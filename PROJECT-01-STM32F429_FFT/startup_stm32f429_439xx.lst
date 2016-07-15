@@ -906,18 +906,18 @@ ARM Macro Assembler    Page 14
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --apcs=int
 erwork --depend=.\targets\stm32f429_discovery\startup_stm32f429_439xx.d -o.\tar
-gets\stm32f429_discovery\startup_stm32f429_439xx.o -IF:\workspace\arm\PROJECT-0
-1-STM32F429_FFT\PROJECT-01-STM32F429_FFT\RTE -IH:\Keil_v5\ARM\PACK\Keil\STM32F4
+gets\stm32f429_discovery\startup_stm32f429_439xx.o -IF:\workspace\arm\QREC\PROJ
+ECT-01-STM32F429_FFT\RTE -IH:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\Drivers
 
 
 
 ARM Macro Assembler    Page 15 
 
 
-xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include -IH:\Keil_v5\ARM\CMSIS\I
-nclude --predefine="__UVISION_VERSION SETA 520" --predefine="STM32F429xx SETA 1
-" --list=.\startup_stm32f429_439xx.lst ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIV
-ERS\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm\startup_stm32f429_439xx.s
+\CMSIS\Device\ST\STM32F4xx\Include -IH:\Keil_v5\ARM\CMSIS\Include --predefine="
+__UVISION_VERSION SETA 520" --predefine="STM32F429xx SETA 1" --list=.\startup_s
+tm32f429_439xx.lst ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Device\ST\
+STM32F4xx\Source\Templates\arm\startup_stm32f429_439xx.s
 
 
 

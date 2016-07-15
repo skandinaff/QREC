@@ -34,6 +34,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 /* Include arm_math.h mathematic functions */
 #include "arm_math.h"
@@ -603,7 +604,7 @@ void SendData(unsigned char tx_data[DATA_PACKET_LEN]){
 
 }
 void DisplayDataOnLcd(char* input){
-	char output[1004]; // TODO: change to 14
+	char output[1024]; // TODO: change to 14
 	sprintf(output, "%X%X%X%X%X%X%X", input[0], input[1], input[2], input[3], input[4], input[5], input[6]);
 	
 	//sprintf(output, "%X%X%X", 0x12, 0x13, 0x14);
@@ -690,6 +691,30 @@ unsigned char get_char(void) // Data recive
 	return data;
 }		
 
+
+bool usart_has_data() {
+	return rx_counter != 0;
+}
+
+
+void usart_get_data_packet(char* str, int packet_length) {	
+	uint8_t data;	
+	
+	int i = 0;
+	while (i < packet_length) {
+		while (rx_counter == 0); // Wait if there's no data 
+		data=rx_buffer[rx_rd_index++]; //Getting data from the buffer
+		if (rx_rd_index == RX_BUFFER_SIZE) rx_rd_index=0; //cycling through buffer
+		USART_ITConfig(USART1, USART_IT_RXNE, DISABLE); // disabling interrupt
+		--rx_counter;																		// so it won't interfere change variable
+		USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);  // enebling it back again
+		
+		str[i++] = data;
+	}
+}
+
+
+
 void put_char(uint8_t c)
 {
 	if(c){
@@ -708,23 +733,22 @@ void put_char(uint8_t c)
 
 }
 
+
 void put_str(unsigned char *s)
 {
   while (*s != 0)
     put_char(*s++);
 }
 
-void put_str_for_real(char str[])
-{
-	int i = 0;
-  while (i<=DATA_PACKET_LEN){
+
+void put_str_for_real(char str[]) {
+  for (int i = 0; i <= DATA_PACKET_LEN; i++) {
     put_char(str[i]);
-		i++;
 	}
 }
 
+
 int main(void) {
-	
 	arm_cfft_radix4_instance_f32 S;	/* ARM CFFT module */
 	float32_t maxValue;							/* Max FFT value is stored here */
 	uint32_t maxIndex;							/* Index in Output array where max value is */
@@ -768,76 +792,53 @@ int main(void) {
   SendData(a);
 
 	
+	char* packet = malloc(DATA_PACKET_LEN * sizeof(char));
 	
-	while (1) {
-	
-	TM_BUTTON_Update();
-		
-		
-		
-	// char test[] = {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16};
-		char* test = "sukABC bljatj";
-	
-		
-	char* buff_buff_bkp = malloc(strlen(buffbuff) * sizeof(char));
-	strcpy(buff_buff_bkp, buffbuff);
-		
-	switch (ButtonState) {
-		case 0:
-			DetectWhistle(S, maxValue, maxIndex, i);	
-			break;
-		case 1:
-			TM_DISCO_LedOff(LED_RED);
-			TM_DISCO_LedOff(LED_GREEN);				
-			readPulse2();
-			break;
-		case 2:
-				// if (strcmp(buffbuff, buff_buff_bkp) != 0) {
-					// strcpy(buff_buff_bkp, buffbuff);
-					DisplayDataOnLcd(buffbuff);
-
-					
-				// } else {
-					// put_str_for_real("wwwwww");
-				// }
-				
-		
-			break;
-		case 3:
-			// put_str_for_real(buffbuff);
-			put_str_for_real(buffbuff);
-		
-			ButtonState++;			
-			break;
-		default:
-			ButtonState = 0;
-			break;
-	}
-
-	// Here we constrct a string out of data that came	
-	if (rx_counter != 0) {
-		// for (int i = 0; i < DATA_PACKET_LEN; i++) {
-		
-		i = 0;
-		while (rx_counter != 0) { // while there is new data
-			buffbuff[i++] = get_char();
-			put_str_for_real("w");
+	while (1) {	
+		TM_BUTTON_Update();
+			
+		// char test[] = {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16};
+			char* test = "sukABC bljatj";
+			
+		switch (ButtonState) {
+			case 0:
+				DetectWhistle(S, maxValue, maxIndex, i);	
+				break;
+			case 1:
+				TM_DISCO_LedOff(LED_RED);
+				TM_DISCO_LedOff(LED_GREEN);				
+				readPulse2();
+				break;
+			case 2:
+				// DisplayDataOnLcd(buffbuff);					
+			DisplayDataOnLcd(packet);
+				break;
+			case 3:
+				put_str_for_real(buffbuff);
+			
+				ButtonState++;			
+				break;
+			default:
+				ButtonState = 0;
+				break;
 		}
-			// }		
-	}
-	
-	//else{memset(&buffbuff[0], 0, sizeof(buffbuff));	}
-	
-	char state[16];
-  sprintf(state, "%d", ButtonState);
-	TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
 
-	
-	/*** This is for pulse readings ***/
-	if(QS == 1) QS = !QS; 						// A Heartbeat Was Found, reset the Quantified Self flag for next time    
-	/**********************************/
+		
+		if (usart_has_data()) {
+			usart_get_data_packet(packet, DATA_PACKET_LEN);
+			put_str("w");
+		}
+		
+		
+		char state[16];
+		sprintf(state, "%d", ButtonState);
+		TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
 
-	
-	
+		
+		/*** This is for pulse readings ***/
+		if(QS == 1) QS = !QS; 						// A Heartbeat Was Found, reset the Quantified Self flag for next time    
+		/**********************************/	
 	}	
+	
+	free(packet);
 }

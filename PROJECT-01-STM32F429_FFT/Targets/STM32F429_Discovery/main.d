@@ -54,6 +54,7 @@
 .\targets\stm32f429_discovery\main.o: .\TM\attributes.h
 .\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\arm_math.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4.h
 .\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Targets\STM32F429_Discovery\project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Targets\STM32F429_Discovery\project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Fri Jul 15 21:38:36 2016
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Fri Jul 15 22:48:47 2016
 <BR><P>
-<H3>Maximum Stack Usage =       1208 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =       1232 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 __rt_entry_main &rArr; main &rArr; DisplayDataOnLcd &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 <P>
@@ -296,7 +296,7 @@ Global Symbols
 <P><STRONG><a name="[19c]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[8a]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1208 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 1232 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; DisplayDataOnLcd &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1451,7 +1451,7 @@ Global Symbols
 <P><STRONG><a name="[27a]"></a>USART_OneBitMethodCmd</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, stm32f4xx_usart.o(.text), UNUSED)
 
 <P><STRONG><a name="[148]"></a>USART_SendData</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, stm32f4xx_usart.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_char
+<BR><BR>[Called By]<UL><LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_char
 <LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
 <LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SendData
 </UL>
@@ -1489,14 +1489,15 @@ Global Symbols
 <P><STRONG><a name="[145]"></a>USART_ITConfig</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, stm32f4xx_usart.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = USART_ITConfig
 </UL>
-<BR>[Called By]<UL><LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_char
+<BR>[Called By]<UL><LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_char
+<LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_get_data_packet
 <LI><a href="#[14c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_char
 <LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART1_IRQHandler
 <LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUSART
 </UL>
 
 <P><STRONG><a name="[147]"></a>USART_GetFlagStatus</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f4xx_usart.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_char
+<BR><BR>[Called By]<UL><LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_char
 <LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SendData
 </UL>
 
@@ -1782,7 +1783,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 </UL>
 
-<P><STRONG><a name="[151]"></a>Delayms</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, tm_stm32f4_delay.o(.text))
+<P><STRONG><a name="[152]"></a>Delayms</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, tm_stm32f4_delay.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Delayms
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -1980,7 +1981,7 @@ Global Symbols
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ILI9341_Putc
 </UL>
 
-<P><STRONG><a name="[150]"></a>TM_ILI9341_Rotate</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, tm_stm32f4_ili9341_ltdc.o(.text))
+<P><STRONG><a name="[151]"></a>TM_ILI9341_Rotate</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, tm_stm32f4_ili9341_ltdc.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -2487,8 +2488,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[149]"></a>DisplayDataOnLcd</STRONG> (Thumb, 66 bytes, Stack size 1032 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1160 + Unknown Stack Size
+<P><STRONG><a name="[149]"></a>DisplayDataOnLcd</STRONG> (Thumb, 66 bytes, Stack size 1056 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 1184 + Unknown Stack Size
 <LI>Call Chain = DisplayDataOnLcd &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ILI9341_Puts
@@ -2507,44 +2508,58 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f429_439xx.o(RESET)
 </UL>
-<P><STRONG><a name="[14c]"></a>get_char</STRONG> (Thumb, 66 bytes, Stack size 24 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = get_char &rArr; USART_ITConfig
+<P><STRONG><a name="[14c]"></a>get_char</STRONG> (Thumb, 66 bytes, Stack size 24 bytes, main.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ITConfig
+</UL>
+
+<P><STRONG><a name="[153]"></a>usart_has_data</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, main.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[14d]"></a>usart_get_data_packet</STRONG> (Thumb, 242 bytes, Stack size 32 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = usart_get_data_packet &rArr; USART_ITConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ITConfig
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[14d]"></a>put_char</STRONG> (Thumb, 258 bytes, Stack size 24 bytes, main.o(.text))
+<P><STRONG><a name="[14e]"></a>put_char</STRONG> (Thumb, 106 bytes, Stack size 24 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = put_char &rArr; USART_ITConfig
 </UL>
 <BR>[Calls]<UL><LI><a href="#[147]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_GetFlagStatus
 <LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_ITConfig
 <LI><a href="#[148]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;USART_SendData
 </UL>
-<BR>[Called By]<UL><LI><a href="#[14f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_str_for_real
-<LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_str
+<BR>[Called By]<UL><LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_str_for_real
+<LI><a href="#[14f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_str
 </UL>
 
-<P><STRONG><a name="[14e]"></a>put_str</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, main.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_char
+<P><STRONG><a name="[14f]"></a>put_str</STRONG> (Thumb, 20 bytes, Stack size 8 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = put_str &rArr; put_char &rArr; USART_ITConfig
 </UL>
-
-<P><STRONG><a name="[14f]"></a>put_str_for_real</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = put_str_for_real &rArr; put_char &rArr; USART_ITConfig
-</UL>
-<BR>[Calls]<UL><LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_char
+<BR>[Calls]<UL><LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_char
 </UL>
 <BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[8b]"></a>main</STRONG> (Thumb, 292 bytes, Stack size 48 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 1208 + Unknown Stack Size
+<P><STRONG><a name="[150]"></a>put_str_for_real</STRONG> (Thumb, 20 bytes, Stack size 16 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = put_str_for_real &rArr; put_char &rArr; USART_ITConfig
+</UL>
+<BR>[Calls]<UL><LI><a href="#[14e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_char
+</UL>
+<BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+</UL>
+
+<P><STRONG><a name="[8b]"></a>main</STRONG> (Thumb, 274 bytes, Stack size 48 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 1232 + Unknown Stack Size
 <LI>Call Chain = main &rArr; DisplayDataOnLcd &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
-<LI><a href="#[14f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_str_for_real
-<LI><a href="#[14c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_char
+<LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_str_for_real
+<LI><a href="#[14f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;put_str
+<LI><a href="#[14d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_get_data_packet
+<LI><a href="#[153]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_has_data
 <LI><a href="#[149]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DisplayDataOnLcd
 <LI><a href="#[146]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SendData
 <LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;InitUSART
@@ -2556,15 +2571,13 @@ Global Symbols
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_BUTTON_Update
 <LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_BUTTON_Init
 <LI><a href="#[102]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ILI9341_Puts
-<LI><a href="#[150]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ILI9341_Rotate
+<LI><a href="#[151]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ILI9341_Rotate
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ILI9341_Init
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_DISCO_LedOff
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_DISCO_LedInit
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_DELAY_Init
-<LI><a href="#[151]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
+<LI><a href="#[152]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 <LI><a href="#[ca]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ADC_Init
-<LI><a href="#[152]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strlen
-<LI><a href="#[153]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;strcpy
 <LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 </UL>
@@ -2694,18 +2707,6 @@ Global Symbols
 <LI><a href="#[15b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_is_digit
 </UL>
 <BR>[Called By]<UL><LI><a href="#[158]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_char_common
-</UL>
-
-<P><STRONG><a name="[153]"></a>strcpy</STRONG> (Thumb, 72 bytes, Stack size 12 bytes, strcpy.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = strcpy
-</UL>
-<BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-</UL>
-
-<P><STRONG><a name="[152]"></a>strlen</STRONG> (Thumb, 62 bytes, Stack size 8 bytes, strlen.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = strlen
-</UL>
-<BR>[Called By]<UL><LI><a href="#[8b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[2a3]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
