@@ -67,28 +67,30 @@ typedef struct {
 
 
 /* FFT settings */
-#define SAMPLES					512 			/* 256 real party and 256 imaginary parts */
-#define FFT_SIZE				SAMPLES / 2		/* FFT size is always the same size as we have samples, so 256 in our case */
+#define SAMPLES					    512 			/* 256 real party and 256 imaginary parts */
+#define FFT_SIZE				    SAMPLES / 2		/* FFT size is always the same size as we have samples, so 256 in our case */
 
-#define FFT_BAR_MAX_HEIGHT		120 			/* 120 px on the LCD */
+#define FFT_BAR_MAX_HEIGHT		    120 		    /* 120 px on the LCD */
 
 #define QUEST_ID					0x10
-#define DATA_PACKET_LEN		7								
-#define MASTER_START_BYTE	0xC1
-#define SLAVE_START_BYTE	0xC2
+#define DATA_PACKET_LEN		        7
+#define OUTGOING_PACKET_LENGTH      5
+#define MASTER_START_BYTE	        0xC1
+#define SLAVE_START_BYTE	        0xC2
 #define STOP_BYTE					0xC0
+#define RESTRICTED_BYTE             0x7B
 
 //------------- 
-#define CMD_MASTER_TEST					0x01			
-#define CMD_MASTER_WORK_START		0x02			
-#define CMD_MASTER_STATUS_REQ		0x03			
-#define CMD_MASTER_SET_IDLE			0x04			
+#define INSTR_MASTER_TEST			0x01
+#define INSTR_MASTER_WORK_START		0x02			
+#define INSTR_MASTER_STATUS_REQ		0x03			
+#define INSTR_MASTER_SET_IDLE		0x04
 
 //------------- 
-#define CMD_SLAVE_NOT_READY			0x01			
-#define CMD_SLAVE_READY					0x02 			
-#define CMD_SLAVE_NOT_COMLETED	0x03			
-#define CMD_SLAVE_COMPLETED			0x04      
+#define INSTR_SLAVE_NOT_READY		0x01
+#define INSTR_SLAVE_READY			0x02
+#define INSTR_SLAVE_NOT_COMLETED	0x03			
+#define INSTR_SLAVE_COMPLETED		0x04
 
 GPIO_InitTypeDef GPIO_InintStructure;
 
@@ -543,14 +545,8 @@ void BUTTON1_EventHandler(TM_BUTTON_PressType_t type) {
 		
 	} else if (type == TM_BUTTON_PressType_Normal) {
 
-			//ButtonState = !ButtonState;
-		
-		
 	} else {
 
-			//ButtonState = !ButtonState;
-		
-		
 	}
 }
 
@@ -615,16 +611,16 @@ void InitUSART(void){
 		
 }
 
-void SendData(unsigned char tx_data[DATA_PACKET_LEN]){
-	// Older implementation
-	unsigned char i;
-	
-	for(i=0; i<DATA_PACKET_LEN; i++){
-		while(USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
-		USART_SendData(USART1, tx_data[i]);
-		//memset(&rx_data[0], 0, sizeof(rx_data)); // Clear the buffer once data sent out
-		
-	}
+void SendData(unsigned char tx_data[DATA_PACKET_LEN]) {
+    // Older implementation
+    unsigned char i;
+
+    for (i = 0; i < DATA_PACKET_LEN; i++) {
+        while (USART_GetFlagStatus(USART1, USART_FLAG_TC) == RESET);
+        USART_SendData(USART1, tx_data[i]);
+        //memset(&rx_data[0], 0, sizeof(rx_data)); // Clear the buffer once data sent out
+
+    }
 
 }
 
@@ -632,80 +628,75 @@ void SendData(unsigned char tx_data[DATA_PACKET_LEN]){
 void DisplayDataOnLcd(char* input){
 	char output[14];
 	sprintf(output, "%02X%02X%02X%02X%02X%02X%02X", input[0], input[1], input[2], input[3], input[4], input[5], input[6]);
-	
+
 	TM_ILI9341_Puts(1, 20, output, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	
+
 	/*
 	int len = strlen(input);
-	
-		
+
+
 	char* output = malloc(len * 2 * sizeof(char));
-    
+
 	char tmp[2]; // 1 char contains 2 HEX encoded "characters"
 	int output_index = 0;
 	for (int i = 0; i < len; i++) {
 		sprintf(tmp, "%X", input[i]); // convert 1 char to 2 HEX encoded "characters"
-			
+
 		output[2*output_index] = tmp[0];
 		output[2*output_index+1] = tmp[1];
-			
+
 		output_index++;
 	}
-	
+
 	TM_ILI9341_Puts(1, 20, output, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	*/
 }
 
 
-void USART1_IRQHandler(void){
+void USART1_IRQHandler(void) {
 
-	
-	if(USART_GetITStatus(USART1, USART_IT_RXNE) == SET)
-  {
-                if ((USART1->SR & (USART_FLAG_NE|USART_FLAG_FE|USART_FLAG_PE|USART_FLAG_ORE)) == 0)
-                {                       
-                        rx_buffer[rx_wr_index++]=(uint8_t)(USART_ReceiveData(USART1)& 0xFF);
-                        if (rx_wr_index == RX_BUFFER_SIZE) rx_wr_index=0;
-                        if (++rx_counter == RX_BUFFER_SIZE)
-                                {
-                                rx_counter=0;
-                                rx_buffer_overflow=1;
-                                }
-                }
-               else USART_ReceiveData(USART1);//вообще здесь нужен обработчик ошибок, а мы просто пропускаем битый байт
+
+    if (USART_GetITStatus(USART1, USART_IT_RXNE) == SET) {
+        if ((USART1->SR & (USART_FLAG_NE | USART_FLAG_FE | USART_FLAG_PE | USART_FLAG_ORE)) == 0) {
+            rx_buffer[rx_wr_index++] = (uint8_t)(USART_ReceiveData(USART1) & 0xFF);
+            if (rx_wr_index == RX_BUFFER_SIZE) rx_wr_index = 0;
+            if (++rx_counter == RX_BUFFER_SIZE) {
+                rx_counter = 0;
+                rx_buffer_overflow = 1;
+            }
         }
+        else USART_ReceiveData(USART1);//вообще здесь нужен обработчик ошибок, а мы просто пропускаем битый байт
+    }
 
-  if(USART_GetITStatus(USART1, USART_IT_ORE_RX) == SET) //прерывание по переполнению буфера
-  {
-     USART_ReceiveData(USART1); //в идеале пишем здесь обработчик переполнения буфера, но мы просто сбрасываем этот флаг прерывания чтением из регистра данных.
-  }
+    if (USART_GetITStatus(USART1, USART_IT_ORE_RX) == SET) //прерывание по переполнению буфера
+    {
+        USART_ReceiveData(
+                USART1); //в идеале пишем здесь обработчик переполнения буфера, но мы просто сбрасываем этот флаг прерывания чтением из регистра данных.
+    }
 
-  if(USART_GetITStatus(USART1, USART_IT_TXE) == SET)
-  {   
-                if (tx_counter)
-                {
-                 --tx_counter;
-                 USART_SendData(USART1,tx_buffer[tx_rd_index++]);
-                 if (tx_rd_index == TX_BUFFER_SIZE) tx_rd_index=0;
-                }
-                else
-                {
-                        USART_ITConfig(USART1, USART_IT_TXE, DISABLE);                  
-                }
+    if (USART_GetITStatus(USART1, USART_IT_TXE) == SET) {
+        if (tx_counter) {
+            --tx_counter;
+            USART_SendData(USART1, tx_buffer[tx_rd_index++]);
+            if (tx_rd_index == TX_BUFFER_SIZE) tx_rd_index = 0;
         }
-	
-	
+        else {
+            USART_ITConfig(USART1, USART_IT_TXE, DISABLE);
+        }
+    }
+
+
 }
 
 
 unsigned char get_char(void) { // Data recive 
-	uint8_t data;	
-	data=rx_buffer[rx_rd_index++]; //Getting data from the buffer
-	if (rx_rd_index == RX_BUFFER_SIZE) rx_rd_index=0; //cycling through buffer
-	USART_ITConfig(USART1, USART_IT_RXNE, DISABLE); // disabling interrupt
-	--rx_counter;																		// so it won't interfere change variable
-	USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);  // enebling it back again
-	return data;
+    uint8_t data;
+    data = rx_buffer[rx_rd_index++]; //Getting data from the buffer
+    if (rx_rd_index == RX_BUFFER_SIZE) rx_rd_index = 0; //cycling through buffer
+    USART_ITConfig(USART1, USART_IT_RXNE, DISABLE); // disabling interrupt
+    --rx_counter;                                                                        // so it won't interfere change variable
+    USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);  // enebling it back again
+    return data;
 }		
 
 
@@ -733,30 +724,25 @@ void usart_get_data_packet(char* packet) {
 }
 
 
-
-void put_char(uint8_t c)
-{
-	if(c){
-	while (tx_counter == TX_BUFFER_SIZE);
-	USART_ITConfig(USART1, USART_IT_TXE, DISABLE);
-	if (tx_counter || (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET))
-		 {
-		 tx_buffer[tx_wr_index++]=c;
-		 if (tx_wr_index == TX_BUFFER_SIZE) tx_wr_index=0;
-		 ++tx_counter;
-					 USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
-		 }
-	else
-		 USART_SendData(USART1,c);
-	}
-
+void put_char(uint8_t c) {
+    if (c) {
+        while (tx_counter == TX_BUFFER_SIZE);
+        USART_ITConfig(USART1, USART_IT_TXE, DISABLE);
+        if (tx_counter || (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET)) {
+            tx_buffer[tx_wr_index++] = c;
+            if (tx_wr_index == TX_BUFFER_SIZE) tx_wr_index = 0;
+            ++tx_counter;
+            USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
+        }
+        else
+            USART_SendData(USART1, c);
+    }
 }
 
 
-void put_str(unsigned char *s)
-{
-  while (*s != 0)
-    put_char(*s++);
+void put_str(unsigned char *s) {
+    while (*s != 0)
+        put_char(*s++);
 }
 
 
@@ -782,6 +768,56 @@ incoming_packet_t usart_packet_parser(char* packet) {
     incoming_packet.crc8 = packet[incoming_packet.packet_length == 7 ? 5 : 3];
 
     return incoming_packet;
+}
+
+
+void usart_peform_instruction(incoming_packet_t incoming_packet) {
+    switch (incoming_packet.instruction) {
+        case INSTR_MASTER_TEST:
+            // TODO: gotov ili ne gotov k rabote
+            put_str("A");
+            break;
+        case INSTR_MASTER_WORK_START:
+            // TODO: nachinaem quest
+            put_str("B");
+            break;
+        case INSTR_MASTER_STATUS_REQ:
+            put_str("C");
+            // TODO: zapros viponen kvest ili net
+            break;
+        case INSTR_MASTER_SET_IDLE:
+            put_str("D");
+            // TODO: vernutj v ishodnoe sostojanie
+            break;
+    }
+}
+
+
+outgoing_packet_t usart_assemble_response(char instruction) {
+    outgoing_packet_t outgoing_packet;
+    outgoing_packet.slave_start_byte = SLAVE_START_BYTE;
+    outgoing_packet.slave_address = QUEST_ID;
+    outgoing_packet.instruction = instruction;
+    outgoing_packet.crc8 = RESTRICTED_BYTE; // TODO: CHANGE ME PLZ!!!
+    outgoing_packet.stop_byte = STOP_BYTE;
+
+    if (outgoing_packet.crc8 == STOP_BYTE ||
+            outgoing_packet.crc8 == MASTER_START_BYTE ||
+            outgoing_packet.crc8 == SLAVE_START_BYTE ||
+            outgoing_packet.crc8 == RESTRICTED_BYTE) {
+        outgoing_packet.crc8 ^= RESTRICTED_BYTE;
+    }
+
+    return outgoing_packet;
+}
+
+void usart_convert_outgoing_packet (char* packet, outgoing_packet_t outgoing_packet) {
+    packet[0] = outgoing_packet.slave_start_byte;
+    packet[1] = outgoing_packet.slave_address;
+    packet[2] = outgoing_packet.instruction;
+    packet[3] = outgoing_packet.crc8;
+    packet[4] = outgoing_packet.stop_byte;
+    packet[5] = '\0';
 }
 
 
@@ -845,7 +881,7 @@ int main(void) {
 				DisplayDataOnLcd(packet);
 				break;
 			case 3:
-				put_str(packet);
+				// put_str(packet);
 			
 				ButtonState++;			
 				break;
@@ -859,7 +895,19 @@ int main(void) {
 			usart_get_data_packet(packet);
             incoming_packet = usart_packet_parser(packet);
             if (usart_packet_is_addressed_to_me(incoming_packet)) {
-                put_str("w");
+                usart_peform_instruction(incoming_packet);
+
+                // TODO: THIS BIT SENDS THE OUTGOING PACKET
+                char instruction = INSTR_SLAVE_NOT_READY;
+                instruction = INSTR_SLAVE_READY;
+                instruction = INSTR_SLAVE_NOT_COMLETED;
+                instruction = INSTR_SLAVE_READY;
+
+                char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
+                outgoing_packet_t outgoing_packet = usart_assemble_response(instruction);
+                usart_convert_outgoing_packet(packet, outgoing_packet);
+                put_str("www");
+                put_str(packet);
             }
 		}
 
