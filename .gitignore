@@ -83,5 +83,7 @@ $RECYCLE.BIN/
 *.lnk
 
 Targets/*
+*.rar
+*.htm
 
 PROJECT-01-STM32F429_FFT/project.map
