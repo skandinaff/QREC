@@ -603,17 +603,13 @@ void SendData(unsigned char tx_data[DATA_PACKET_LEN]){
 	}
 
 }
+
+
 void DisplayDataOnLcd(char* input){
-	char output[1024]; // TODO: change to 14
-	sprintf(output, "%X%X%X%X%X%X%X", input[0], input[1], input[2], input[3], input[4], input[5], input[6]);
-	
-	//sprintf(output, "%X%X%X", 0x12, 0x13, 0x14);
-	
-	// sprintf(output, "%s", 0x12, 0x13, 0x14);
+	char output[14];
+	sprintf(output, "%02X%02X%02X%02X%02X%02X%02X", input[0], input[1], input[2], input[3], input[4], input[5], input[6]);
 	
 	TM_ILI9341_Puts(1, 20, output, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	
-	// TM_ILI9341_Puts(1, 20, output, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	
 	/*
 	int len = strlen(input);
@@ -626,7 +622,6 @@ void DisplayDataOnLcd(char* input){
 	for (int i = 0; i < len; i++) {
 		sprintf(tmp, "%X", input[i]); // convert 1 char to 2 HEX encoded "characters"
 			
-		// TODO: refactor
 		output[2*output_index] = tmp[0];
 		output[2*output_index+1] = tmp[1];
 			
@@ -810,8 +805,7 @@ int main(void) {
 				readPulse2();
 				break;
 			case 2:
-				// DisplayDataOnLcd(buffbuff);					
-			DisplayDataOnLcd(packet);
+				DisplayDataOnLcd(packet);
 				break;
 			case 3:
 				put_str_for_real(buffbuff);
@@ -826,7 +820,6 @@ int main(void) {
 		
 		if (usart_has_data()) {
 			usart_get_data_packet(packet, DATA_PACKET_LEN);
-			put_str("w");
 		}
 		
 		
