@@ -81,3 +81,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+Targets/*
+
+PROJECT-01-STM32F429_FFT/project.map
