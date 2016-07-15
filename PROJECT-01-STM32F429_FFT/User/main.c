@@ -20,7 +20,6 @@
 // System Clock is 180 Mhz
 /* Include core modules */
 #include "stm32f4xx.h"
-/* Include my libraries here */
 #include "defines.h"
 #include "tm_stm32f4_delay.h"
 #include "tm_stm32f4_ili9341_ltdc.h"
@@ -40,11 +39,30 @@
 #include "arm_math.h"
 
 /* Includes for timer to work */
-
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx_rcc.h"
 
 
+typedef struct {
+	int packet_length;
+	
+	char master_stat_byte;
+	char slave_address;
+	char instruction;
+	char player_count;
+	char hint_count;
+	char crc8;
+	char stop_byte;
+} incoming_packet_t;
+
+
+typedef struct {
+	char slave_start_byte;
+	char slave_address;
+	char instruction;
+	char crc8;
+	char stop_byte;
+} outgoing_packet_t;
 
 
 
@@ -54,11 +72,23 @@
 
 #define FFT_BAR_MAX_HEIGHT		120 			/* 120 px on the LCD */
 
-#define QUEST_ID					0x0F
+#define QUEST_ID					0x10
 #define DATA_PACKET_LEN		7								
 #define MASTER_START_BYTE	0xC1
 #define SLAVE_START_BYTE	0xC2
 #define STOP_BYTE					0xC0
+
+//------------- 
+#define CMD_MASTER_TEST					0x01			
+#define CMD_MASTER_WORK_START		0x02			
+#define CMD_MASTER_STATUS_REQ		0x03			
+#define CMD_MASTER_SET_IDLE			0x04			
+
+//------------- 
+#define CMD_SLAVE_NOT_READY			0x01			
+#define CMD_SLAVE_READY					0x02 			
+#define CMD_SLAVE_NOT_COMLETED	0x03			
+#define CMD_SLAVE_COMPLETED			0x04      
 
 GPIO_InitTypeDef GPIO_InintStructure;
 
@@ -166,33 +196,31 @@ void DrawBar(uint16_t bottomX, uint16_t bottomY, uint16_t maxHeight, uint16_t ma
 	}
 }
 
-void FlashLeds (float32_t freq){
-	
+void FlashLeds(float32_t freq) {
 
-	
-		if(freq >= 1100){
-			TM_DISCO_LedOff(LED_RED);
-			TM_DISCO_LedOn(LED_GREEN);
-			
-			
+
+	if (freq >= 1100) {
+		TM_DISCO_LedOff(LED_RED);
+		TM_DISCO_LedOn(LED_GREEN);
+
+
 		TIM_Cmd(TIM2, ENABLE);
-			
-			
 
-		}
-		
-		if(freq < 900 /*&& freq > 10*/){
-			TM_DISCO_LedOn(LED_RED);
-			TM_DISCO_LedOff(LED_GREEN);
-			TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-			TIM_Cmd(TIM2, DISABLE);
-		}
-		
+
+	}
+
+	if (freq < 900 /*&& freq > 10*/) {
+		TM_DISCO_LedOn(LED_RED);
+		TM_DISCO_LedOff(LED_GREEN);
+		TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		TIM_Cmd(TIM2, DISABLE);
+	}
+
 
 }
 
-void countSeconds(){
-	if(secondsCount > 5) {
+void countSeconds() {
+	if (secondsCount > 5) {
 		TM_ILI9341_Puts(10, 25, "You Whistled for 5 sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 		secondsCount = 0;
 	}
@@ -237,15 +265,14 @@ void INTTIM2_Config(void){
   //TIM_Cmd(TIM2, ENABLE);
 }
 
-void TIM2_IRQHandler(void){
-	
-  if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
-  {
-		secondsCount+=1;
-    TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-    GPIO_ToggleBits(GPIOC, GPIO_Pin_9);
+void TIM2_IRQHandler(void) {
+
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
+		secondsCount += 1;
+		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+		GPIO_ToggleBits(GPIOC, GPIO_Pin_9);
 		//TM_ILI9341_Puts(10, 25, "You Whistled for 10 sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-  }
+	}
 }
 
 void INTTIM5_Config(void){
@@ -273,30 +300,27 @@ void INTTIM5_Config(void){
   TIM_Cmd(TIM5, ENABLE);
 }
 
-void TIM5_IRQHandler(void){
+void TIM5_IRQHandler(void) {
 
-		
-	
-  if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)
-  {
-    TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
-		
-		sampleCounter+=1;
-		
 
-		
-		counter+=1;          // This horrible thing here helps to get ~0.250ms refresh rate for drawing signal
-		counter2+=1;
-		if(counter == 50 ){
-			tim5_count+=1;
-			counter =0;
+	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET) {
+		TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
+
+		sampleCounter += 1;
+
+
+		counter += 1;          // This horrible thing here helps to get ~0.250ms refresh rate for drawing signal
+		counter2 += 1;
+		if (counter == 50) {
+			tim5_count += 1;
+			counter = 0;
 		}
-		if(counter2 == 150){
-			tim5_count2+=1;
-			counter2=0;
+		if (counter2 == 150) {
+			tim5_count2 += 1;
+			counter2 = 0;
 		}
 
-  }
+	}
 }
 
 void readPulse2(void){
@@ -674,10 +698,8 @@ void USART1_IRQHandler(void){
 }
 
 
-unsigned char get_char(void) // Data recive 
-{
+unsigned char get_char(void) { // Data recive 
 	uint8_t data;	
-	//while (rx_counter==0); // Wait if there's no data 
 	data=rx_buffer[rx_rd_index++]; //Getting data from the buffer
 	if (rx_rd_index == RX_BUFFER_SIZE) rx_rd_index=0; //cycling through buffer
 	USART_ITConfig(USART1, USART_IT_RXNE, DISABLE); // disabling interrupt
@@ -692,20 +714,22 @@ bool usart_has_data() {
 }
 
 
-void usart_get_data_packet(char* str, int packet_length) {	
-	uint8_t data;	
-	
-	int i = 0;
-	while (i < packet_length) {
-		while (rx_counter == 0); // Wait if there's no data 
-		data=rx_buffer[rx_rd_index++]; //Getting data from the buffer
-		if (rx_rd_index == RX_BUFFER_SIZE) rx_rd_index=0; //cycling through buffer
-		USART_ITConfig(USART1, USART_IT_RXNE, DISABLE); // disabling interrupt
-		--rx_counter;																		// so it won't interfere change variable
-		USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);  // enebling it back again
-		
-		str[i++] = data;
+void usart_get_data_packet(char* packet) {	
+	if (!usart_has_data()) {
+		*packet = '\0';
+		return;
 	}
+	
+	uint8_t packet_byte;	
+	do {
+		while (rx_counter == 0); // Wait if there's no data 
+		
+		packet_byte = get_char();
+		
+		*packet++ = packet_byte;
+	} while (packet_byte != STOP_BYTE);
+
+	*packet = '\0';
 }
 
 
@@ -736,10 +760,28 @@ void put_str(unsigned char *s)
 }
 
 
-void put_str_for_real(char str[]) {
-  for (int i = 0; i <= DATA_PACKET_LEN; i++) {
-    put_char(str[i]);
-	}
+bool usart_packet_is_addressed_to_me(incoming_packet_t incoming_packet) {
+    return incoming_packet.slave_address == QUEST_ID;
+}
+
+
+incoming_packet_t usart_packet_parser(char* packet) {
+    incoming_packet_t incoming_packet;
+    incoming_packet.packet_length = strlen(packet);
+
+    incoming_packet.master_stat_byte = packet[0];
+    incoming_packet.slave_address = packet[1];
+    incoming_packet.instruction = packet[2];
+
+    if (incoming_packet.packet_length == 7) {
+        incoming_packet.player_count = packet[3];
+        incoming_packet.hint_count = packet[4];
+    }
+
+    incoming_packet.stop_byte = packet[incoming_packet.packet_length == 7 ? 6 : 4];
+    incoming_packet.crc8 = packet[incoming_packet.packet_length == 7 ? 5 : 3];
+
+    return incoming_packet;
 }
 
 
@@ -748,9 +790,7 @@ int main(void) {
 	float32_t maxValue;							/* Max FFT value is stored here */
 	uint32_t maxIndex;							/* Index in Output array where max value is */
 	uint16_t i;
-	
-	char buffbuff[7] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-	
+
 	/* Initialize system */
 	SystemInit();
 	
@@ -787,13 +827,10 @@ int main(void) {
   SendData(a);
 
 	
-	char* packet = malloc(DATA_PACKET_LEN * sizeof(char));
-	
+	char* packet = malloc((DATA_PACKET_LEN + 1) * sizeof(char));
+	incoming_packet_t incoming_packet;
 	while (1) {	
 		TM_BUTTON_Update();
-			
-		// char test[] = {0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16};
-			char* test = "sukABC bljatj";
 			
 		switch (ButtonState) {
 			case 0:
@@ -808,7 +845,7 @@ int main(void) {
 				DisplayDataOnLcd(packet);
 				break;
 			case 3:
-				put_str_for_real(buffbuff);
+				put_str(packet);
 			
 				ButtonState++;			
 				break;
@@ -819,11 +856,15 @@ int main(void) {
 
 		
 		if (usart_has_data()) {
-			usart_get_data_packet(packet, DATA_PACKET_LEN);
+			usart_get_data_packet(packet);
+            incoming_packet = usart_packet_parser(packet);
+            if (usart_packet_is_addressed_to_me(incoming_packet)) {
+                put_str("w");
+            }
 		}
+
 		
-		
-		char state[16];
+		char state[1];
 		sprintf(state, "%d", ButtonState);
 		TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
 
@@ -831,7 +872,7 @@ int main(void) {
 		/*** This is for pulse readings ***/
 		if(QS == 1) QS = !QS; 						// A Heartbeat Was Found, reset the Quantified Self flag for next time    
 		/**********************************/	
-	}	
+	}
 	
-	free(packet);
+	// free(packet);
 }
