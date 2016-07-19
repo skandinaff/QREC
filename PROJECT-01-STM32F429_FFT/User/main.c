@@ -1,10 +1,8 @@
 /**
- *	Keil project example for FFT on STM32F4 device.
  *
- *	Works on STM32F429-Discovery board because it has LCD
  *
- *	@author		Tilen Majerle
- *	@email		tilen@majerle.eu
+ *	@author		Aleksandrs S.
+ *	@email		sevalks@gmail.com
  *	@website	http://stm32f4-discovery.com
  *	@ide		Keil uVision 5
  *	@packs		STM32F4xx Keil packs version 2.2.0 or greater required
@@ -18,9 +16,19 @@
  
 // Timers clock is 45 Mhz
 // System Clock is 180 Mhz
+/*
+PA3 - Microphone
+PF8 - Pulse Sensor
+PA10 - USART
+PA9 - USART
+
+*/
+
+
 /* Include core modules */
 #include "stm32f4xx.h"
 #include "defines.h"
+
 #include "tm_stm32f4_delay.h"
 #include "tm_stm32f4_ili9341_ltdc.h"
 #include "tm_stm32f4_adc.h"
@@ -30,6 +38,10 @@
 
 #include "tm_stm32f4_button.h"
 #include "tm_stm32f4_usart.h"
+
+#include "stm32f4xx_exti.h"
+#include "stm32f4xx_syscfg.h"
+
 
 #include <stdio.h>
 #include <string.h>
@@ -44,6 +56,8 @@
 
 /* My custom includes */
 #include "usart.h"
+#include "stack.h"
+
 
 
 
@@ -54,6 +68,7 @@
 #define FFT_SIZE				    SAMPLES / 2		/* FFT size is always the same size as we have samples, so 256 in our case */
 
 #define FFT_BAR_MAX_HEIGHT		    120 		    /* 120 px on the LCD */
+#define TARGET_BPM 80
 
 
 
@@ -74,6 +89,8 @@ void INTTIM2_Config(void);
 void INTTIM5_Config(void);
 void readPulse(void);
 void BUTTON1_EventHandler(TM_BUTTON_PressType_t type);
+void BUTTON2_EventHandler(TM_BUTTON_PressType_t type);
+uint8_t DetectCups(void);
 
 /* Global variables */
 float32_t Input[SAMPLES];
@@ -93,12 +110,35 @@ uint32_t pulse = 0;
 
 uint16_t ButtonState = 0;
 
+unsigned char c1_state = 0;
+unsigned char c2_state = 0;
+unsigned char c3_state = 0;
+unsigned char c4_state = 0;
+unsigned char c5_state = 0;
+
+uint16_t cstate;
+char cstate_str[32];
 
 
 uint16_t old_tim5_count = 0;
 
+// Flags that signal that the task is done
 
+struct Flags {
 
+bool detect_whistle;
+bool read_pulse;
+bool detect_movement;
+bool detect_silence;
+bool detect_clap;
+bool all_tasks;
+
+};
+
+struct Flags t_flags;
+
+bool all_cups_present;
+	
 //Pulse Reader variables
 
 volatile uint16_t BPM;
@@ -121,6 +161,11 @@ volatile uint16_t secondBeat = 1;      // used to seed rate array so we startup 
 char adc_result_str[15];
 char BPM_result_str[15];
 char thresh_restult_str[15];
+
+// this is the stack that holds activated cups
+stackT c_stack; // Creating stack of cups 
+char c_str[5] = {0,0,0,0,0};  // String of "buttons" pressed
+char *traverse;  // Pointer used to traverse the string
 
 
 
@@ -164,23 +209,12 @@ void FlashLeds(float32_t freq) {
 void countSeconds() {
 	if (secondsCount > 5) {
 		TM_ILI9341_Puts(10, 25, "You Whistled for 5 sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		Delayms(750);
+		t_flags.detect_whistle = true;
 		secondsCount = 0;
 	}
 }
 
-void InitGPIO(void){
-	/*Initializing Pin for additional LEDs s*/
-	GPIO_InitTypeDef PORT;
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
-	
-	PORT.GPIO_Pin = (GPIO_Pin_9 | GPIO_Pin_8);
-	PORT.GPIO_Mode = GPIO_Mode_OUT;
-	PORT.GPIO_Speed = GPIO_Low_Speed;
-	
-	GPIO_Init(GPIOC, &PORT);
-	/********************/
-
-}
 
 void INTTIM2_Config(void){
 
@@ -212,7 +246,6 @@ void TIM2_IRQHandler(void) {
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET) {
 		secondsCount += 1;
 		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
-		GPIO_ToggleBits(GPIOC, GPIO_Pin_9);
 		//TM_ILI9341_Puts(10, 25, "You Whistled for 10 sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	}
 }
@@ -298,7 +331,7 @@ void readPulse2(void){
 		
     if ( (Signal > thresh) && (Pulse == 0) && (N > (IBI/5)*3) && ((Signal - thresh) > 100) && (Signal - thresh) < 400 ){        
       Pulse = 1;                               // set the Pulse flag when we think there is a pulse
-      GPIO_SetBits(GPIOC, GPIO_Pin_9);               // turn on pin 13 LED
+      TM_DISCO_LedOn(LED_RED);               // turn on pin 13 LED
 			//TM_DISCO_LedOn(LED_GREEN);
       IBI = sampleCounter - lastBeatTime;         // measure time between beats in mS
       lastBeatTime = sampleCounter;               // keep track of time for next pulse
@@ -336,7 +369,7 @@ void readPulse2(void){
   }
 
   if (Signal < thresh && Pulse == 1){   // when the values are going down, the beat is over
-    GPIO_ResetBits(GPIOC, GPIO_Pin_9);              // turn off pin 13 LED
+    TM_DISCO_LedOff(LED_RED);              // turn off pin 13 LED
     //TM_DISCO_LedOff(LED_GREEN);
 		Pulse = 0;                         // reset the Pulse flag so we can do it again
 
@@ -392,10 +425,12 @@ void readPulse2(void){
 
 		TM_ILI9341_DrawPixel(tim5_count, 240-Signal/17, 0x1234);		
 	
-	 if(BPM > 120) {
+	 if(BPM > TARGET_BPM) {
 		TIM_Cmd(TIM2, ENABLE);
 		if(secondsCount >= 5){
 			TM_ILI9341_Puts(1, 65, "You have >120 BPM for >5 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			Delayms(2000);
+			t_flags.read_pulse = true;
 			
 		}
 	 }else{
@@ -403,7 +438,12 @@ void readPulse2(void){
 		 TM_ILI9341_Puts(1, 65, "                              ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 		 secondsCount=0;
 	 }
-	
+	 
+	if(DetectCups()<5){
+		all_cups_present = false;
+		cstate = 0;
+	}
+
 	
 }
 
@@ -458,8 +498,20 @@ void DetectWhistle(arm_cfft_radix4_instance_f32 S, float32_t maxValue, uint32_t 
 		if(maxIndex > 0) TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				
 		FlashLeds( freq );
-		countSeconds();
+		//countSeconds();
+
+		if (secondsCount > 5) {
+			TM_ILI9341_Puts(10, 25, "You Whistled for 5 sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			Delayms(2000);
+			t_flags.detect_whistle = true;
+			secondsCount = 0;
+		}
 	
+		if(DetectCups()<5){
+			all_cups_present = false;
+			cstate = 0;
+		}
+		
 		/* Display data on LCD */
 		for (i = 0; i < FFT_SIZE / 2; i++) {
 			/* Draw FFT results */
@@ -473,21 +525,6 @@ void DetectWhistle(arm_cfft_radix4_instance_f32 S, float32_t maxValue, uint32_t 
 			);
 		}
 
-}
-
-void BUTTON1_EventHandler(TM_BUTTON_PressType_t type) {
-	/* Check button */
-	if (type == TM_BUTTON_PressType_OnPressed) {
-		
-			ButtonState++;
-		  TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-			tim5_count=1;
-		
-	} else if (type == TM_BUTTON_PressType_Normal) {
-
-	} else {
-
-	}
 }
 
 
@@ -514,6 +551,98 @@ void peform_instruction(incoming_packet_t incoming_packet) {
 
 
 
+void Configure_PD(void){
+	GPIO_InitTypeDef GPIO_InitStruct;
+	
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+	
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_7 | GPIO_Pin_5 | GPIO_Pin_4 | GPIO_Pin_6 | GPIO_Pin_2;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
+	
+	GPIO_Init(GPIOD, &GPIO_InitStruct);
+	
+}
+
+void Configure_MotionSensorPort(void){
+	GPIO_InitTypeDef GPIO_InitStruct;
+	
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOG, ENABLE);
+	
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_1;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
+	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
+	
+	GPIO_Init(GPIOG, &GPIO_InitStruct);
+	
+}
+
+uint8_t DetectCups(void){
+	
+	c1_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7);
+	c2_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_5);
+	c3_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6);
+	c4_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4);
+	c5_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_2);
+	
+	return c1_state + c2_state + c3_state + c4_state + c5_state;
+}
+
+void MotionDetection(void){
+	
+	bool motion = GPIO_ReadInputDataBit(GPIOG, GPIO_Pin_1);
+	char mvm[1];
+	char scd[8];
+	sprintf(mvm, "%d", motion);
+	TM_ILI9341_Puts(20, 20, mvm, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);		
+	
+	//TODO: Abstract this into separate functuon: cupsAllThere
+	if(DetectCups()<5){
+		all_cups_present = false;
+		cstate = 0;
+	}
+	
+		if(motion) {
+		TIM_Cmd(TIM2, ENABLE);
+		
+		sprintf(scd, "%d", secondsCount);
+		TM_ILI9341_Puts(20, 45, scd, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
+			
+		if(secondsCount >= 10){
+			TM_ILI9341_Puts(1, 65, "You haven't moved for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			Delayms(2000);
+			t_flags.detect_movement = true;
+			
+		}
+	 }else{
+		TIM_Cmd(TIM2, DISABLE);
+		 TM_ILI9341_Puts(1, 65, "                              ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		 secondsCount=0;
+	 }
+
+	
+}
+
+uint8_t SendComplPacket(void){
+	unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
+	outgoing_packet_t outgoing_packet = usart_assemble_response(INSTR_SLAVE_COMPLETED);
+	usart_convert_outgoing_packet(packet, outgoing_packet);
+	put_str(packet);
+	Delayms(100);
+	return 1;
+}
+
+void reset_all_t_flags(void){
+	t_flags.detect_whistle = false;
+	t_flags.detect_clap = false;
+	t_flags.detect_movement = false;
+	t_flags.read_pulse = false;
+	t_flags.detect_silence = false;
+}
 
 int main(void) {
 	arm_cfft_radix4_instance_f32 S;	/* ARM CFFT module */
@@ -530,9 +659,8 @@ int main(void) {
 	/* Initialize LED's on board */
 	TM_DISCO_LedInit();
 		
-	TM_BUTTON_Init(GPIOA, GPIO_PIN_0, 1, BUTTON1_EventHandler);
 
-	InitGPIO();
+	
 	INTTIM2_Config();
 	INTTIM5_Config();
 
@@ -550,39 +678,104 @@ int main(void) {
 
 	init_usart();
 	
+	Configure_PD();
+	Configure_MotionSensorPort();
+	
 	Delayms(300);
 	
-	unsigned char a[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66}; // Start Up Sequence 
-	
-  send_data(a);
 
 	
 	unsigned char* packet = malloc((DATA_PACKET_LEN + 1) * sizeof(unsigned char));
 	incoming_packet_t incoming_packet;
 	
 	
+	reset_all_t_flags();
+	t_flags.all_tasks = false;
+
+
+
 	while (1) {	
-		TM_BUTTON_Update();
-			
-		switch (ButtonState) {
-			case 0:
-				DetectWhistle(S, maxValue, maxIndex, i);	
+
+
+		
+		switch (cstate) {
+			case 0: // Wait for cups to be placed
+				
+				
+				TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				
+				
+				if(!t_flags.all_tasks){
+					if(DetectCups() == 5){
+						//cstate +=1;
+						cstate = 3;
+						all_cups_present = true;
+					}
+				}
+				
+				
+			  
+				
 				break;
-			case 1:
+			case 1:  // Whistle Detection 
+				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+			
+				while(!t_flags.detect_whistle && all_cups_present) DetectWhistle(S, maxValue, maxIndex, i);
+			
+				if(!all_cups_present) cstate = 0;
+				else if(all_cups_present) cstate+=1;
+			
+				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+				break;
+			case 2:  // Pulse Readings
+				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+			
+				tim5_count=1;
 				TM_DISCO_LedOff(LED_RED);
-				TM_DISCO_LedOff(LED_GREEN);				
-				readPulse2();
-				break;
-			case 2:
-				usart_put_data_on_lcd(packet);
-				break;
-			case 3:
-				// put_str(packet);
+				TM_DISCO_LedOff(LED_GREEN);
 			
-				ButtonState++;			
+				while(!t_flags.read_pulse && all_cups_present) readPulse2();
+			
+				if(!all_cups_present) cstate = 0;
+				else if(all_cups_present) cstate+=1;
+				
+				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+				break;
+			case 3:  // Motion detection
+				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+			
+				while(!t_flags.detect_movement && all_cups_present) MotionDetection();
+			
+				if(!all_cups_present) cstate = 0;
+				else if(all_cups_present) cstate+=1;
+			
+				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);	
+			  break;
+			case 4:	// Silence detection
+				//TODO: implemet silence detection.
+				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+			  TM_ILI9341_Puts(1, 100, "Silence detection coming soon!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			  Delayms(1500);
+				cstate+=1;				
+				break;
+			case 5: // Clap detection
+				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+			  TM_ILI9341_Puts(1, 100, "Clap detection coming soon!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			  Delayms(1500);
+				cstate+=1;				
+				break;
+			case 6: // All Done, you Win
+				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+			  TM_ILI9341_Puts(1, 100, "All done, you win!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			  Delayms(2000);
+				do SendComplPacket();
+				while(!SendComplPacket());
+				reset_all_t_flags();
+				t_flags.all_tasks = true;
+				cstate=0;
 				break;
 			default:
-				ButtonState = 0;
+				cstate = 0;
 				break;
 		}
 
@@ -608,14 +801,20 @@ int main(void) {
 		}
 
 		
+		
+		
 		char state[1];
-		sprintf(state, "%d", ButtonState);
+		
+		sprintf(state, "%d", cstate);
 		TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
 
 		
 		/*** This is for pulse readings ***/
 		if(QS == 1) QS = !QS; 						// A Heartbeat Was Found, reset the Quantified Self flag for next time    
 		/**********************************/	
+		
+
+		
 	}
 	
 	// free(packet);
