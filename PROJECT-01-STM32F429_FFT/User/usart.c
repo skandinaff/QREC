@@ -12,8 +12,6 @@ unsigned char sample2[] = {0xC1, 0x10, 0x01, 0xAA, 0xAA, 0xFF, 0xC0};
 unsigned char rx_data[DATA_PACKET_LEN];
 unsigned char rx_buff[DATA_PACKET_LEN];
 
-// NEW USART variables
-
 // USART Receiver buffer
 #define RX_BUFFER_SIZE 350
 volatile uint8_t  rx_buffer[RX_BUFFER_SIZE];
@@ -264,11 +262,39 @@ outgoing_packet_t usart_assemble_response(unsigned char instruction) {
     return outgoing_packet;
 }
 
-void usart_convert_outgoing_packet (unsigned char* packet, outgoing_packet_t outgoing_packet) {
+/*
+unsigned char* usart_calculate_crc8(unsigned char* packet){
+	unsigned char i;
+	unsigned char* data;
+	
+	
+	
+	data =	CRC_INIT_VAL ^ packet;
+	
+	for(i=0; i < 8; i++){
+		if((data & 0x80) != 0){
+			data <<= 1;
+			data ^= 0x07;
+		} else {
+			data <<= 1;
+		}
+	}
+	return data;
+	
+}
+*/
+
+void usart_convert_outgoing_packet (unsigned char* packet, outgoing_packet_t outgoing_packet){ //, bool crc8) {
     packet[0] = outgoing_packet.slave_start_byte;
     packet[1] = outgoing_packet.slave_address;
     packet[2] = outgoing_packet.instruction;
+	//if (crc8){
     packet[3] = outgoing_packet.crc8;
     packet[4] = outgoing_packet.stop_byte;
     packet[5] = '\0';
+	//} else {
+		packet[3] = outgoing_packet.stop_byte;
+    packet[4] = '\0';
+	//}
+	
 }
