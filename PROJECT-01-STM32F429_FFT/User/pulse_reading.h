@@ -15,7 +15,7 @@
 #include "cup_detection.h"
 #include "pulse_reading.h"
 
-#define TARGET_BPM 80
+#define TARGET_BPM 120
 
 void ReadPulse(void);
 uint16_t getQS(void);

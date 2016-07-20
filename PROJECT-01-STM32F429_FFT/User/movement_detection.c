@@ -4,7 +4,7 @@
 
 
 void MotionDetection(void){
-	
+	//TODO: Find why it shows 0 state on the screen while working	
 	flags_t cflags;
 	
 	cflags = get_flags();
