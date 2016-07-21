@@ -17,9 +17,11 @@
 #include "cup_detection.h"
 
 /* FFT settings */
-#define SAMPLES					    512 			/* 256 real party and 256 imaginary parts */
-#define FFT_SIZE				    SAMPLES / 2		/* FFT size is always the same size as we have samples, so 256 in our case */
+#define SAMPLES					    			512 			/* 256 real party and 256 imaginary parts */
+#define FFT_SIZE				    			SAMPLES / 2		/* FFT size is always the same size as we have samples, so 256 in our case */
 #define FFT_BAR_MAX_HEIGHT		    120 		    /* 120 px on the LCD */
+#define CLAP_AMPLITUDE 						33
+#define SILENCE_AMPLITUDE					5.5						// 4 is the absolute minimum, barele above backround noise
 
 typedef struct {
 		float32_t maxValue;							
@@ -30,5 +32,7 @@ typedef struct {
 void DetectWhistle(void);
 void DrawBar(uint16_t bottomX, uint16_t bottomY, uint16_t maxHeight, uint16_t maxValue, float32_t value, uint16_t foreground, uint16_t background);
 FFT_OUT_t ComputeFFT(void);
+void DetectClap(void);
+void SilenceDetection(void);
 
 #endif

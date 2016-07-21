@@ -6,16 +6,17 @@
 /* Global variables */
 float32_t Input[SAMPLES];
 float32_t Output[FFT_SIZE];
-
+uint8_t claps = 0;	
 
 
 void DetectWhistle(void){
-	//TODO: abstract signal sampling in a separate function that will return maxValue and maxIndex
+
 		flags_t cflags;
 	
 		cflags = get_flags();
 	
 		TM_ILI9341_Puts(150, 10,"           ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
 		
 		FFT_OUT_t in;
 		
@@ -23,6 +24,7 @@ void DetectWhistle(void){
 	
 		/* This is me trying to output frequency as a number */
 		TM_ILI9341_Puts(10, 10, "Peak Freq:",&TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		
 			
 		
 		
@@ -34,6 +36,8 @@ void DetectWhistle(void){
 																											// certain frequency is enough to trigger the event
 		char str[64];	
 		sprintf(str, "%.0f Hz", freq);
+		
+
 		
 		if(in.maxIndex > 0) TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				
@@ -117,12 +121,99 @@ FFT_OUT_t ComputeFFT(void){
 
 void DetectClap(void){
 	
+	flags_t cflags;
+	cflags = get_flags();
+	
+//	TM_ILI9341_Puts(180, 10,"           ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
+	FFT_OUT_t in;
+	in = ComputeFFT();
+
+	
+	TM_ILI9341_Puts(10, 10, "Peak Ampl:",&TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	TM_ILI9341_Puts(10, 25, "Claps detected:",&TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	TM_ILI9341_Puts(10, 40, "Seconds passed:",&TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
+	
+	char str[16];
+	char str2[8];
+	char str3[8];
+	
+	sprintf(str, "%.2f", in.maxValue);
+	sprintf(str2, "%d", claps);	
+	sprintf(str3, "%d", getSecondCount());	
+		
+	TM_ILI9341_Puts(180, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	TM_ILI9341_Puts(180, 25, str2, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	TM_ILI9341_Puts(180, 40, str3, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	
+  /* // Simple implementation, that works, though not very flexible
+	if(in.maxValue > CLAP_AMPLITUDE) { // First clap detected
+		Delayms(1000);
+		claps++;
+	}
+	*/
+	
+	if(claps == 0){
+		if(in.maxValue > CLAP_AMPLITUDE){
+			TIM_Cmd(TIM2, ENABLE);
+		}
+	}
+	if(in.maxValue > CLAP_AMPLITUDE) claps++;
+	
+
+	if(getSecondCount() > 5 && claps > 10) {
+		TIM_Cmd(TIM2, DISABLE);
+		setSecondsCount(0);
+		TM_ILI9341_Puts(10, 60, "You did clap 3 times", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
+		cflags.detect_clap = true;
+		Delayms(1000);
+	}
+		
+	CheckIfAllCupsPresent();
+	set_flags(cflags);
+	
+}
+
+void SilenceDetection(void){
+
+	flags_t cflags;
+	cflags = get_flags();
+	
 	FFT_OUT_t in;
 	in = ComputeFFT();
 	
-	//TODO: Implement clap detection here.
-	// look for bigges value, store it, start timer, wait for ~ 1 sec, detecti 
-	//if another such walue occured. Do so for N iterations to detect N claps.
+	TM_ILI9341_Puts(10, 10, "Peak Ampl:",&TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	TM_ILI9341_Puts(10, 25, "Seconds passed:",&TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
+	Delayms(350);
+	
+	char str[16];
+	char str3[8];
+	
+	sprintf(str, "%.2f", in.maxValue);
+	sprintf(str3, "%d", getSecondCount());	
+		
+	TM_ILI9341_Puts(180, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	TM_ILI9341_Puts(180, 25, str3, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	
+	
+	if(in.maxValue < SILENCE_AMPLITUDE){
+			TIM_Cmd(TIM2, ENABLE);
+	}
+	if(in.maxValue > SILENCE_AMPLITUDE) setSecondsCount(0);
+	
+	if(getSecondCount() > 10) {
+		TIM_Cmd(TIM2, DISABLE);
+		TM_ILI9341_Puts(10, 60, "You were silent for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
+		cflags.detect_silence = true;
+		Delayms(1000);
+	}	
+	
+	
+	
+	CheckIfAllCupsPresent();
+	set_flags(cflags);
 	
 }
 

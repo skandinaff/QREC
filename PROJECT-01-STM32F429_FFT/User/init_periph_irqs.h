@@ -16,6 +16,9 @@ void Configure_MotionSensorPort(void);
 uint16_t getSecondCount(void);
 void setSecondsCount(uint16_t s);
 
+uint16_t getQrSecondCount(void);
+void setQrSecondsCount(uint16_t s);
+
 uint32_t getSampleCounterIRQ(void);
 void setSampleCounterIRQ(uint32_t s);
 

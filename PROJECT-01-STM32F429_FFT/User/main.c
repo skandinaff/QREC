@@ -124,6 +124,8 @@ int main(void) {
 	flags_t cflags;
 	
 	cflags.all_tasks = false;
+	
+	Configure_MotionSensorPort();
 
 	while (1) {	
 
@@ -144,9 +146,10 @@ int main(void) {
 					}
 					
 				break;
+					
 			case 1:  // Whistle Detection 
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-			
+					Delayms(300);
 					while(!cflags.detect_whistle && getAll_cups_present()) {
 						DetectWhistle(); 
 						cflags = get_flags();
@@ -157,6 +160,7 @@ int main(void) {
 			
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 				break;
+					
 			case 2:  // Pulse Readings
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 			
@@ -174,11 +178,10 @@ int main(void) {
 				
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 				break;
+					
 			case 3:  // Motion detection
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-			
-					Configure_MotionSensorPort();
-				
+
 					while(!cflags.detect_movement && getAll_cups_present()) {
 						MotionDetection();
 						cflags = get_flags();
@@ -189,21 +192,33 @@ int main(void) {
 			
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);	
 			  break;
-			case 4:	// Silence detection
-				//TODO: implemet silence detection.
+					
+			case 4:	// Clap detection
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-			  TM_ILI9341_Puts(1, 100, "Silence detection coming soon!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-			  Delayms(1500);
+
+				while(!cflags.detect_clap && getAll_cups_present()) {
+					DetectClap();
+					cflags = get_flags();
+				}
+			
 					if(!getAll_cups_present()) setCstate(0);
 					else if(getAll_cups_present()) setCstate(getCstate()+1);	
-				break;
-			case 5: // Clap detection
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-			  TM_ILI9341_Puts(1, 100, "Clap detection coming soon!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-			  Delayms(1500);
-					if(!getAll_cups_present()) setCstate(0);
-					else if(getAll_cups_present()) setCstate(getCstate()+1);				
 				break;
+				
+			case 5: // Silence detection
+				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+
+				while(!cflags.detect_silence && getAll_cups_present()) {
+					SilenceDetection();
+					cflags = get_flags();
+				}
+			
+					if(!getAll_cups_present()) setCstate(0);
+					else if(getAll_cups_present()) setCstate(getCstate()+1);		
+				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);				
+				break;
+				
 			case 6: // All Done, you Win
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 			

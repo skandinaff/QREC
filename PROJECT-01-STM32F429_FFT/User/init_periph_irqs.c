@@ -1,10 +1,11 @@
 #include "init_periph_irqs.h"
 
-uint16_t secondsCount = 0;
-uint16_t tim5_count = 0;
-uint16_t tim5_count2 = 0;
-uint16_t counter = 0;
-uint16_t counter2 = 0;
+long secondsCount = 0;
+long tim2_count = 0;
+long tim5_count = 0;
+long tim5_count2 = 0;
+long counter = 0;
+long counter2 = 0;
 
 volatile uint32_t sampleCounterIRQ = 0;          // used to determine pulse timing, triggered by Timer 5 IRQ
 
@@ -23,8 +24,8 @@ void INTTIM2_Config(void){
   /* TIM2 clock enable */
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
   /* Time base configuration */
-  TIM_TimeBaseStructure.TIM_Period = 100000 - 1;  // 1 MHz down to 1 KHz (1 ms)
-  TIM_TimeBaseStructure.TIM_Prescaler = 450 - 1; // 24 MHz Clock down to 1 MHz (adjust per your clock)
+  TIM_TimeBaseStructure.TIM_Period = 100000 - 1; //
+  TIM_TimeBaseStructure.TIM_Prescaler = 450 - 1; // 
   TIM_TimeBaseStructure.TIM_ClockDivision = 0;
   TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
   TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
@@ -125,13 +126,22 @@ void TIM5_IRQHandler(void) {
 	}
 }
 
-uint16_t getSecondCount(){
+uint16_t getSecondCount(void){
 	return secondsCount;
 }
 
 void setSecondsCount(uint16_t s){
 	secondsCount = s;
 }
+
+uint16_t getQrSecondCount(void){
+	return tim2_count;
+}
+
+void setQrSecondsCount(uint16_t s){
+	tim2_count = s;
+}
+
 ////////////
 uint32_t getSampleCounterIRQ(void){
 	return sampleCounterIRQ;
