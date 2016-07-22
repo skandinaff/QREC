@@ -30,6 +30,7 @@
 #define INSTR_SLAVE_COMPLETED		0x04
 
 #define CRC_INIT_VAL 0x00
+#define CRC_POLYNOM 0x07
 
 
 typedef struct {
@@ -68,6 +69,7 @@ bool usart_packet_is_addressed_to_me(incoming_packet_t incoming_packet);
 incoming_packet_t usart_packet_parser(unsigned char* packet);
 outgoing_packet_t usart_assemble_response(unsigned char instruction);
 void usart_convert_outgoing_packet (unsigned char* packet, outgoing_packet_t outgoing_packet);
-
+uint8_t usart_crc8(uint8_t init, uint8_t *packet);
+bool usart_validate_crc8(incoming_packet_t incoming_packet);
 
 #endif

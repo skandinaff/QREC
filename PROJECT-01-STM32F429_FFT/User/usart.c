@@ -240,16 +240,22 @@ incoming_packet_t usart_packet_parser(unsigned char* packet) {
     incoming_packet.stop_byte = packet[incoming_packet.packet_length == 7 ? 6 : 4];
     incoming_packet.crc8 = packet[incoming_packet.packet_length == 7 ? 5 : 3];
 
+		usart_validate_crc8(incoming_packet);
+		
     return incoming_packet;
 }
 
 
 outgoing_packet_t usart_assemble_response(unsigned char instruction) {
-    outgoing_packet_t outgoing_packet;
+  
+		char data_for_crc8[] = {QUEST_ID, instruction, '\0'};
+	
+		outgoing_packet_t outgoing_packet;
     outgoing_packet.slave_start_byte = SLAVE_START_BYTE;
     outgoing_packet.slave_address = QUEST_ID;
     outgoing_packet.instruction = instruction;
-    outgoing_packet.crc8 = RESTRICTED_BYTE; // TODO: CHANGE ME PLZ!!!
+    outgoing_packet.crc8 = usart_crc8(CRC_INIT_VAL, data_for_crc8); 
+		
     outgoing_packet.stop_byte = STOP_BYTE;
 
     if (outgoing_packet.crc8 == STOP_BYTE ||
@@ -259,30 +265,43 @@ outgoing_packet_t usart_assemble_response(unsigned char instruction) {
         outgoing_packet.crc8 ^= RESTRICTED_BYTE;
     }
 
+		
+		
     return outgoing_packet;
 }
 
-/*
-unsigned char* usart_calculate_crc8(unsigned char* packet){
-	unsigned char i;
-	unsigned char* data;
+bool usart_validate_crc8(incoming_packet_t incoming_packet){
+
+	char data_for_crc8[] = {incoming_packet.slave_address, incoming_packet.instruction, '\0'};
 	
+	char incoming_crc8 = usart_crc8(CRC_INIT_VAL, data_for_crc8);
 	
-	
-	data =	CRC_INIT_VAL ^ packet;
-	
-	for(i=0; i < 8; i++){
-		if((data & 0x80) != 0){
-			data <<= 1;
-			data ^= 0x07;
-		} else {
-			data <<= 1;
-		}
+	if(incoming_packet.crc8 == incoming_crc8) {
+		return true;
 	}
-	return data;
+	else{
+		return false;
+	}
 	
 }
-*/
+
+uint8_t usart_crc8(uint8_t init, uint8_t *packet){
+	uint8_t i;
+	uint8_t crc;
+
+	uint8_t len = strlen(packet);
+	
+	while(len--){
+			
+		crc ^= *packet++;
+		for(i = 0; i < 8; i++){
+			crc = crc & 0x80 ? (crc << 1) ^ CRC_POLYNOM : crc <<1;
+		}
+		
+	}
+	return crc;
+	
+}
 
 void usart_convert_outgoing_packet (unsigned char* packet, outgoing_packet_t outgoing_packet){ //, bool crc8) {
     packet[0] = outgoing_packet.slave_start_byte;

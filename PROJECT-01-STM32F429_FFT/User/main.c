@@ -47,6 +47,7 @@
 #include "movement_detection.h"
 
 void peform_instruction(incoming_packet_t incoming_packet) {
+	
     switch (incoming_packet.instruction) {
         case INSTR_MASTER_TEST:
             // TODO: gotov ili ne gotov k rabote
@@ -125,7 +126,7 @@ int main(void) {
 	
 	cflags.all_tasks = false;
 	
-	Configure_MotionSensorPort();
+	
 
 	while (1) {	
 
@@ -182,6 +183,8 @@ int main(void) {
 			case 3:  // Motion detection
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 
+				Configure_MotionSensorPort();
+			
 					while(!cflags.detect_movement && getAll_cups_present()) {
 						MotionDetection();
 						cflags = get_flags();
@@ -241,6 +244,7 @@ int main(void) {
 			usart_get_data_packet(packet);
             incoming_packet = usart_packet_parser(packet);
             if (usart_packet_is_addressed_to_me(incoming_packet)) {
+							
                 peform_instruction(incoming_packet);
 
                 // TODO: THIS BIT SENDS THE OUTGOING PACKET
