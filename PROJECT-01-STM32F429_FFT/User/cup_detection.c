@@ -27,7 +27,7 @@ uint8_t DetectCups(void){
 	return c1_state + c2_state + c3_state + c4_state + c5_state;
 }
 
-void reset_all_flags(void){
+void reset_all_flags(void){          // Does not affect .all_tasks
 	_cflags.detect_whistle = false;
 	_cflags.detect_clap = false;
 	_cflags.detect_movement = false;

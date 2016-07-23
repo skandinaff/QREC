@@ -134,8 +134,7 @@ void ReadPulse(void){
 	sprintf(BPM_result_str, "%4d: ", BPM);
 	TM_ILI9341_Puts(1, 45, "BPM: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	if(Pulse == 1){
-		TM_ILI9341_Puts(125, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
-		//TM_USART_Putc(USART1, BPM);
+	TM_ILI9341_Puts(125, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 	}
 	
 }
@@ -168,13 +167,13 @@ void ReadPulse(void){
 		 TM_ILI9341_Puts(1, 65, "                              ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 		 setSecondsCount(0);
 	 }
-	 /*
-	if(DetectCups()<5){
-		setAll_cups_present(false);
-		setCstate(0);
-	}
-*/
+
 	 CheckIfAllCupsPresent();
+	 
+	 	/*** This is for pulse readings ***/
+		if(getQS() == 1) setQS(!getQS());						// A Heartbeat Was Found, reset the Quantified Self flag for next time    
+		/**********************************/	
+	
 	 
 	set_flags(cflags);
 }

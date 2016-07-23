@@ -17,15 +17,11 @@ bool all_tasks;
 
 } flags_t;
 
-//struct Flags t_flags;
-
 void reset_all_flags(void);
 
 flags_t get_flags(void);
 void set_flags(flags_t new_flags);
-
 uint8_t DetectCups(void);
-
 bool getAll_cups_present(void);
 void setAll_cups_present(bool s);
 uint16_t getCstate(void);

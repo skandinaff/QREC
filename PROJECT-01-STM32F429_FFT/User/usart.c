@@ -26,8 +26,6 @@ volatile uint16_t tx_wr_index=0,tx_rd_index=0;
 volatile uint16_t tx_counter=0;
 
 
-
-
 void init_usart(void){
 
     GPIO_InitTypeDef GPIO_InitStruct;
@@ -197,6 +195,32 @@ void usart_get_data_packet(unsigned char* packet) {
 }
 
 
+bool usart_break_required(void){
+	return false;
+	
+	/*
+	unsigned char packet[128];
+	
+	incoming_packet_t incoming_packet;
+	
+	if (usart_has_data()) {
+		usart_get_data_packet(packet);
+		incoming_packet = usart_packet_parser(packet);
+			
+		if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
+			if (incoming_packet.instruction == INSTR_MASTER_SET_IDLE) {
+				
+				
+				return true;
+			}
+		}
+	}
+	
+	return false;
+	*/
+}
+
+
 void put_char(uint8_t c) {
     if (c) {
         while (tx_counter == TX_BUFFER_SIZE);
@@ -240,9 +264,8 @@ incoming_packet_t usart_packet_parser(unsigned char* packet) {
     incoming_packet.stop_byte = packet[incoming_packet.packet_length == 7 ? 6 : 4];
     incoming_packet.crc8 = packet[incoming_packet.packet_length == 7 ? 5 : 3];
 
-		usart_validate_crc8(incoming_packet);
-		
-    return incoming_packet;
+		return incoming_packet;
+
 }
 
 
@@ -287,7 +310,7 @@ bool usart_validate_crc8(incoming_packet_t incoming_packet){
 
 uint8_t usart_crc8(uint8_t init, uint8_t *packet){
 	uint8_t i;
-	uint8_t crc;
+	uint8_t crc = init;
 
 	uint8_t len = strlen(packet);
 	
@@ -317,3 +340,7 @@ void usart_convert_outgoing_packet (unsigned char* packet, outgoing_packet_t out
 	//}
 	
 }
+
+
+
+
