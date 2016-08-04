@@ -79,37 +79,37 @@ void PerformQuest(void){
 	}
 
 	switch (task_counter) {
-		case 0:  // Whistle Detection
+		case 0:	// Clap detection
 			break;
-		case 1:  // Pulse Readings
-			setTIM5_count(1);
-			TM_DISCO_LedOff(LED_RED);
-			TM_DISCO_LedOff(LED_GREEN);
+		case 1: // Silence detection
 			break;
 		case 2:  // Motion detection
 			Configure_MotionSensorPort();
 			break;
-		case 3:	// Clap detection
+		case 4:  // Whistle Detection
 			break;
-		case 4: // Silence detection
+		case 5:  // Pulse Readings
+			setTIM5_count(1);
+			TM_DISCO_LedOff(LED_RED);
+			TM_DISCO_LedOff(LED_GREEN);
 			break;
 	}
 
 	while (task_counter == get_task_counter() && getAll_cups_present()) {
 		switch (task_counter) {
-			case 0:  // Whistle Detection
-				DetectWhistle();
+			case 0:	// Clap detection
+				DetectClap();
 				break;
-			case 1:  // Pulse Readings
-				ReadPulse();
+			case 1: // Silence detection
+				SilenceDetection();
 				break;
 			case 2:  // Motion detection
 				MotionDetection();
-			case 3:	// Clap detection
-				DetectClap();
+			case 3:  // Whistle Detection
+				DetectWhistle();
 				break;
-			case 4: // Silence detection
-				SilenceDetection();
+			case 4:  // Pulse Readings
+				ReadPulse();
 				break;
 		}
 

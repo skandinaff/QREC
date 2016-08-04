@@ -21,7 +21,7 @@
 #define FFT_SIZE				    			SAMPLES / 2		/* FFT size is always the same size as we have samples, so 256 in our case */
 #define FFT_BAR_MAX_HEIGHT		    120 		    /* 120 px on the LCD */
 #define CLAP_AMPLITUDE 						33
-#define SILENCE_AMPLITUDE					5.5						// 4 is the absolute minimum, barele above backround noise
+#define SILENCE_AMPLITUDE					10						// 4 is the absolute minimum, barele above backround noise // TODO: FIXME (was 5.5)
 
 typedef struct {
 		float32_t maxValue;							

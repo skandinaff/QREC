@@ -160,8 +160,6 @@ void ReadPulse(void) {
         setSecondsCount(0);
     }
 
-    CheckIfAllCupsPresent();
-
     /*** This is for pulse readings ***/
     if (getQS() == 1)
         setQS(!getQS());                        // A Heartbeat Was Found, reset the Quantified Self flag for next time
