@@ -48,54 +48,11 @@
 
 // Function prototypes
 void PerformqQuest(void);
-void peform_instruction(incoming_packet_t incoming_packet);
-void usart_check_for_data(void);
 uint8_t SendInstruction(unsigned char instruction);
 void idle(void);
 
 
 bool break_flag = false;
-
-///
-
-void peform_instruction(incoming_packet_t incoming_packet) {					
-		flags_t cflags = get_flags();
-	
-    switch (incoming_packet.instruction) {
-        case INSTR_MASTER_TEST:
-						SendInstruction(INSTR_SLAVE_READY);
-				//TODO: think about, how the device can not be ready...
-            break;
-        case INSTR_MASTER_WORK_START:
-						while (!(cflags.all_tasks || break_flag)) {
-							PerformqQuest();
-							cflags = get_flags();
-						}
-            break;
-        case INSTR_MASTER_STATUS_REQ:				
-						if (cflags.all_tasks) {
-							SendInstruction(INSTR_SLAVE_COMPLETED);
-						} else {
-							SendInstruction(INSTR_SLAVE_NOT_COMLETED);
-						}
-            break;
-        case INSTR_MASTER_SET_IDLE:
-						reset_all_flags();
-						cflags.all_tasks = false;
-						set_flags(cflags);
-            break;
-				case CINSTR_GOTO_END:
-					setCstate(6);
-					PerformqQuest();
-						break;
-    }
-}
-
-
-
-
-
-
 
 
 uint8_t SendInstruction(unsigned char instruction){
@@ -108,30 +65,6 @@ uint8_t SendInstruction(unsigned char instruction){
 }
 
 
-void usart_check_for_data(void){
-	int len = DATA_PACKET_LEN + 1;
-	unsigned char packet[len];
-	
-	incoming_packet_t incoming_packet;
-	
-	if (usart_has_data()) {
-		usart_get_data_packet(packet);
-		incoming_packet = usart_packet_parser(packet);
-		
-		//put_str(packet);
-		
-		if (usart_validate_crc8(incoming_packet)){
-			if (usart_packet_is_addressed_to_me(incoming_packet)) {
-				
-					// put_str(packet);
-				
-					peform_instruction(incoming_packet);
-			}
-		}
-	}
-}
-
-
 void PerformqQuest(void){
 		char state[1];
 	
@@ -141,101 +74,97 @@ void PerformqQuest(void){
 			case 0: // Wait for cups to be placed
 			sprintf(state, "%d", getCstate());
 			TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
-				
 			TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				
-				
-					if(!cflags.all_tasks){
-						if(DetectCups() == 5){
-							setCstate(getCstate()+1);
-							setAll_cups_present(true);
-						}
+				if(!cflags.all_tasks){
+					if(DetectCups() == 5){
+						setCstate(getCstate()+1);
+						setAll_cups_present(true);
 					}
-					
+				}
 				break;
-					
 			case 1:  // Whistle Detection 
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 			
-			sprintf(state, "%d", getCstate());
-			TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
-				
+				sprintf(state, "%d", getCstate());
+				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
+				Delayms(300);
 			
-					Delayms(300);
-					while(!cflags.detect_whistle && getAll_cups_present()) {
-						DetectWhistle();
-						
-						if (usart_break_required()) {
-							break_flag = true;
-							return;
-						}
-						
-						cflags = get_flags();
+				while (!cflags.detect_whistle && getAll_cups_present()) {
+					DetectWhistle();
+					
+					if (usart_break_required()) {
+						break_flag = true;
+						return;
 					}
-				
-					if(!getAll_cups_present()) {setCstate(0);}
-					else if(getAll_cups_present()) {setCstate(getCstate()+1);}
+					
+					cflags = get_flags();
+				}
 			
+				if (!getAll_cups_present()) {
+					setCstate(0);
+				} else if(getAll_cups_present()) {
+					setCstate(getCstate() + 1);
+				}
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 				break;
-					
 			case 2:  // Pulse Readings
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 			
-			sprintf(state, "%d", getCstate());
-			TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
-	
+				sprintf(state, "%d", getCstate());
+				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
 			
-					setTIM5_count(1);
-					TM_DISCO_LedOff(LED_RED);
-					TM_DISCO_LedOff(LED_GREEN);
-				
-					while(!cflags.read_pulse && getAll_cups_present()) {
-						ReadPulse();
-						if (usart_break_required()) {
-							break_flag = true;
-							return;
-						}
-						cflags = get_flags();
+				setTIM5_count(1);
+				TM_DISCO_LedOff(LED_RED);
+				TM_DISCO_LedOff(LED_GREEN);
+			
+				while (!cflags.read_pulse && getAll_cups_present()) {
+					ReadPulse();
+					if (usart_break_required()) {
+						break_flag = true;
+						return;
 					}
-					
-					if(!getAll_cups_present()) {setCstate(0);}
-					else if(getAll_cups_present()) {setCstate(getCstate()+1);}
+					cflags = get_flags();
+				}
 				
+				if (!getAll_cups_present()) {
+					setCstate(0);
+				} else if (getAll_cups_present()) {
+					setCstate(getCstate()+1);
+				}
+			
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 				break;
-					
 			case 3:  // Motion detection
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 			
-			sprintf(state, "%d", getCstate());
-			TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
+				sprintf(state, "%d", getCstate());
+				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
 	
-
 				Configure_MotionSensorPort();
 			
-					while(!cflags.detect_movement && getAll_cups_present()) {
-						MotionDetection();
-						if (usart_break_required()) {
-							break_flag = true;
-							return;
-						}
-						cflags = get_flags();
+				while (!cflags.detect_movement && getAll_cups_present()) {
+					MotionDetection();
+					if (usart_break_required()) {
+						break_flag = true;
+						return;
 					}
-					
-					if(!getAll_cups_present()) {setCstate(0);}
-					else if(getAll_cups_present()) {setCstate(getCstate()+1);}
+					cflags = get_flags();
+				}
+				
+				if (!getAll_cups_present()) {
+					setCstate(0);
+				} else if(getAll_cups_present()) {
+					setCstate(getCstate()+1);
+				}
 			
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);	
-			  break;
-					
+				break;
 			case 4:	// Clap detection
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 			
-			sprintf(state, "%d", getCstate());
-			TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
+				sprintf(state, "%d", getCstate());
+				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
 	
-
 				while (!cflags.detect_clap && getAll_cups_present()) {
 					DetectClap();
 					
@@ -247,25 +176,31 @@ void PerformqQuest(void){
 					}	 else {
 						
 						// put_str("A");
-						usart_check_for_data();
+						// ===================================================================
+						// TODO: fix....
+						// ===================================================================
+						// usart_check_for_data();
 					}
 					
 					cflags = get_flags();
 				}
 			
-					if(!getAll_cups_present()) setCstate(0);
-					else if(getAll_cups_present()) setCstate(getCstate()+1);	
+				if (!getAll_cups_present()) {
+					setCstate(0);
+				} else if (getAll_cups_present()) {
+					setCstate(getCstate()+1);	
+				}
+				
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 				break;
 				
 			case 5: // Silence detection
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 			
-			sprintf(state, "%d", getCstate());
-			TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
+				sprintf(state, "%d", getCstate());
+				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	
-
-				while(!cflags.detect_silence && getAll_cups_present()) {
+				while (!cflags.detect_silence && getAll_cups_present()) {
 					SilenceDetection();
 						if (usart_break_required()) {
 							break_flag = true;
@@ -274,11 +209,13 @@ void PerformqQuest(void){
 					cflags = get_flags();
 				}
 			
-					if(!getAll_cups_present()) setCstate(0);
-					else if(getAll_cups_present()) setCstate(getCstate()+1);		
+				if (!getAll_cups_present()) { 
+					setCstate(0); 
+				} else if(getAll_cups_present()) { 
+					setCstate(getCstate()+1); 
+				}		
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);				
 				break;
-				
 			case 6: // All Done, you Won
 				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 			
@@ -286,8 +223,8 @@ void PerformqQuest(void){
 				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
 	
 			
-			  TM_ILI9341_Puts(1, 100, "All done!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-			  Delayms(2000);
+				TM_ILI9341_Puts(1, 100, "All done!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				Delayms(2000);
 			
 				SendInstruction(INSTR_SLAVE_COMPLETED);	
 			
@@ -295,14 +232,6 @@ void PerformqQuest(void){
 				cflags.all_tasks = true;
 				set_flags(cflags);
 			
-				// idle();
-
-			/*
-			for (int i = 0; i< 3; i++) {
-				TM_ILI9341_Puts(1, 41, "suka bljatj", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-			}
-			*/
-				
 				break;
 			default:
 				setCstate(0);
@@ -313,15 +242,11 @@ void PerformqQuest(void){
 
 
 int main(void) {
+	SystemInit(); /* Initialize system */
 	
-	/* Initialize system */
-	SystemInit();
+	TM_DELAY_Init(); /* Delay init */
 	
-	/* Delay init */
-	TM_DELAY_Init();
-	
-	/* Initialize LED's on board */
-	TM_DISCO_LedInit();
+	TM_DISCO_LedInit(); /* Initialize LED's on board */
 
 	INTTIM2_Config();
 	INTTIM5_Config();
@@ -332,24 +257,57 @@ int main(void) {
 
 	/* Initialize ADC, PA0 is used */
 	TM_ADC_Init(ADC1, ADC_Channel_3); // PA3 Microphone's ADC 
-	
 	TM_ADC_Init(ADC3, ADC_Channel_6); // PF8 PulseSensor's ADC
 
 	init_usart();
-	
-	Configure_PD();
-	
-	
+	Configure_PD();	
 	Delayms(300);
-
-
 	
 	TM_ILI9341_Puts(1, 41, "Status: Idle", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 	flags_t cflags;
+	int len = DATA_PACKET_LEN + 1;
+	unsigned char packet[len];
+	incoming_packet_t incoming_packet;
+	
 	while (1) {	
-
-		usart_check_for_data();
+		//label: infiniteloop;
+		
+		if (usart_has_data()) {
+			usart_get_data_packet(packet);
+			incoming_packet = usart_packet_parser(packet);
+			
+			if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
+				switch (incoming_packet.instruction) {
+					case INSTR_MASTER_TEST:
+						SendInstruction(INSTR_SLAVE_READY); //TODO: think about, how the device can not be ready...
+						break;
+					case INSTR_MASTER_WORK_START:
+						while (!(cflags.all_tasks || break_flag)) {
+							PerformqQuest();
+							cflags = get_flags();
+						}
+						break;
+					case INSTR_MASTER_STATUS_REQ:				
+						if (cflags.all_tasks) {
+							SendInstruction(INSTR_SLAVE_COMPLETED);
+						} else {
+							SendInstruction(INSTR_SLAVE_NOT_COMLETED);
+						}
+						break;
+					case INSTR_MASTER_SET_IDLE:
+						reset_all_flags();
+						cflags.all_tasks = false;
+						set_flags(cflags);
+						break;
+					case CINSTR_GOTO_END:
+						setCstate(6);
+						PerformqQuest();
+						break;
+				}				
+			}
+		}
+		
 		break_flag = false;
 
 		reset_all_flags();
@@ -360,6 +318,4 @@ int main(void) {
 		//put_str("w");
 		//Delayms(500);
 	}
-	
-	
 }
