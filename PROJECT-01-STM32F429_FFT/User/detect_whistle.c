@@ -146,7 +146,8 @@ void DetectClap(void) {
         TIM_Cmd(TIM2, DISABLE);
         setSecondsCount(0);
         TM_ILI9341_Puts(10, 60, "You did clap 3 times", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-        set_task_counter(get_task_counter() + 1);
+        setSecondsCount(0);
+				set_task_counter(get_task_counter() + 1);
         Delayms(1000);
     }
 }
@@ -181,7 +182,7 @@ void SilenceDetection(void) {
         TM_ILI9341_Puts(10, 60, "You were silent for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
         set_task_counter(get_task_counter() + 1);
-
+				setSecondsCount(0);
         Delayms(1000);
     }
 }
