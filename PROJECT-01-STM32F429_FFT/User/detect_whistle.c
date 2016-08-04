@@ -48,8 +48,6 @@ void DetectWhistle(void) {
         setSecondsCount(0);
     }
 
-    CheckIfAllCupsPresent();
-
     /* Display data on LCD */
     for (in.i = 0; in.i < FFT_SIZE / 2; in.i++) {
         /* Draw FFT results */
@@ -151,8 +149,6 @@ void DetectClap(void) {
         set_task_counter(get_task_counter() + 1);
         Delayms(1000);
     }
-
-    CheckIfAllCupsPresent();
 }
 
 
@@ -188,9 +184,6 @@ void SilenceDetection(void) {
 
         Delayms(1000);
     }
-
-
-    CheckIfAllCupsPresent();
 }
 
 /* Draw bar for LCD */

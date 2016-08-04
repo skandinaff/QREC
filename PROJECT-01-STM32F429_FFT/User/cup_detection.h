@@ -13,10 +13,8 @@ int get_task_counter(void);
 void set_task_counter(int counter);
 
 uint8_t DetectCups(void);
-bool getAll_cups_present(void);
-void setAll_cups_present(bool s);
 uint16_t getCstate(void);
 void setCstate(uint16_t s);
-void CheckIfAllCupsPresent(void);
+bool getAll_cups_present(void);
 
 #endif

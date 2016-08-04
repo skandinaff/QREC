@@ -66,91 +66,69 @@ uint8_t SendInstruction(unsigned char instruction){
 
 
 void PerformQuest(void){
-	char state[1];
-
-	unsigned int c_state = getCstate();
 	int task_counter = get_task_counter();
 
 	TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 
-	if (c_state == 0) { // Wait for cups to be placed
-		sprintf(state, "%d", getCstate());
-		TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	char state[1];
+	sprintf(state, "%d", task_counter);
+	TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
+	if (!getAll_cups_present()) {
 		TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		if (task_counter != TASK_COUNT && DetectCups() == 5) {
-			setCstate(getCstate() + 1);
-			setAll_cups_present(true);
-		}
-	} else if (c_state == 6) { // All Done, you Won
-		sprintf(state, "%d", getCstate());
-		TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		TM_ILI9341_Puts(1, 100, "All done!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		Delayms(2000);
-
-		SendInstruction(INSTR_SLAVE_COMPLETED);
-
-		reset_task_counter();
-		setCstate(0);
-	} else { // We are performing the quest
-		sprintf(state, "%d", getCstate());
-		TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-		switch (c_state) {
-			case 1:  // Whistle Detection
-				break;
-			case 2:  // Pulse Readings
-				setTIM5_count(1);
-				TM_DISCO_LedOff(LED_RED);
-				TM_DISCO_LedOff(LED_GREEN);
-				break;
-			case 3:  // Motion detection
-				Configure_MotionSensorPort();
-				break;
-			case 4:	// Clap detection
-				break;
-			case 5: // Silence detection
-				break;
-		}
-
-		int old_task_counter = get_task_counter();
-		while (get_task_counter() == old_task_counter && getAll_cups_present()) {
-			switch (c_state) {
-				case 1:  // Whistle Detection
-					DetectWhistle();
-					break;
-				case 2:  // Pulse Readings
-					ReadPulse();
-					break;
-				case 3:  // Motion detection
-					MotionDetection();
-				case 4:	// Clap detection
-					DetectClap();
-					break;
-				case 5: // Silence detection
-					SilenceDetection();
-					break;
-				default:
-					setCstate(0);
-					break;
-			}
-
-			/*
-			if (usart_break_required()) {
-				break_flag = true;
-				return;
-			}
-			 */
-		}
-
-		// TODO: fix
-		if (!getAll_cups_present()) {
-			setCstate(0);
-		} else if (getAll_cups_present()) {
-			setCstate(c_state + 1);
-		}
-
-		TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 	}
+
+	switch (task_counter) {
+		case 0:  // Whistle Detection
+			break;
+		case 1:  // Pulse Readings
+			setTIM5_count(1);
+			TM_DISCO_LedOff(LED_RED);
+			TM_DISCO_LedOff(LED_GREEN);
+			break;
+		case 2:  // Motion detection
+			Configure_MotionSensorPort();
+			break;
+		case 3:	// Clap detection
+			break;
+		case 4: // Silence detection
+			break;
+	}
+
+	while (task_counter == get_task_counter() && getAll_cups_present()) {
+		switch (task_counter) {
+			case 0:  // Whistle Detection
+				DetectWhistle();
+				break;
+			case 1:  // Pulse Readings
+				ReadPulse();
+				break;
+			case 2:  // Motion detection
+				MotionDetection();
+			case 3:	// Clap detection
+				DetectClap();
+				break;
+			case 4: // Silence detection
+				SilenceDetection();
+				break;
+		}
+
+		/*
+		if (usart_break_required()) {
+			break_flag = true;
+			return;
+		}
+		 */
+
+		// TODO:
+		/* 	1) check usart
+			2) if can be handled, then handle it right here!
+			3) if can not be handled, then break out of this function to the outer while
+			5) let the outer while handle the request (reset the state)
+		 */
+	}
+
+	TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 }
 
 
@@ -211,8 +189,7 @@ int main(void) {
 						set_task_counter(0);
 						break;
 					case CINSTR_GOTO_END:
-						setCstate(6);
-						set_task_counter(5); // TODO: TAKE A LOOK
+						set_task_counter(TASK_COUNT + 1); // TODO: TAKE A LOOK
 						PerformQuest();
 						break;
 				}				

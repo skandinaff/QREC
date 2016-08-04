@@ -11,7 +11,6 @@ volatile uint16_t cstate;
 
 int _task_counter = 0;
 
-
 bool all_cups_present;
 
 void reset_task_counter(void) {
@@ -40,20 +39,8 @@ uint8_t DetectCups(void) {
 }
 
 
-void CheckIfAllCupsPresent(void) {
-    if (DetectCups() < 5) {
-        setAll_cups_present(false);
-        setCstate(0);
-    }
-}
-
 bool getAll_cups_present(void) {
-    return all_cups_present;
-}
-
-
-void setAll_cups_present(bool s) {
-    all_cups_present = s;
+    return DetectCups() == 5;
 }
 
 

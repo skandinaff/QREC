@@ -35,6 +35,4 @@ void MotionDetection(void) {
 
     GPIO_ResetBits(GPIOG, GPIO_Pin_1);
     GPIO_ResetBits(GPIOG, GPIO_Pin_3);
-
-    CheckIfAllCupsPresent();
 }
