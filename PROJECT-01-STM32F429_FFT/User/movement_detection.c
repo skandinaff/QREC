@@ -1,8 +1,8 @@
 #include "movement_detection.h"
 
 void MotionDetection(void) {
-    bool motion_s1 = GPIO_ReadInputDataBit(GPIOG, GPIO_Pin_1);
-    bool motion_s2 = GPIO_ReadInputDataBit(GPIOG, GPIO_Pin_9);
+    bool motion_s1 = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5);
+    bool motion_s2 = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_6);
     //bool motion = (motion_s1 || motion_s2);
     char mvm_s1[1];
     char mvm_s2[1];
@@ -13,7 +13,7 @@ void MotionDetection(void) {
     TM_ILI9341_Puts(20, 40, mvm_s2, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 
-    if (!motion_s1 || !motion_s2) { // if there was a motion
+    if (!motion_s1  || !motion_s2) { // if there was a motion
         setSecondsCount(0);
         TIM_Cmd(TIM2, DISABLE);
         //TM_ILI9341_Puts(1, 65, "                              ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -28,12 +28,13 @@ void MotionDetection(void) {
                             ILI9341_COLOR_WHITE);
             //Delayms(1000);
 					  TIM_Cmd(TIM2, DISABLE);
+            setSecondsCount(0);					
             set_task_counter(get_task_counter() + 1);
-            setSecondsCount(0);
+
 
         }
     }
 
-    GPIO_ResetBits(GPIOG, GPIO_Pin_1);
-    GPIO_ResetBits(GPIOG, GPIO_Pin_9);
+    //GPIO_ResetBits(GPIOG, GPIO_Pin_1);
+    //GPIO_ResetBits(GPIOG, GPIO_Pin_9);
 }

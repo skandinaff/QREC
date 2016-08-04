@@ -105,6 +105,7 @@ void PerformQuest(void){
 				break;
 			case 2:  // Motion detection
 				MotionDetection();
+			  break;
 			case 3:  // Whistle Detection
 				DetectWhistle();
 				break;

@@ -42,7 +42,7 @@ void DetectWhistle(void) {
 
     int SECONDS = 2;
     if (getSecondCount() > SECONDS) { // TODO: remove hardcode
-        TM_ILI9341_Puts(10, 25, "You Whistled for SECONDS sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        TM_ILI9341_Puts(10, 25, "You Whistled for N sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         Delayms(2000);
         set_task_counter(get_task_counter() + 1);
         setSecondsCount(0);
@@ -146,7 +146,6 @@ void DetectClap(void) {
         TIM_Cmd(TIM2, DISABLE);
         setSecondsCount(0);
         TM_ILI9341_Puts(10, 60, "You did clap 3 times", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-        setSecondsCount(0);
 				set_task_counter(get_task_counter() + 1);
         Delayms(1000);
     }
