@@ -150,6 +150,7 @@ void ReadPulse(void) {
                             ILI9341_COLOR_WHITE);
             Delayms(2000);
             set_task_counter(get_task_counter() + 1);
+					
             setSecondsCount(0);
 
         }

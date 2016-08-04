@@ -50,7 +50,9 @@
 void PerformQuest(void);
 uint8_t SendInstruction(unsigned char instruction);
 void idle(void);
+void check_usart_while_playing(void);
 
+bool break_flag = false;
 
 //bool break_flag = false;
 
@@ -61,6 +63,7 @@ uint8_t SendInstruction(unsigned char instruction){
 	usart_convert_outgoing_packet(packet, outgoing_packet);
 	put_str(packet);
 	Delayms(100);
+	free(packet);
 	return 1;
 }
 
@@ -75,6 +78,7 @@ void PerformQuest(void){
 	TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 	if (!getAll_cups_present()) {
+    setSecondsCount(0);	
 		TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	}
 
@@ -122,17 +126,58 @@ void PerformQuest(void){
 		 */
 
 		// TODO:
-		/* 	1) check usart
-			2) if can be handled, then handle it right here!
-			3) if can not be handled, then break out of this function to the outer while
-			5) let the outer while handle the request (reset the state)
+		/* 1) check usart
+			 2) if can be handled, then handle it right here!
+			 3) if can not be handled, then break out of this function to the outer while
+			 5) let the outer while handle the request (reset the state)
 		 */
+		check_usart_while_playing();
+		if (break_flag) return;
 	}
 
 	TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 }
 
+void check_usart_while_playing(){
+		incoming_packet_t incoming_packet;
+	
+		unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
+	
+		if (usart_has_data()) {
+			
+			usart_get_data_packet(packet);
+			incoming_packet = usart_packet_parser(packet);
+			if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
+			TM_ILI9341_Puts(1, 220, "We recevied some data", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		
+				switch (incoming_packet.instruction) {
+					case INSTR_MASTER_TEST:
+						SendInstruction(INSTR_SLAVE_READY); //TODO: think about, how the device can not be ready...
+						break;
+					case INSTR_MASTER_WORK_START:
+						
+						break;
+					case INSTR_MASTER_STATUS_REQ:				
+						if (get_task_counter() == TASK_COUNT) {
+							SendInstruction(INSTR_SLAVE_COMPLETED);
+						} else {
+							SendInstruction(INSTR_SLAVE_NOT_COMLETED);
+						}
+						break;
+					case INSTR_MASTER_SET_IDLE:
+						break_flag = true;
+						return;
+					case CINSTR_GOTO_END:
+						set_task_counter(TASK_COUNT + 1); // TODO: TAKE A LOOK
+						PerformQuest();
+						break;
+				}	
+			}
+		}
+		
+		free(packet);
 
+}
 
 int main(void) {
 	SystemInit(); /* Initialize system */
@@ -177,6 +222,14 @@ int main(void) {
 					case INSTR_MASTER_WORK_START:
 						while (get_task_counter() <= TASK_COUNT) {
 							PerformQuest();
+							if(break_flag){
+								set_task_counter(0);
+								setSecondsCount(0);
+								TIM_Cmd(TIM2, DISABLE);
+								TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+								break_flag = false;
+								break;
+							}
 						}
 						break;
 					case INSTR_MASTER_STATUS_REQ:				

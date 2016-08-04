@@ -139,12 +139,18 @@ void DetectClap(void) {
             TIM_Cmd(TIM2, ENABLE);
         }
     }
+	
     if (in.maxValue > CLAP_AMPLITUDE) claps++;
 
-
+		if(getSecondCount() > 60) {
+			setSecondsCount(0);
+			claps = 0;
+		}
+		
     if (getSecondCount() > 5 && claps > 10) {
         TIM_Cmd(TIM2, DISABLE);
         setSecondsCount(0);
+				claps = 0;
         TM_ILI9341_Puts(10, 60, "You did clap 3 times", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				set_task_counter(get_task_counter() + 1);
         Delayms(1000);
