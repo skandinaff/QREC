@@ -84,7 +84,7 @@ void Configure_MotionSensorPort(void){
 	
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_3;
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_9;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
 	

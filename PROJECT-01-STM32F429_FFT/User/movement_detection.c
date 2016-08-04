@@ -2,7 +2,7 @@
 
 void MotionDetection(void) {
     bool motion_s1 = GPIO_ReadInputDataBit(GPIOG, GPIO_Pin_1);
-    bool motion_s2 = GPIO_ReadInputDataBit(GPIOG, GPIO_Pin_3);
+    bool motion_s2 = GPIO_ReadInputDataBit(GPIOG, GPIO_Pin_9);
     //bool motion = (motion_s1 || motion_s2);
     char mvm_s1[1];
     char mvm_s2[1];
@@ -26,7 +26,7 @@ void MotionDetection(void) {
         if (getSecondCount() >= 10) {
             TM_ILI9341_Puts(1, 95, "You haven't moved for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK,
                             ILI9341_COLOR_WHITE);
-            Delayms(1000);
+            //Delayms(1000);
 					  TIM_Cmd(TIM2, DISABLE);
             set_task_counter(get_task_counter() + 1);
             setSecondsCount(0);
@@ -35,5 +35,5 @@ void MotionDetection(void) {
     }
 
     GPIO_ResetBits(GPIOG, GPIO_Pin_1);
-    GPIO_ResetBits(GPIOG, GPIO_Pin_3);
+    GPIO_ResetBits(GPIOG, GPIO_Pin_9);
 }
