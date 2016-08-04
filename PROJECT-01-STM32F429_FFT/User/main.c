@@ -47,12 +47,12 @@
 #include "movement_detection.h"
 
 // Function prototypes
-void PerformqQuest(void);
+void PerformQuest(void);
 uint8_t SendInstruction(unsigned char instruction);
 void idle(void);
 
 
-bool break_flag = false;
+//bool break_flag = false;
 
 
 uint8_t SendInstruction(unsigned char instruction){
@@ -65,178 +65,92 @@ uint8_t SendInstruction(unsigned char instruction){
 }
 
 
-void PerformqQuest(void){
-		char state[1];
-	
-		flags_t cflags = get_flags();
-		
-		switch (getCstate()) {
-			case 0: // Wait for cups to be placed
-			sprintf(state, "%d", getCstate());
-			TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
-			TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				if(!cflags.all_tasks){
-					if(DetectCups() == 5){
-						setCstate(getCstate()+1);
-						setAll_cups_present(true);
-					}
-				}
-				break;
-			case 1:  // Whistle Detection 
-				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-			
-				sprintf(state, "%d", getCstate());
-				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
-				Delayms(300);
-			
-				while (!cflags.detect_whistle && getAll_cups_present()) {
-					DetectWhistle();
-					
-					if (usart_break_required()) {
-						break_flag = true;
-						return;
-					}
-					
-					cflags = get_flags();
-				}
-			
-				if (!getAll_cups_present()) {
-					setCstate(0);
-				} else if(getAll_cups_present()) {
-					setCstate(getCstate() + 1);
-				}
-				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+void PerformQuest(void){
+	char state[1];
+
+	unsigned int c_state = getCstate();
+	int task_counter = get_task_counter();
+
+	TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+
+	if (c_state == 0) { // Wait for cups to be placed
+		sprintf(state, "%d", getCstate());
+		TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		if (task_counter != TASK_COUNT && DetectCups() == 5) {
+			setCstate(getCstate() + 1);
+			setAll_cups_present(true);
+		}
+	} else if (c_state == 6) { // All Done, you Won
+		sprintf(state, "%d", getCstate());
+		TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		TM_ILI9341_Puts(1, 100, "All done!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		Delayms(2000);
+
+		SendInstruction(INSTR_SLAVE_COMPLETED);
+
+		reset_task_counter();
+		setCstate(0);
+	} else { // We are performing the quest
+		sprintf(state, "%d", getCstate());
+		TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
+		switch (c_state) {
+			case 1:  // Whistle Detection
 				break;
 			case 2:  // Pulse Readings
-				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-			
-				sprintf(state, "%d", getCstate());
-				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
-			
 				setTIM5_count(1);
 				TM_DISCO_LedOff(LED_RED);
 				TM_DISCO_LedOff(LED_GREEN);
-			
-				while (!cflags.read_pulse && getAll_cups_present()) {
-					ReadPulse();
-					if (usart_break_required()) {
-						break_flag = true;
-						return;
-					}
-					cflags = get_flags();
-				}
-				
-				if (!getAll_cups_present()) {
-					setCstate(0);
-				} else if (getAll_cups_present()) {
-					setCstate(getCstate()+1);
-				}
-			
-				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 				break;
 			case 3:  // Motion detection
-				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-			
-				sprintf(state, "%d", getCstate());
-				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
-	
 				Configure_MotionSensorPort();
-			
-				while (!cflags.detect_movement && getAll_cups_present()) {
-					MotionDetection();
-					if (usart_break_required()) {
-						break_flag = true;
-						return;
-					}
-					cflags = get_flags();
-				}
-				
-				if (!getAll_cups_present()) {
-					setCstate(0);
-				} else if(getAll_cups_present()) {
-					setCstate(getCstate()+1);
-				}
-			
-				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);	
 				break;
 			case 4:	// Clap detection
-				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-			
-				sprintf(state, "%d", getCstate());
-				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
-	
-				while (!cflags.detect_clap && getAll_cups_present()) {
-					DetectClap();
-					
-					if (usart_break_required()) {
-						break_flag = true;
-						// put_str("X");
-						cflags = get_flags();
-						return;
-					}	 else {
-						
-						// put_str("A");
-						// ===================================================================
-						// TODO: fix....
-						// ===================================================================
-						// usart_check_for_data();
-					}
-					
-					cflags = get_flags();
-				}
-			
-				if (!getAll_cups_present()) {
-					setCstate(0);
-				} else if (getAll_cups_present()) {
-					setCstate(getCstate()+1);	
-				}
-				
-				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 				break;
-				
 			case 5: // Silence detection
-				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-			
-				sprintf(state, "%d", getCstate());
-				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	
-				while (!cflags.detect_silence && getAll_cups_present()) {
-					SilenceDetection();
-						if (usart_break_required()) {
-							break_flag = true;
-							return;
-						}
-					cflags = get_flags();
-				}
-			
-				if (!getAll_cups_present()) { 
-					setCstate(0); 
-				} else if(getAll_cups_present()) { 
-					setCstate(getCstate()+1); 
-				}		
-				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);				
-				break;
-			case 6: // All Done, you Won
-				TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-			
-				sprintf(state, "%d", getCstate());
-				TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);	
-	
-			
-				TM_ILI9341_Puts(1, 100, "All done!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				Delayms(2000);
-			
-				SendInstruction(INSTR_SLAVE_COMPLETED);	
-			
-				reset_all_flags();
-				cflags.all_tasks = true;
-				set_flags(cflags);
-			
-				break;
-			default:
-				setCstate(0);
 				break;
 		}
+
+		int old_task_counter = get_task_counter();
+		while (get_task_counter() == old_task_counter && getAll_cups_present()) {
+			switch (c_state) {
+				case 1:  // Whistle Detection
+					DetectWhistle();
+					break;
+				case 2:  // Pulse Readings
+					ReadPulse();
+					break;
+				case 3:  // Motion detection
+					MotionDetection();
+				case 4:	// Clap detection
+					DetectClap();
+					break;
+				case 5: // Silence detection
+					SilenceDetection();
+					break;
+				default:
+					setCstate(0);
+					break;
+			}
+
+			/*
+			if (usart_break_required()) {
+				break_flag = true;
+				return;
+			}
+			 */
+		}
+
+		// TODO: fix
+		if (!getAll_cups_present()) {
+			setCstate(0);
+		} else if (getAll_cups_present()) {
+			setCstate(c_state + 1);
+		}
+
+		TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+	}
 }
 
 
@@ -265,7 +179,6 @@ int main(void) {
 	
 	TM_ILI9341_Puts(1, 41, "Status: Idle", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-	flags_t cflags;
 	int len = DATA_PACKET_LEN + 1;
 	unsigned char packet[len];
 	incoming_packet_t incoming_packet;
@@ -283,37 +196,32 @@ int main(void) {
 						SendInstruction(INSTR_SLAVE_READY); //TODO: think about, how the device can not be ready...
 						break;
 					case INSTR_MASTER_WORK_START:
-						while (!(cflags.all_tasks || break_flag)) {
-							PerformqQuest();
-							cflags = get_flags();
+						while (get_task_counter() <= TASK_COUNT) {
+							PerformQuest();
 						}
 						break;
 					case INSTR_MASTER_STATUS_REQ:				
-						if (cflags.all_tasks) {
+						if (get_task_counter() == TASK_COUNT) {
 							SendInstruction(INSTR_SLAVE_COMPLETED);
 						} else {
 							SendInstruction(INSTR_SLAVE_NOT_COMLETED);
 						}
 						break;
 					case INSTR_MASTER_SET_IDLE:
-						reset_all_flags();
-						cflags.all_tasks = false;
-						set_flags(cflags);
+						set_task_counter(0);
 						break;
 					case CINSTR_GOTO_END:
 						setCstate(6);
-						PerformqQuest();
+						set_task_counter(5); // TODO: TAKE A LOOK
+						PerformQuest();
 						break;
 				}				
 			}
 		}
 		
-		break_flag = false;
+		// break_flag = false;
 
-		reset_all_flags();
-		cflags = get_flags();
-		cflags.all_tasks = false;
-		set_flags(cflags);
+		set_task_counter(0);
 		
 		//put_str("w");
 		//Delayms(500);
