@@ -22,28 +22,29 @@ Dialog DLL:      TCM.DLL V1.14.9.0
  
 <h2>Project:</h2>
 F:\workspace\arm\QREC\PROJECT-01-STM32F429_FFT\project.uvprojx
-Project File Date:  07/23/2016
+Project File Date:  07/13/2016
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 2 (build 183)', folder: 'H:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'STM32F429-Discovery'
 assembling startup_stm32f429_439xx.s...
-compiling arm_min_f32.c...
 compiling main.c...
-compiling pulse_reading.c...
-compiling movement_detection.c...
-compiling detect_whistle.c...
+User\main.c(796): warning:  #177-D: variable "test" was declared but never referenced
+  			char* test = "sukABC bljatj";
+User\main.c(836): warning:  #111-D: statement is unreachable
+  	free(packet);
+User\main.c: 2 warnings, 0 errors
 linking...
-Program Size: Code=30936 RO-data=38960 RW-data=156 ZI-data=5516  
+Program Size: Code=29440 RO-data=38960 RW-data=128 ZI-data=5584  
 FromELF: creating hex file...
-".\Targets\STM32F429_Discovery\project.axf" - 0 Error(s), 0 Warning(s).
+".\Targets\STM32F429_Discovery\project.axf" - 0 Error(s), 2 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   F:\workspace\arm\QREC\PROJECT-01-STM32F429_FFT\RTE
   H:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

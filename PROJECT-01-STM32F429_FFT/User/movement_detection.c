@@ -12,7 +12,6 @@ void MotionDetection(void) {
     TM_ILI9341_Puts(20, 20, mvm_s1, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     TM_ILI9341_Puts(20, 40, mvm_s2, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-		GPIO_SetBits(GPIOE, GPIO_Pin_4);
 
     if (!motion_s1  || !motion_s2) { // if there was a motion
         setSecondsCount(0);

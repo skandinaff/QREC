@@ -165,10 +165,15 @@ void check_usart_while_playing(){
 						}
 						break;
 					case INSTR_MASTER_SET_IDLE:
+						/*setTIM5_count(0);
+					  setSecondsCount(0);
+						TIM_Cmd(TIM2, DISABLE);
+						TIM_Cmd(TIM5, DISABLE);*/
+						setClaps(0);
 						break_flag = true;
 						return;
 					case CINSTR_GOTO_END:
-						set_task_counter(TASK_COUNT + 1); // TODO: TAKE A LOOK
+						set_task_counter(get_task_counter() + 1); // TODO: TAKE A LOOK
 						PerformQuest();
 						break;
 				}	

@@ -82,20 +82,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-/PROJECT-01-STM32F429_FFT/Targets/**
+PROJECT-01-STM32F429_FFT/Targets/*
 *.rar
 *.htm
 
-/*
-/PROJECT-01-STM32F429_FFT/*
-!/PROJECT-01-STM32F429_FFT/User
-
-
-*.[TMP]
-*.TMP
-*.map
-*.uvprojx
-*.uvoptx
-*.skandinaff
 PROJECT-01-STM32F429_FFT/project.map
-*.skandinaff
