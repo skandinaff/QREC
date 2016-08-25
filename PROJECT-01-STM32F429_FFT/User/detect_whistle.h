@@ -23,6 +23,7 @@
 #define CLAP_AMPLITUDE 						33
 #define SILENCE_AMPLITUDE					10						// 4 is the absolute minimum, barele above backround noise // TODO: FIXME (was 5.5)
 #define SILENCE_TIME							10
+#define SIL_AVG_SAMPLES						10
 
 typedef struct {
 		float32_t maxValue;							
@@ -39,5 +40,7 @@ void DetectClap(void);
 void SilenceDetection(void);
 void setClaps(uint8_t c);
 uint8_t getClaps(void);
+void setSilenceThresh(uint32_t st);
+uint32_t getSilenceThresh(void);
 
 #endif

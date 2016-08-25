@@ -86,6 +86,7 @@ void PerformQuest(void){
 		case 0:	// Clap detection
 			break;
 		case 1: // Silence detection
+			//setSilenceThresh(SILENCE_AMPLITUDE); 
 			break;
 		case 2:  // Motion detection
 			Configure_MotionSensorPort();

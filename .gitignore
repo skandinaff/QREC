@@ -87,3 +87,11 @@ PROJECT-01-STM32F429_FFT/Targets/*
 *.htm
 
 PROJECT-01-STM32F429_FFT/project.map
+*.uvoptx
+PROJECT-01-STM32F429_FFT/project.uvguix.skandinaff
+*.uvprojx
+*.skandinaff
+*.TMP
+*.crf
+*.htm
+*.dep

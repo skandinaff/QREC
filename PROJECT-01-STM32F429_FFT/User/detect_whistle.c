@@ -5,7 +5,9 @@
 float32_t Input[SAMPLES];
 float32_t Output[FFT_SIZE];
 uint8_t claps = 0;
-
+uint32_t silence_thresh = SILENCE_AMPLITUDE;
+uint32_t silence_thresh_avg;
+uint8_t N = 0;
 
 void DetectWhistle(void) {
     TM_ILI9341_Puts(150, 10, "           ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -131,12 +133,7 @@ void DetectClap(void) {
     TM_ILI9341_Puts(180, 25, str2, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     TM_ILI9341_Puts(180, 40, str3, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-    /* // Simple implementation, that works, though not very flexible
-      if(in.maxValue > CLAP_AMPLITUDE) { // First clap detected
-          Delayms(1000);
-          claps++;
-      }
-      */
+		Delayms(50);
 
     if (getClaps() == 0) {
         if (in.maxValue > CLAP_AMPLITUDE) {
@@ -147,6 +144,7 @@ void DetectClap(void) {
     if (in.maxValue > CLAP_AMPLITUDE) setClaps(getClaps() + 1);
 
 		if(getSecondCount() > 60) {
+			TM_ILI9341_Puts(180, 40, "   ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 			setSecondsCount(0);
 			setClaps(0);
 		}
@@ -163,37 +161,63 @@ void DetectClap(void) {
 
 
 void SilenceDetection(void) {
+	
     FFT_OUT_t in;
     in = ComputeFFT();
 
     TM_ILI9341_Puts(10, 10, "Peak Ampl:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    TM_ILI9341_Puts(10, 25, "Seconds passed:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		TM_ILI9341_Puts(10, 25, "Current Thresh:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    TM_ILI9341_Puts(10, 40, "Seconds passed:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-    Delayms(350);
+    Delayms(50);
 
-    char str[16];
-    char str3[8];
+    char amp_str[16];
+    char time_str[8];
+		char thresh_str[8];
 
-    sprintf(str, "%.2f", in.maxValue);
-    sprintf(str3, "%d", getSecondCount());
+    sprintf(amp_str, "%.2f", in.maxValue);
+    sprintf(time_str, "%d", getSecondCount());
+		sprintf(thresh_str, "%d", getSilenceThresh());
 
-    TM_ILI9341_Puts(180, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    TM_ILI9341_Puts(180, 25, str3, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	
+		TM_ILI9341_Puts(180, 25, "    ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		
+    TM_ILI9341_Puts(180, 10, amp_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		TM_ILI9341_Puts(180, 25, thresh_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    TM_ILI9341_Puts(180, 40, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		
+		
+		
+		if(N < SIL_AVG_SAMPLES){
+			silence_thresh_avg += in.maxValue;
+			TM_ILI9341_Puts(10, 65, "Acquiring threshold value", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
+		}
+		if(N >= SIL_AVG_SAMPLES){
+			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + 4 ); // Add correction value, 4 seems to be optimal
+			TM_ILI9341_Puts(10, 65, "                         ", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
+		} 
+		if(N<SIL_AVG_SAMPLES + 1) N++;
 
-
-    if (in.maxValue < SILENCE_AMPLITUDE) {
+		
+    if (in.maxValue < getSilenceThresh()) {
         TIM_Cmd(TIM2, ENABLE);
     }
-    if (in.maxValue > SILENCE_AMPLITUDE) setSecondsCount(0);
+		
+    if (in.maxValue > getSilenceThresh()) setSecondsCount(0); // Here, instead of comparing MAX to a threshold (SILENCE_AMPLITEUD) 
+																														 // Should be comparing average between min and max 
+																														 // from a previous iterationto a max 
 
+		
     if (getSecondCount() > SILENCE_TIME) { //Silence time
         TIM_Cmd(TIM2, DISABLE);
         TM_ILI9341_Puts(10, 60, "You were silent for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
         set_task_counter(get_task_counter() + 1);
 				setSecondsCount(0);
+				setSilenceThresh(SILENCE_AMPLITUDE);
         Delayms(1000);
     }
+		
 }
 
 /* Draw bar for LCD */
@@ -216,4 +240,12 @@ void setClaps(uint8_t c) {
 
 uint8_t getClaps(void) {
 	return claps;
+}
+
+void setSilenceThresh(uint32_t st) {
+	silence_thresh = st;
+}
+
+uint32_t getSilenceThresh(void) {
+	return silence_thresh;
 }
