@@ -16,6 +16,7 @@
 #include "pulse_reading.h"
 
 #define TARGET_BPM 120
+#define TARGET_TIME 10
 
 void ReadPulse(void);
 uint16_t getQS(void);

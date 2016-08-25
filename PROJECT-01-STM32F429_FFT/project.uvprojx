@@ -331,7 +331,7 @@
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--cpp11</MiscControls>
               <Define>STM32F429_439xx,USE_STDPERIPH_DRIVER,STM32F4XX,__ASSEMBLY__,KEIL_IDE,TM_DISCO_STM32F429_DISCOVERY,ARM_MATH_CM4,__FPU_PRESENT=1</Define>
               <Undefine></Undefine>
               <IncludePath>.\User;.\TM;..\00-STM32F429_LIBRARIES;..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc;..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\src;..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Device\ST\STM32F4xx\Include;..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Device\ST\STM32F4xx\Source\Templates\arm;..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include;.\STM32F4xx_HAL_Driver\Inc</IncludePath>
@@ -620,6 +620,16 @@
               <FileType>1</FileType>
               <FilePath>..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_usart.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f4xx_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_syscfg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_syscfg.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -776,16 +786,6 @@
           <GroupName>User</GroupName>
           <Files>
             <File>
-              <FileName>main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\User\main.h</FilePath>
-            </File>
-            <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\User\main.c</FilePath>
-            </File>
-            <File>
               <FileName>defines.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\User\defines.h</FilePath>
@@ -809,6 +809,71 @@
               <FileName>system_stm32f4xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\system_stm32f4xx.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\usart.h</FilePath>
+            </File>
+            <File>
+              <FileName>init_periph_irqs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\init_periph_irqs.c</FilePath>
+            </File>
+            <File>
+              <FileName>init_periph_irqs.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\init_periph_irqs.h</FilePath>
+            </File>
+            <File>
+              <FileName>detect_whistle.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\detect_whistle.c</FilePath>
+            </File>
+            <File>
+              <FileName>detect_whistle.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\detect_whistle.h</FilePath>
+            </File>
+            <File>
+              <FileName>cup_detection.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\cup_detection.c</FilePath>
+            </File>
+            <File>
+              <FileName>cup_detection.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\cup_detection.h</FilePath>
+            </File>
+            <File>
+              <FileName>pulse_reading.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\pulse_reading.c</FilePath>
+            </File>
+            <File>
+              <FileName>pulse_reading.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\pulse_reading.h</FilePath>
+            </File>
+            <File>
+              <FileName>movement_detection.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\movement_detection.c</FilePath>
+            </File>
+            <File>
+              <FileName>movement_detection.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\movement_detection.h</FilePath>
             </File>
           </Files>
         </Group>

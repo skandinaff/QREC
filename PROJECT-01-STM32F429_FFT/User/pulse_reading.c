@@ -19,6 +19,8 @@ volatile uint16_t secondBeat = 1;      // used to seed rate array so we startup 
 char adc_result_str[15];
 char BPM_result_str[15];
 char thresh_restult_str[15];
+char time_str[15];
+char pulse_str[15];
 
 uint16_t old_tim5_count = 0;
 
@@ -100,7 +102,7 @@ void ReadPulse(void) {
         T = thresh;
     }
 
-    if (N > 1000) {                           // if N milliseconds go by without a beat
+    if (N > 1000) {                           // if N milliseconds go by without a beat hihger than 
         thresh = 2058;                          // set thresh default
         P = 2048;                               // set P default
         T = 2048;                               // set T default
@@ -108,7 +110,8 @@ void ReadPulse(void) {
         firstBeat = 1;                      // set these to avoid noise
         secondBeat = 0;                    // when we get the heartbeat back
 
-        //BPM = 0;		// Add this line here, so when no beat detected display shows 0
+				Pulse = 0;    // Added here to reduce 
+        BPM = 0;		// Add this line here, so when no beat detected display shows 0
     }
 
 
@@ -117,18 +120,28 @@ void ReadPulse(void) {
         sprintf(adc_result_str, "%4d: ", Signal);
         TM_ILI9341_Puts(1, 5, "RAW ADC: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         if (getTIM5_count2() != old_tim5_count)
-            TM_ILI9341_Puts(125, 5, adc_result_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+            TM_ILI9341_Puts(100, 5, adc_result_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
         sprintf(thresh_restult_str, "%4d: ", thresh);
         TM_ILI9341_Puts(1, 25, "Thresh: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-        TM_ILI9341_Puts(125, 25, thresh_restult_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        TM_ILI9341_Puts(100, 25, thresh_restult_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
         sprintf(BPM_result_str, "%4d: ", BPM);
         TM_ILI9341_Puts(1, 45, "BPM: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         if (Pulse == 1) {
-            TM_ILI9341_Puts(125, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
+            TM_ILI9341_Puts(100, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
         }
+				
+        sprintf(time_str, "%4d: ", getSecondCount());
+        TM_ILI9341_Puts(160, 5, "Time: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				TM_ILI9341_Puts(190, 5, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				
+				sprintf(pulse_str, "%4d: ", Pulse);
+        TM_ILI9341_Puts(160, 25, "Pulse: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				TM_ILI9341_Puts(190, 25, pulse_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
+				
+				
     }
 
 
@@ -145,13 +158,16 @@ void ReadPulse(void) {
 
     if (BPM > TARGET_BPM) {
         TIM_Cmd(TIM2, ENABLE);
-        if (getSecondCount() >= 5) {
-            TM_ILI9341_Puts(1, 65, "You have >120 BPM for >5 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK,
+        if (getSecondCount() >= TARGET_TIME) {
+            TM_ILI9341_Puts(1, 65, "You have >120 BPM for >10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK,
                             ILI9341_COLOR_WHITE);
             Delayms(2000);
             set_task_counter(get_task_counter() + 1);
 					
+						// After task is done, we're cleaning all the counters
             setSecondsCount(0);
+					  BPM = 0;
+						
 
         }
     } else {

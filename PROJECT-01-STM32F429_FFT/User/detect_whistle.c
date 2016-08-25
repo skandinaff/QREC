@@ -98,6 +98,8 @@ FFT_OUT_t ComputeFFT(void) {
 
     /* Calculates maxValue and returns corresponding value */
     arm_max_f32(Output, FFT_SIZE, &out.maxValue, &out.maxIndex);
+		
+		arm_min_f32(Output, FFT_SIZE, &out.minValue, &out.minIndex);
 
     return out;
 }
@@ -108,6 +110,8 @@ void DetectClap(void) {
 
     FFT_OUT_t in;
     in = ComputeFFT();
+		
+	//uint8_t claps = 0;
 
 
     TM_ILI9341_Puts(10, 10, "Peak Ampl:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -120,7 +124,7 @@ void DetectClap(void) {
     char str3[8];
 
     sprintf(str, "%.2f", in.maxValue);
-    sprintf(str2, "%d", claps);
+    sprintf(str2, "%d", getClaps());
     sprintf(str3, "%d", getSecondCount());
 
     TM_ILI9341_Puts(180, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -134,23 +138,23 @@ void DetectClap(void) {
       }
       */
 
-    if (claps == 0) {
+    if (getClaps() == 0) {
         if (in.maxValue > CLAP_AMPLITUDE) {
             TIM_Cmd(TIM2, ENABLE);
         }
     }
 	
-    if (in.maxValue > CLAP_AMPLITUDE) claps++;
+    if (in.maxValue > CLAP_AMPLITUDE) setClaps(getClaps() + 1);
 
 		if(getSecondCount() > 60) {
 			setSecondsCount(0);
-			claps = 0;
+			setClaps(0);
 		}
 		
-    if (getSecondCount() > 5 && claps > 10) {
+    if (getSecondCount() > 5 && getClaps() > 10) {
         TIM_Cmd(TIM2, DISABLE);
         setSecondsCount(0);
-				claps = 0;
+				setClaps(0);
         TM_ILI9341_Puts(10, 60, "You did clap 3 times", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				set_task_counter(get_task_counter() + 1);
         Delayms(1000);
@@ -182,7 +186,7 @@ void SilenceDetection(void) {
     }
     if (in.maxValue > SILENCE_AMPLITUDE) setSecondsCount(0);
 
-    if (getSecondCount() > 10) {
+    if (getSecondCount() > SILENCE_TIME) { //Silence time
         TIM_Cmd(TIM2, DISABLE);
         TM_ILI9341_Puts(10, 60, "You were silent for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
@@ -194,8 +198,7 @@ void SilenceDetection(void) {
 
 /* Draw bar for LCD */
 /* Simple library to draw bars */
-void
-DrawBar(uint16_t bottomX, uint16_t bottomY, uint16_t maxHeight, uint16_t maxValue, float32_t value, uint16_t foreground,
+void DrawBar(uint16_t bottomX, uint16_t bottomY, uint16_t maxHeight, uint16_t maxValue, float32_t value, uint16_t foreground,
         uint16_t background) {
     uint16_t height;
     height = (uint16_t)((float32_t) value / (float32_t) maxValue * (float32_t) maxHeight);
@@ -207,3 +210,10 @@ DrawBar(uint16_t bottomX, uint16_t bottomY, uint16_t maxHeight, uint16_t maxValu
     }
 }
 
+void setClaps(uint8_t c) {
+	claps = c;
+}
+
+uint8_t getClaps(void) {
+	return claps;
+}
