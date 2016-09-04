@@ -21,32 +21,34 @@
 #include <stdbool.h>
 #include "tm_stm32f4_ili9341_ltdc.h"
 
+#define USART_BAUD_RATE 					19200
 
-
-#define QUEST_ID					0x10
+#define QUEST_ID									0x10
 #define DATA_PACKET_LEN		        7
-#define OUTGOING_PACKET_LENGTH      5
+#define OUTGOING_PACKET_LENGTH    5
 #define MASTER_START_BYTE	        0xC1
 #define SLAVE_START_BYTE	        0xC2
-#define STOP_BYTE					0xC0
-#define RESTRICTED_BYTE             0x7B
+#define STOP_BYTE									0xC0
+#define RESTRICTED_BYTE           0x7B
 
 //------------- Instructions from main device
-#define INSTR_MASTER_TEST			0x01
+#define INSTR_MASTER_TEST					0x01
 #define INSTR_MASTER_WORK_START		0x02			
 #define INSTR_MASTER_STATUS_REQ		0x03			
-#define INSTR_MASTER_SET_IDLE		0x04
+#define INSTR_MASTER_SET_IDLE			0x04
 
 //------------- Instructions from this device
-#define INSTR_SLAVE_NOT_READY		0x01
-#define INSTR_SLAVE_READY			0x02
+#define INSTR_SLAVE_NOT_READY			0x01
+#define INSTR_SLAVE_READY					0x02
 #define INSTR_SLAVE_NOT_COMLETED	0x03			
-#define INSTR_SLAVE_COMPLETED		0x04
+#define INSTR_SLAVE_COMPLETED			0x04
 //------------- Supplemetery instructions for test purpouses
 #define CINSTR_GOTO_END           0x7F
+#define CINSTR_RESTART_TASK				0x7E
 
-#define CRC_INIT_VAL 0x00
-#define CRC_POLYNOM 0x07
+#define CRC_INIT_VAL 							0x00
+#define CRC_POLYNOM 							0x07
+
 
 
 typedef struct {

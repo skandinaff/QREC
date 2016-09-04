@@ -177,6 +177,15 @@ void check_usart_while_playing(){
 						set_task_counter(get_task_counter() + 1); // TODO: TAKE A LOOK
 						PerformQuest();
 						break;
+					case CINSTR_RESTART_TASK:
+						setSecondsCount(0);
+						setClaps(0);
+						setSilenceThresh(SILENCE_AMPLITUDE);
+						resetSilenceThresh();
+						setTIM5_count(0);
+						set_task_counter(get_task_counter());
+						PerformQuest();
+						break;
 				}	
 			}
 		}

@@ -42,8 +42,8 @@ void DetectWhistle(void) {
         TIM_Cmd(TIM2, DISABLE);
     }
 
-    int SECONDS = 2;
-    if (getSecondCount() > SECONDS) { // TODO: remove hardcode
+    
+    if (getSecondCount() > WHISTLE_TIME) { // TODO: remove hardcode
         TM_ILI9341_Puts(10, 25, "You Whistled for N sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         Delayms(2000);
         set_task_counter(get_task_counter() + 1);
@@ -193,7 +193,7 @@ void SilenceDetection(void) {
 			TM_ILI9341_Puts(10, 65, "Acquiring threshold value", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 		}
 		if(N >= SIL_AVG_SAMPLES){
-			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + 4 ); // Add correction value, 4 seems to be optimal
+			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + CORRECTION_VALUE );  // Add correction value, 4 seems to be optimal
 			TM_ILI9341_Puts(10, 65, "                         ", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 		} 
 		if(N<SIL_AVG_SAMPLES + 1) N++;
@@ -249,3 +249,9 @@ void setSilenceThresh(uint32_t st) {
 uint32_t getSilenceThresh(void) {
 	return silence_thresh;
 }
+
+void resetSilenceThresh(void){
+	N = 0;
+	silence_thresh_avg = 0;
+} 
+

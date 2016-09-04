@@ -35,6 +35,6 @@ void MotionDetection(void) {
         }
     }
 
-    //GPIO_ResetBits(GPIOG, GPIO_Pin_1);
-    //GPIO_ResetBits(GPIOG, GPIO_Pin_9);
+    //GPIO_ResetBits(GPIOE, GPIO_Pin_5);
+    //GPIO_ResetBits(GPIOE, GPIO_Pin_6);
 }
