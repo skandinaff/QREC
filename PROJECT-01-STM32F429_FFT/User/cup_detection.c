@@ -29,11 +29,11 @@ void set_task_counter(int counter) {
 
 
 uint8_t DetectCups(void) {
-    c1_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_7);
-    c2_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_5);
-    c3_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_6);
-    c4_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_4);
-    c5_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_2);
+    c1_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_8);
+    c2_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_9);
+    c3_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_10);
+    c4_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
+    c5_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_12);
 
     return c1_state + c2_state + c3_state + c4_state + c5_state;
 }

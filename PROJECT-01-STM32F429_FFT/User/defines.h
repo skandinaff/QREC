@@ -30,6 +30,6 @@
 
 /* Put your global defines for all libraries here used in your project */
 
-//#define TM_USART1_USE_CUSTOM_IRQ
+//#define TM_USART3_USE_CUSTOM_IRQ
 
 #endif

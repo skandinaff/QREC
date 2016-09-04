@@ -19,12 +19,26 @@
 		Timers clock is 45 Mhz
 		System Clock is 180 Mhz
 
-		Pins used:
+		Pins used in discovery kit:
 
 		PA3 - Microphone
 		PF8 - Pulse Sensor
+		
 		PA10 - USART
 		PA9 - USART
+		
+		Pins used in production board:
+		
+		PA3 - Microphone
+		PC1 - Pulse Sensor
+		
+		PD0..PD3 - Extra LEDs
+		PD8..PD12 - Reeds
+		PE8..PE12 - Big 12V LEDs
+		PE0..PE7 - PIRs
+		
+		PC10 USART TX
+		PC11 USART RX
 
 */
 
@@ -205,18 +219,24 @@ int main(void) {
 	INTTIM5_Config();
 
 	/* Initialize LCD */
-	TM_ILI9341_Init();
-	TM_ILI9341_Rotate(TM_ILI9341_Orientation_Landscape_1);
+	
+	//TM_ILI9341_Init();
+	//TM_ILI9341_Rotate(TM_ILI9341_Orientation_Landscape_1);
 
 	/* Initialize ADC, PA0 is used */
 	TM_ADC_Init(ADC1, ADC_Channel_3); // PA3 Microphone's ADC 
-	TM_ADC_Init(ADC3, ADC_Channel_6); // PF8 PulseSensor's ADC
+	TM_ADC_Init(ADC3, ADC_Channel_11); // PF8 PulseSensor's ADC
 
 	init_usart();
-	Configure_PD();	
-	Delayms(300);
 	
-	TM_ILI9341_Puts(1, 41, "Status: Idle", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	Configure_PD_LEDS();	
+	GPIO_SetBits(GPIOD, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3);
+	
+	Delayms(1000);
+	
+	Configure_PD();	
+	
+	//TM_ILI9341_Puts(1, 41, "Status: Idle", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 	int len = DATA_PACKET_LEN + 1;
 	unsigned char packet[len];

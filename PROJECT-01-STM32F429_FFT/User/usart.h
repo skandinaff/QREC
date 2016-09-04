@@ -75,7 +75,7 @@ typedef struct {
 void init_usart(void);
 void send_data(unsigned char tx_data[DATA_PACKET_LEN]); 
 void usart_put_data_on_lcd(unsigned char* input);
-void USART1_IRQHandler(void);
+void USART3_IRQHandler(void);
 unsigned char get_char(void);
 bool usart_has_data(void);
 void usart_get_data_packet(unsigned char* packet);

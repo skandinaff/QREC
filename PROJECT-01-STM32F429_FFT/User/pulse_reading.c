@@ -28,7 +28,7 @@ uint16_t old_tim5_count = 0;
 void ReadPulse(void) {
     TM_ILI9341_DrawPixel(getTIM5_count(), 240 - thresh / 17, ILI9341_COLOR_RED);
 
-    Signal = TM_ADC_Read(ADC3, ADC_Channel_6);              // read the Pulse Sensor
+    Signal = TM_ADC_Read(ADC3, ADC_Channel_11);              // read the Pulse Sensor from PC1
     //sampleCounter += 2; // 2 (ms)                         // keep track of the time in mS with this variable
     // We've assigned this variable incrementation to a timer iinterrupts
     uint16_t N = getSampleCounterIRQ() - lastBeatTime;       // monitor the time since the last beat to avoid noise
