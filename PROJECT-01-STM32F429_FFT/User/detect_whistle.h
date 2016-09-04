@@ -20,10 +20,12 @@
 #define SAMPLES					    			512 			/* 256 real party and 256 imaginary parts */
 #define FFT_SIZE				    			SAMPLES / 2		/* FFT size is always the same size as we have samples, so 256 in our case */
 #define FFT_BAR_MAX_HEIGHT		    120 		    /* 120 px on the LCD */
+#define WHISTLE_TIME							5
 #define CLAP_AMPLITUDE 						33
 #define SILENCE_AMPLITUDE					10						// 4 is the absolute minimum, barele above backround noise // TODO: FIXME (was 5.5)
 #define SILENCE_TIME							10
 #define SIL_AVG_SAMPLES						10
+#define CORRECTION_VALUE					3
 
 typedef struct {
 		float32_t maxValue;							
@@ -42,5 +44,6 @@ void setClaps(uint8_t c);
 uint8_t getClaps(void);
 void setSilenceThresh(uint32_t st);
 uint32_t getSilenceThresh(void);
+void resetSilenceThresh(void);
 
 #endif
