@@ -95,3 +95,5 @@ PROJECT-01-STM32F429_FFT/project.uvguix.skandinaff
 *.crf
 *.htm
 *.dep
+*.skandinaff
+PROJECT-01-STM32F429_FFT/project.uvoptx
