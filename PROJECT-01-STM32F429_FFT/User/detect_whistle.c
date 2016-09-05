@@ -10,14 +10,14 @@ uint32_t silence_thresh_avg;
 uint8_t N = 0;
 
 void DetectWhistle(void) {
-    TM_ILI9341_Puts(150, 10, "           ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(150, 10, "           ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
     FFT_OUT_t in;
 
     in = ComputeFFT();
 
     /* This is me trying to output frequency as a number */
-    TM_ILI9341_Puts(10, 10, "Peak Freq:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(10, 10, "Peak Freq:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
     float32_t freq;
 
@@ -28,7 +28,7 @@ void DetectWhistle(void) {
     char str[64];
     sprintf(str, "%.0f Hz", freq);
 
-    if (in.maxIndex > 0) TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    if (in.maxIndex > 0) //TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
     if (freq >= 1100) {
         TIM_Cmd(TIM2, ENABLE);
@@ -38,21 +38,23 @@ void DetectWhistle(void) {
     if (freq < 900) {
         TM_DISCO_LedOn(LED_RED);
         TM_DISCO_LedOff(LED_GREEN);
-        TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         TIM_Cmd(TIM2, DISABLE);
     }
 
 
     if (getSecondCount() > WHISTLE_TIME) { // TODO: remove hardcode
-        TM_ILI9341_Puts(10, 25, "You Whistled for N sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(10, 25, "You Whistled for N sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         Delayms(2000);
         set_task_counter(get_task_counter() + 1);
         setSecondsCount(0);
     }
-
-    /* Display data on LCD */
+		
+		
+    // Display data on LCD 
+		/*
     for (in.i = 0; in.i < FFT_SIZE / 2; in.i++) {
-        /* Draw FFT results */
+        // Draw FFT results 
         DrawBar(30 + 2 * in.i,
                 220,
                 FFT_BAR_MAX_HEIGHT,
@@ -62,6 +64,8 @@ void DetectWhistle(void) {
                 0xFFFF
         );
     }
+		*/
+		
 }
 
 
@@ -116,9 +120,9 @@ void DetectClap(void) {
 	//uint8_t claps = 0;
 
 
-    TM_ILI9341_Puts(10, 10, "Peak Ampl:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    TM_ILI9341_Puts(10, 25, "Claps detected:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    TM_ILI9341_Puts(10, 40, "Seconds passed:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(10, 10, "Peak Ampl:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(10, 25, "Claps detected:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(10, 40, "Seconds passed:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 
     char str[16];
@@ -129,9 +133,9 @@ void DetectClap(void) {
     sprintf(str2, "%d", getClaps());
     sprintf(str3, "%d", getSecondCount());
 
-    TM_ILI9341_Puts(180, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    TM_ILI9341_Puts(180, 25, str2, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    TM_ILI9341_Puts(180, 40, str3, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(180, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(180, 25, str2, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(180, 40, str3, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 		Delayms(50);
 
@@ -144,7 +148,7 @@ void DetectClap(void) {
     if (in.maxValue > CLAP_AMPLITUDE) setClaps(getClaps() + 1);
 
 		if(getSecondCount() > 60) {
-			TM_ILI9341_Puts(180, 40, "   ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			//TM_ILI9341_Puts(180, 40, "   ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 			setSecondsCount(0);
 			setClaps(0);
 		}
@@ -153,7 +157,7 @@ void DetectClap(void) {
         TIM_Cmd(TIM2, DISABLE);
         setSecondsCount(0);
 				setClaps(0);
-        TM_ILI9341_Puts(10, 60, "You did clap 3 times", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(10, 60, "You did clap 3 times", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				set_task_counter(get_task_counter() + 1);
         Delayms(1000);
     }
@@ -165,9 +169,9 @@ void SilenceDetection(void) {
     FFT_OUT_t in;
     in = ComputeFFT();
 
-    TM_ILI9341_Puts(10, 10, "Peak Ampl:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		TM_ILI9341_Puts(10, 25, "Current Thresh:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    TM_ILI9341_Puts(10, 40, "Seconds passed:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(10, 10, "Peak Ampl:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		//TM_ILI9341_Puts(10, 25, "Current Thresh:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(10, 40, "Seconds passed:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
     Delayms(50);
 
@@ -180,21 +184,21 @@ void SilenceDetection(void) {
 		sprintf(thresh_str, "%d", getSilenceThresh());
 
 	
-		TM_ILI9341_Puts(180, 25, "    ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		//TM_ILI9341_Puts(180, 25, "    ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 		
-    TM_ILI9341_Puts(180, 10, amp_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		TM_ILI9341_Puts(180, 25, thresh_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    TM_ILI9341_Puts(180, 40, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(180, 10, amp_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		//TM_ILI9341_Puts(180, 25, thresh_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(180, 40, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 		
 		
 		
 		if(N < SIL_AVG_SAMPLES){
 			silence_thresh_avg += in.maxValue;
-			TM_ILI9341_Puts(10, 65, "Acquiring threshold value", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
+			//TM_ILI9341_Puts(10, 65, "Acquiring threshold value", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 		}
 		if(N >= SIL_AVG_SAMPLES){
 			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + CORRECTION_VALUE ); // Add correction value, 4 seems to be optimal
-			TM_ILI9341_Puts(10, 65, "                         ", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
+			//TM_ILI9341_Puts(10, 65, "                         ", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 		} 
 		if(N<SIL_AVG_SAMPLES + 1) N++;
 
@@ -210,7 +214,7 @@ void SilenceDetection(void) {
 		
     if (getSecondCount() > SILENCE_TIME) { //Silence time
         TIM_Cmd(TIM2, DISABLE);
-        TM_ILI9341_Puts(10, 60, "You were silent for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(10, 60, "You were silent for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
         set_task_counter(get_task_counter() + 1);
 				setSecondsCount(0);
@@ -227,10 +231,10 @@ void DrawBar(uint16_t bottomX, uint16_t bottomY, uint16_t maxHeight, uint16_t ma
     uint16_t height;
     height = (uint16_t)((float32_t) value / (float32_t) maxValue * (float32_t) maxHeight);
     if (height == maxHeight) {
-        TM_ILI9341_DrawLine(bottomX, bottomY, bottomX, bottomY - height, foreground);
+        //TM_ILI9341_DrawLine(bottomX, bottomY, bottomX, bottomY - height, foreground);
     } else if (height < maxHeight) {
-        TM_ILI9341_DrawLine(bottomX, bottomY, bottomX, bottomY - height, foreground);
-        TM_ILI9341_DrawLine(bottomX, bottomY - height, bottomX, bottomY - maxHeight, background);
+        //TM_ILI9341_DrawLine(bottomX, bottomY, bottomX, bottomY - height, foreground);
+        //TM_ILI9341_DrawLine(bottomX, bottomY - height, bottomX, bottomY - maxHeight, background);
     }
 }
 

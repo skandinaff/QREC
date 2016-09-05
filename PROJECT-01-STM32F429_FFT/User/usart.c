@@ -32,26 +32,26 @@ void init_usart(void){
     USART_InitTypeDef USART_InitStruct;
     NVIC_InitTypeDef NVIC_InitStruct;
 
-    RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+    RCC_AHB1PeriphClockCmd(USART_GPIO_RCC, ENABLE);
 
 
-    GPIO_PinAFConfig(GPIOC, GPIO_PinSource10, GPIO_AF_USART3);
-    GPIO_PinAFConfig(GPIOC, GPIO_PinSource11, GPIO_AF_USART3);
+    GPIO_PinAFConfig(USART_GPIO, USART_GPIO_SRC_TX, USART_GPIO_AF);
+    GPIO_PinAFConfig(USART_GPIO, USART_GPIO_SRC_RX, USART_GPIO_AF);
 
     // Initialize pins as alternating function
-    GPIO_InitStruct.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
+    GPIO_InitStruct.GPIO_Pin = USART_GPIO_TX | USART_GPIO_RX;
     GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
     GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
     GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
     GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOC, &GPIO_InitStruct);
+    GPIO_Init(USART_GPIO, &GPIO_InitStruct);
 
-    //Enable clock for USART3
+    //Enable clock for USARTx
 
     /**
-     * Enable clock for USART3 peripheral
+     * Enable clock for USARTx peripheral
      */
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);
+    RCC_APB1PeriphClockCmd(USART_RCC, ENABLE);
 
 
     USART_InitStruct.USART_BaudRate = USART_BAUD_RATE;
@@ -60,27 +60,29 @@ void init_usart(void){
     USART_InitStruct.USART_Parity = USART_Parity_No;
     USART_InitStruct.USART_StopBits = USART_StopBits_1;
     USART_InitStruct.USART_WordLength = USART_WordLength_8b;
-    USART_Init(USART3, &USART_InitStruct);
+    USART_Init(USARTx, &USART_InitStruct);
 
-    USART_Cmd(USART3, ENABLE);
+    USART_Cmd(USARTx, ENABLE);
 
     /**
      * Enable RX interrupt
      */
-    USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
+    USART_ITConfig(USARTx, USART_IT_RXNE, ENABLE);
 
     /**
-     * Set Channel to USART3
-     * Set Channel Cmd to enable. That will enable USART3 channel in NVIC
+     * Set Channel to USARTx
+     * Set Channel Cmd to enable. That will enable USARTx channel in NVIC
      * Set Both priorities to 0. This means high priority
      *
      * Initialize NVIC
      */
-    NVIC_InitStruct.NVIC_IRQChannel = USART3_IRQn;
+    NVIC_InitStruct.NVIC_IRQChannel = USART_IRQ;
     NVIC_InitStruct.NVIC_IRQChannelCmd = ENABLE;
     NVIC_InitStruct.NVIC_IRQChannelPreemptionPriority = 0;
     NVIC_InitStruct.NVIC_IRQChannelSubPriority = 0;
     NVIC_Init(&NVIC_InitStruct);
+		
+
 
 }
 
@@ -89,8 +91,8 @@ void send_data(unsigned char tx_data[DATA_PACKET_LEN]) {
     unsigned char i;
 
     for (i = 0; i < DATA_PACKET_LEN; i++) {
-        while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-        USART_SendData(USART3, tx_data[i]);
+        while (USART_GetFlagStatus(USARTx, USART_FLAG_TC) == RESET);
+        USART_SendData(USARTx, tx_data[i]);
         //memset(&rx_data[0], 0, sizeof(rx_data)); // Clear the buffer once data sent out
 
     }
@@ -101,7 +103,7 @@ void usart_put_data_on_lcd(unsigned char* input){
     unsigned char output[14];
     sprintf(output, "%02X%02X%02X%02X%02X%02X%02X", input[0], input[1], input[2], input[3], input[4], input[5], input[6]);
 
-    TM_ILI9341_Puts(1, 20, output, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(1, 20, output, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
     /* This should've been a proper, solution, but it doens't work for some reason
     int len = strlen(input);
@@ -124,36 +126,36 @@ void usart_put_data_on_lcd(unsigned char* input){
     */
 }
 
-void USART3_IRQHandler(void) {
+void USARTx_IRQHandler(void) {
 
 	GPIO_ToggleBits(GPIOD, GPIO_Pin_2); // TODO: remove debug led 
 
-    if (USART_GetITStatus(USART3, USART_IT_RXNE) == SET) {
-        if ((USART3->SR & (USART_FLAG_NE | USART_FLAG_FE | USART_FLAG_PE | USART_FLAG_ORE)) == 0) {
-            rx_buffer[rx_wr_index++] = (uint8_t)(USART_ReceiveData(USART3) & 0xFF);
+    if (USART_GetITStatus(USARTx, USART_IT_RXNE) == SET) {
+        if ((USARTx->SR & (USART_FLAG_NE | USART_FLAG_FE | USART_FLAG_PE | USART_FLAG_ORE)) == 0) {
+            rx_buffer[rx_wr_index++] = (uint8_t)(USART_ReceiveData(USARTx) & 0xFF);
             if (rx_wr_index == RX_BUFFER_SIZE) rx_wr_index = 0;
             if (++rx_counter == RX_BUFFER_SIZE) {
                 rx_counter = 0;
                 rx_buffer_overflow = 1;
             }
         }
-        else USART_ReceiveData(USART3);//вообще здесь нужен обработчик ошибок, а мы просто пропускаем битый байт
+        else USART_ReceiveData(USARTx);//вообще здесь нужен обработчик ошибок, а мы просто пропускаем битый байт
     }
 
-    if (USART_GetITStatus(USART3, USART_IT_ORE_RX) == SET) //прерывание по переполнению буфера
+    if (USART_GetITStatus(USARTx, USART_IT_ORE_RX) == SET) //прерывание по переполнению буфера
     {
         USART_ReceiveData(
-                USART3); //в идеале пишем здесь обработчик переполнения буфера, но мы просто сбрасываем этот флаг прерывания чтением из регистра данных.
+                USARTx); //в идеале пишем здесь обработчик переполнения буфера, но мы просто сбрасываем этот флаг прерывания чтением из регистра данных.
     }
 
-    if (USART_GetITStatus(USART3, USART_IT_TXE) == SET) {
+    if (USART_GetITStatus(USARTx, USART_IT_TXE) == SET) {
         if (tx_counter) {
             --tx_counter;
-            USART_SendData(USART3, tx_buffer[tx_rd_index++]);
+            USART_SendData(USARTx, tx_buffer[tx_rd_index++]);
             if (tx_rd_index == TX_BUFFER_SIZE) tx_rd_index = 0;
         }
         else {
-            USART_ITConfig(USART3, USART_IT_TXE, DISABLE);
+            USART_ITConfig(USARTx, USART_IT_TXE, DISABLE);
         }
     }
 
@@ -165,9 +167,9 @@ unsigned char get_char(void) { // Data recive
     uint8_t data;
     data = rx_buffer[rx_rd_index++]; //Getting data from the buffer
     if (rx_rd_index == RX_BUFFER_SIZE) rx_rd_index = 0; //cycling through buffer
-    USART_ITConfig(USART3, USART_IT_RXNE, DISABLE); // disabling interrupt
+    USART_ITConfig(USARTx, USART_IT_RXNE, DISABLE); // disabling interrupt
     --rx_counter;                                                                        // so it won't interfere change variable
-    USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);  // enebling it back again
+    USART_ITConfig(USARTx, USART_IT_RXNE, ENABLE);  // enebling it back again
     return data;
 }
 
@@ -225,15 +227,15 @@ bool usart_break_required(void){
 void put_char(uint8_t c) {
     if (c) {
         while (tx_counter == TX_BUFFER_SIZE);
-        USART_ITConfig(USART3, USART_IT_TXE, DISABLE);
-        if (tx_counter || (USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET)) {
+        USART_ITConfig(USARTx, USART_IT_TXE, DISABLE);
+        if (tx_counter || (USART_GetFlagStatus(USARTx, USART_FLAG_TXE) == RESET)) {
             tx_buffer[tx_wr_index++] = c;
             if (tx_wr_index == TX_BUFFER_SIZE) tx_wr_index = 0;
             ++tx_counter;
-            USART_ITConfig(USART3, USART_IT_TXE, ENABLE);
+            USART_ITConfig(USARTx, USART_IT_TXE, ENABLE);
         }
         else
-            USART_SendData(USART3, c);
+            USART_SendData(USARTx, c);
     }
 }
 

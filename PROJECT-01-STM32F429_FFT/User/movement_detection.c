@@ -9,23 +9,22 @@ void MotionDetection(void) {
     char scd[8];
     sprintf(mvm_s1, "%d", motion_s1);
     sprintf(mvm_s2, "%d", motion_s2);
-    TM_ILI9341_Puts(20, 20, mvm_s1, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    TM_ILI9341_Puts(20, 40, mvm_s2, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(20, 20, mvm_s1, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    //TM_ILI9341_Puts(20, 40, mvm_s2, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 
     if (!motion_s1  || !motion_s2) { // if there was a motion
         setSecondsCount(0);
         TIM_Cmd(TIM2, DISABLE);
-        //TM_ILI9341_Puts(1, 65, "                              ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        ////TM_ILI9341_Puts(1, 65, "                              ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     } else {
         TIM_Cmd(TIM2, ENABLE);
 
         sprintf(scd, "%d", getSecondCount());
-        TM_ILI9341_Puts(20, 65, scd, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(20, 65, scd, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
         if (getSecondCount() >= 10) {
-            TM_ILI9341_Puts(1, 95, "You haven't moved for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK,
-                            ILI9341_COLOR_WHITE);
+            //TM_ILI9341_Puts(1, 95, "You haven't moved for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
             //Delayms(1000);
 					  TIM_Cmd(TIM2, DISABLE);
             setSecondsCount(0);					

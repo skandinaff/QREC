@@ -68,8 +68,6 @@ void check_usart_while_playing(void);
 
 bool break_flag = false;
 
-//bool break_flag = false;
-
 
 uint8_t SendInstruction(unsigned char instruction){
 	unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
@@ -85,15 +83,15 @@ uint8_t SendInstruction(unsigned char instruction){
 void PerformQuest(void){
 	int task_counter = get_task_counter();
 
-	TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+	//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 
 	char state[1];
 	sprintf(state, "%d", task_counter);
-	TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	//TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 	if (!getAll_cups_present()) {
     setSecondsCount(0);	
-		TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		//TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	}
 
 	switch (task_counter) {
@@ -109,8 +107,8 @@ void PerformQuest(void){
 			break;
 		case 5:  // Pulse Readings
 			setTIM5_count(1);
-			TM_DISCO_LedOff(LED_RED);
-			TM_DISCO_LedOff(LED_GREEN);
+			//TM_DISCO_LedOff(LED_RED);
+			//TM_DISCO_LedOff(LED_GREEN);
 			break;
 	}
 
@@ -150,7 +148,7 @@ void PerformQuest(void){
 		if (break_flag) return;
 	}
 
-	TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+	//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 }
 
 void check_usart_while_playing(){
@@ -163,7 +161,7 @@ void check_usart_while_playing(){
 			usart_get_data_packet(packet);
 			incoming_packet = usart_packet_parser(packet);
 			if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
-			TM_ILI9341_Puts(1, 220, "We recevied some data", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			//TM_ILI9341_Puts(1, 220, "We recevied some data", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 		
 				switch (incoming_packet.instruction) {
 					case INSTR_MASTER_TEST:
@@ -223,17 +221,19 @@ int main(void) {
 	//TM_ILI9341_Init();
 	//TM_ILI9341_Rotate(TM_ILI9341_Orientation_Landscape_1);
 
-	/* Initialize ADC, PA0 is used */
+	/* Initialize ADC */
 	TM_ADC_Init(ADC1, ADC_Channel_3); // PA3 Microphone's ADC 
 	TM_ADC_Init(ADC3, ADC_Channel_11); // PF8 PulseSensor's ADC
 
+	Configure_PD();	
+	Configure_PD_LEDS();	
+	Configure_485();
+	
+	GPIO_SetBits(GPIOC, GPIO_Pin_8);
+	
 	init_usart();
 	
-	
-	Configure_PD();	
-	Configure_PD_LEDS();
-	
-	GPIO_ToggleBits(GPIOD, GPIO_Pin_3);
+	GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_1);
 
 	
 	Delayms(300);
@@ -248,6 +248,11 @@ int main(void) {
 	
 
 	while (1) {	
+		
+		//SendInstruction(INSTR_SLAVE_COMPLETED);
+		put_str("w");
+		put_char('w');
+		
 		//label: infiniteloop;
 		
 		if (usart_has_data()) {
@@ -266,7 +271,7 @@ int main(void) {
 								set_task_counter(0);
 								setSecondsCount(0);
 								TIM_Cmd(TIM2, DISABLE);
-								TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+								//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 								break_flag = false;
 								break;
 							}

@@ -26,7 +26,7 @@ uint16_t old_tim5_count = 0;
 
 
 void ReadPulse(void) {
-    TM_ILI9341_DrawPixel(getTIM5_count(), 240 - thresh / 17, ILI9341_COLOR_RED);
+    //TM_ILI9341_DrawPixel(getTIM5_count(), 240 - thresh / 17, ILI9341_COLOR_RED);
 
     Signal = TM_ADC_Read(ADC3, ADC_Channel_11);              // read the Pulse Sensor from PC1
     //sampleCounter += 2; // 2 (ms)                         // keep track of the time in mS with this variable
@@ -118,26 +118,26 @@ void ReadPulse(void) {
     {
 
         sprintf(adc_result_str, "%4d: ", Signal);
-        TM_ILI9341_Puts(1, 5, "RAW ADC: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(1, 5, "RAW ADC: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         if (getTIM5_count2() != old_tim5_count)
-            TM_ILI9341_Puts(100, 5, adc_result_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+            //TM_ILI9341_Puts(100, 5, adc_result_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
         sprintf(thresh_restult_str, "%4d: ", thresh);
-        TM_ILI9341_Puts(1, 25, "Thresh: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-        TM_ILI9341_Puts(100, 25, thresh_restult_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(1, 25, "Thresh: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(100, 25, thresh_restult_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
         sprintf(BPM_result_str, "%4d: ", BPM);
-        TM_ILI9341_Puts(1, 45, "BPM: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(1, 45, "BPM: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         if (Pulse == 1) {
-            TM_ILI9341_Puts(100, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
+            //TM_ILI9341_Puts(100, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
         }
 				sprintf(time_str, "%4d: ", getSecondCount());
-        TM_ILI9341_Puts(160, 5, "Time: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				TM_ILI9341_Puts(190, 5, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(160, 5, "Time: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				//TM_ILI9341_Puts(190, 5, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				
 				sprintf(pulse_str, "%4d: ", Pulse);
-        TM_ILI9341_Puts(160, 25, "Pulse: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				TM_ILI9341_Puts(190, 25, pulse_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(160, 25, "Pulse: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				//TM_ILI9341_Puts(190, 25, pulse_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 
     }
@@ -147,18 +147,17 @@ void ReadPulse(void) {
 
     if (getTIM5_count() >= 320) {
         setTIM5_count(1);
-        TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 
     }
 
 
-    TM_ILI9341_DrawPixel(getTIM5_count(), 240 - Signal / 17, 0x1234);
+    //TM_ILI9341_DrawPixel(getTIM5_count(), 240 - Signal / 17, 0x1234);
 
     if (BPM > TARGET_BPM) {
         TIM_Cmd(TIM2, ENABLE);
         if (getSecondCount() >= TARGET_TIME) {
-            TM_ILI9341_Puts(1, 65, "You have >120 BPM for >10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK,
-                            ILI9341_COLOR_WHITE);
+            //TM_ILI9341_Puts(1, 65, "You have >120 BPM for >10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
             Delayms(2000);
             set_task_counter(get_task_counter() + 1);
 						// After task is done, we're cleaning all the counters
@@ -167,8 +166,7 @@ void ReadPulse(void) {
         }
     } else {
         TIM_Cmd(TIM2, DISABLE);
-        TM_ILI9341_Puts(1, 65, "                              ", &TM_Font_11x18, ILI9341_COLOR_BLACK,
-                        ILI9341_COLOR_WHITE);
+        //TM_ILI9341_Puts(1, 65, "                              ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         setSecondsCount(0);
     }
 

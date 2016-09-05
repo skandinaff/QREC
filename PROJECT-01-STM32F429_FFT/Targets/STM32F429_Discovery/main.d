@@ -45,14 +45,14 @@
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_usart.h
 .\targets\stm32f429_discovery\main.o: .\TM\attributes.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_gpio.h
+.\targets\stm32f429_discovery\main.o: User\init_periph_irqs.h
+.\targets\stm32f429_discovery\main.o: User\detect_whistle.h
+.\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_delay.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_ili9341_ltdc.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_spi.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_fonts.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_sdram.h
-.\targets\stm32f429_discovery\main.o: User\init_periph_irqs.h
-.\targets\stm32f429_discovery\main.o: User\detect_whistle.h
-.\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_delay.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_adc.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_disco.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_dac_signal.h

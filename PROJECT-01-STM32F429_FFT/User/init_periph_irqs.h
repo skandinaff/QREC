@@ -19,6 +19,7 @@ void INTTIM2_Config(void);
 void INTTIM5_Config(void);
 void Configure_PD(void);
 void Configure_PD_LEDS(void);
+void Configure_485(void);
 void Configure_MotionSensorPort(void);
 
 uint16_t getSecondCount(void);
