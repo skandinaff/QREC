@@ -15,6 +15,17 @@
 #include "cup_detection.h"
 #include "pulse_reading.h"
 
+#define PIR_PORT GPIOE
+
+#define PIR_1_PIN GPIO_Pin_0
+#define PIR_2_PIN GPIO_Pin_1
+#define PIR_3_PIN GPIO_Pin_2
+#define PIR_4_PIN GPIO_Pin_3
+#define PIR_5_PIN GPIO_Pin_4
+#define PIR_6_PIN GPIO_Pin_5
+#define PIR_7_PIN GPIO_Pin_6
+#define PIR_8_PIN GPIO_Pin_7
+
 void MotionDetection(void);
 
 #endif

@@ -1,5 +1,5 @@
 --cpu Cortex-M4.fp
-".\targets\stm32f429_discovery\startup_stm32f429_439xx.o"
+".\targets\stm32f429_discovery\startup_stm32f427_437xx.o"
 ".\targets\stm32f429_discovery\misc.o"
 ".\targets\stm32f429_discovery\stm32f4xx_rcc.o"
 ".\targets\stm32f429_discovery\stm32f4xx_gpio.o"

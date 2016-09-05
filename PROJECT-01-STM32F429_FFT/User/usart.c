@@ -126,6 +126,7 @@ void usart_put_data_on_lcd(unsigned char* input){
 
 void USART3_IRQHandler(void) {
 
+	GPIO_ToggleBits(GPIOD, GPIO_Pin_2); // TODO: remove debug led 
 
     if (USART_GetITStatus(USART3, USART_IT_RXNE) == SET) {
         if ((USART3->SR & (USART_FLAG_NE | USART_FLAG_FE | USART_FLAG_PE | USART_FLAG_ORE)) == 0) {

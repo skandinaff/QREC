@@ -80,15 +80,17 @@ void Configure_PD(void){ // That is for Cup Detection Buttons, sensors, whatever
 void Configure_PD_LEDS(void){ 
 	GPIO_InitTypeDef GPIO_InitStruct;
 	
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+	RCC_AHB1PeriphClockCmd(ONBOARD_LED_RCC, ENABLE);
 	
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3;
-	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStruct.GPIO_Pin = ONBOARD_LED_1 | ONBOARD_LED_2 | ONBOARD_LED_3 | ONBOARD_LED_4;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
 	
-	GPIO_Init(GPIOD, &GPIO_InitStruct);
+	GPIO_Init(ONBOARD_LED_GPIO, &GPIO_InitStruct);
+	
+	GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_1 | ONBOARD_LED_2 | ONBOARD_LED_3 | ONBOARD_LED_4);
 	
 }
 

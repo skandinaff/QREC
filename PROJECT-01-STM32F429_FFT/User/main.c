@@ -213,7 +213,7 @@ int main(void) {
 	
 	TM_DELAY_Init(); /* Delay init */
 	
-	TM_DISCO_LedInit(); /* Initialize LED's on board */
+	//TM_DISCO_LedInit(); /* Initialize LED's on board */
 
 	INTTIM2_Config();
 	INTTIM5_Config();
@@ -229,12 +229,16 @@ int main(void) {
 
 	init_usart();
 	
-	Configure_PD_LEDS();	
-	GPIO_SetBits(GPIOD, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2 | GPIO_Pin_3);
-	
-	Delayms(1000);
 	
 	Configure_PD();	
+	Configure_PD_LEDS();
+	
+	GPIO_ToggleBits(GPIOD, GPIO_Pin_3);
+
+	
+	Delayms(300);
+	
+	
 	
 	//TM_ILI9341_Puts(1, 41, "Status: Idle", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
@@ -242,6 +246,7 @@ int main(void) {
 	unsigned char packet[len];
 	incoming_packet_t incoming_packet;
 	
+
 	while (1) {	
 		//label: infiniteloop;
 		

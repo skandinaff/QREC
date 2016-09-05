@@ -6,6 +6,13 @@
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx.h"
 
+#define ONBOARD_LED_RCC RCC_AHB1Periph_GPIOD
+#define ONBOARD_LED_GPIO GPIOD
+#define ONBOARD_LED_1 GPIO_Pin_3
+#define ONBOARD_LED_2 GPIO_Pin_2
+#define ONBOARD_LED_3 GPIO_Pin_1
+#define ONBOARD_LED_4 GPIO_Pin_0
+
 
 
 void INTTIM2_Config(void);

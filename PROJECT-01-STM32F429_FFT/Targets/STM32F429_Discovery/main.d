@@ -35,7 +35,6 @@
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dcmi.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dma2d.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h
-.\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sai.h
 .\targets\stm32f429_discovery\main.o: User\defines.h
 .\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
@@ -47,6 +46,7 @@
 .\targets\stm32f429_discovery\main.o: .\TM\attributes.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_gpio.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_ili9341_ltdc.h
+.\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_spi.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_fonts.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_sdram.h

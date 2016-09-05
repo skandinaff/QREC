@@ -1,8 +1,8 @@
 #include "movement_detection.h"
 
 void MotionDetection(void) {
-    bool motion_s1 = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5);
-    bool motion_s2 = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_6);
+    bool motion_s1 = GPIO_ReadInputDataBit(PIR_PORT, PIR_1_PIN);
+    bool motion_s2 = GPIO_ReadInputDataBit(PIR_PORT, PIR_2_PIN);
     //bool motion = (motion_s1 || motion_s2);
     char mvm_s1[1];
     char mvm_s2[1];
@@ -35,6 +35,6 @@ void MotionDetection(void) {
         }
     }
 
-    //GPIO_ResetBits(GPIOG, GPIO_Pin_1);
-    //GPIO_ResetBits(GPIOG, GPIO_Pin_9);
+    //GPIO_ResetBits(PIR_PORT, PIR_1_PIN);
+    //GPIO_ResetBits(PIR_PORT, PIR_2_PIN);
 }
