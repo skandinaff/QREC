@@ -115,6 +115,7 @@ void PerformQuest(void){
 	while (task_counter == get_task_counter() && getAll_cups_present()) {
 		switch (task_counter) {
 			case 0:	// Clap detection
+				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_1);
 				DetectClap();
 				break;
 			case 1: // Silence detection
@@ -222,14 +223,15 @@ int main(void) {
 	//TM_ILI9341_Rotate(TM_ILI9341_Orientation_Landscape_1);
 
 	/* Initialize ADC */
-	TM_ADC_Init(ADC1, ADC_Channel_3); // PA3 Microphone's ADC 
-	TM_ADC_Init(ADC3, ADC_Channel_11); // PF8 PulseSensor's ADC
+	TM_ADC_Init(ADC1, ADC_Channel_3); 		// PA3 Microphone's ADC 
+	TM_ADC_Init(ADC3, ADC_Channel_11); 		// PC1 PulseSensor's ADC
 
 	Configure_PD();	
 	Configure_PD_LEDS();	
 	Configure_485();
+	Convigure_12V_LEDS();
 	
-	GPIO_SetBits(GPIOC, GPIO_Pin_8);
+	GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
 	
 	init_usart();
 	
@@ -238,7 +240,7 @@ int main(void) {
 	
 	Delayms(300);
 	
-	
+
 	
 	//TM_ILI9341_Puts(1, 41, "Status: Idle", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
@@ -248,14 +250,19 @@ int main(void) {
 	
 
 	while (1) {	
+
+//	SendInstruction(INSTR_SLAVE_COMPLETED);
+//		put_str("www");
+		//put_char('w');
+	//	GPIO_ToggleBits(LED_GPIO, LED_1);
+	//	GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 		
-		//SendInstruction(INSTR_SLAVE_COMPLETED);
-		put_str("w");
-		put_char('w');
-		
-		//label: infiniteloop;
+  // 	Delayms(500);
 		
 		if (usart_has_data()) {
+			
+			GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			
 			usart_get_data_packet(packet);
 			incoming_packet = usart_packet_parser(packet);
 			
@@ -295,11 +302,7 @@ int main(void) {
 			}
 		}
 		
-		// break_flag = false;
-
 		set_task_counter(0);
 		
-		//put_str("w");
-		//Delayms(500);
 	}
 }

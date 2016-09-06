@@ -102,11 +102,28 @@ void Configure_485(void){
 	
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_8;
+	GPIO_InitStruct.GPIO_Pin = RS485_EN_PIN;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
 	
-	GPIO_Init(GPIOC, &GPIO_InitStruct);
+	GPIO_Init(RS485_GPIO, &GPIO_InitStruct);
+}
+
+void Convigure_12V_LEDS(void){
+	
+	GPIO_InitTypeDef GPIO_InitStruct;
+	
+	RCC_AHB1PeriphClockCmd(LED_RCC, ENABLE);
+	
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_Pin = LED_1 | LED_2 | LED_3 | LED_4 | LED_5;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
+	
+	GPIO_Init(LED_GPIO, &GPIO_InitStruct);
+	
+	//GPIO_SetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4);
 }
 
 void Configure_MotionSensorPort(void){
@@ -174,36 +191,30 @@ void setQrSecondsCount(uint16_t s){
 	tim2_count = s;
 }
 
-////////////
 uint32_t getSampleCounterIRQ(void){
 	return sampleCounterIRQ;
 }
-////////////
 void setSampleCounterIRQ(uint32_t s){
 	sampleCounterIRQ = s;
 }
-////////////
 uint16_t getCounter(void){
 	return counter;
 }
 void setCounter(uint16_t s){
 	counter = s;
 }
-////////////
 uint16_t getCounter2(void){
 	return counter2;
 }
 void setCounter2(uint16_t s){
 	counter2 = s;
 }
-////////////
 uint16_t getTIM5_count(void){
 	return tim5_count;
 }
 void setTIM5_count(uint16_t s){
 	tim5_count = s;
 }
-////////////
 uint16_t getTIM5_count2(void){
 	return tim5_count2;
 }

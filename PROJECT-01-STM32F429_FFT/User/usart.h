@@ -21,17 +21,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define USARTx 										USART3
-#define USART_GPIO 								GPIOC
-#define USART_GPIO_RCC 						RCC_AHB1Periph_GPIOC
-#define USART_GPIO_AF 						GPIO_AF_USART3
-#define USART_GPIO_SRC_TX					GPIO_PinSource10
-#define USART_GPIO_SRC_RX					GPIO_PinSource11
-#define USART_GPIO_TX							GPIO_Pin_10
-#define USART_GPIO_RX							GPIO_Pin_11
-#define USART_RCC 								RCC_APB1Periph_USART3
-#define USART_IRQ									USART3_IRQn
-
 #define USART_BAUD_RATE 					19200
 
 #define QUEST_ID									0x10
@@ -85,7 +74,7 @@ typedef struct {
 void init_usart(void);
 void send_data(unsigned char tx_data[DATA_PACKET_LEN]); 
 void usart_put_data_on_lcd(unsigned char* input);
-void USARTx_IRQHandler(void);
+void USART3_IRQHandler(void);
 unsigned char get_char(void);
 bool usart_has_data(void);
 void usart_get_data_packet(unsigned char* packet);
