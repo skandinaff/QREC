@@ -21,7 +21,6 @@
 #define NUM_OF_REG		3
 
 void addToBuffer(int digit);
-void writeBuffer(void);
 void shiftOut(int myDataPin, int myClockPin, uint8_t myDataOut);
 void clearBuffer(void);
 

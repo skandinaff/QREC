@@ -113,7 +113,7 @@ void ReadPulse(void) {
 
 				Pulse = 0;    // Added here to reduce 
         BPM = 0;		// Add this line here, so when no beat detected display shows 0
-				clearBuffer(); // So we're clearing LED indicator
+
     }
 
 
@@ -133,6 +133,7 @@ void ReadPulse(void) {
         if (Pulse == 1) {
             //TM_ILI9341_Puts(100, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 					//put_char(BPM);
+					//if(BPM < 100) clearBuffer(); // So we're clearing LED indicator
 					addToBuffer(BPM);
         }
 				sprintf(time_str, "%4d: ", getSecondCount());

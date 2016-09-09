@@ -99,6 +99,7 @@ void PerformQuest(void){
 	
 	switch (task_counter) {
 		case 0:	// Clap detection
+			addToBuffer(5);
 		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			break;

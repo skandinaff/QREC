@@ -7,11 +7,12 @@ uint8_t numbers[] = {0x02, 0x9E, 0x24, 0x0C, 0x98, 0x48, 0x40, 0x1E, 0x01, 0x08}
 
 
 uint8_t data;
-uint8_t dataBuffer[3] = {0xFF, 0xFF, 0xFF}; //uint8_t dataBuffer[NUM_OF_REG];
+//uint8_t dataBuffer[3] = {0xFF, 0xFF, 0xFF}; //uint8_t dataBuffer[NUM_OF_REG];
 
 
 void addToBuffer(int digit){
 	//memset(dataBuffer, 0, 3); //memset(dataBuffer, 0, sizeof(dataBuffer));
+	uint8_t dataBuffer[3] = {0xFF, 0xFF, 0xFF};
 	
 	int c = 0;
 	while(digit > 0){
@@ -20,11 +21,8 @@ void addToBuffer(int digit){
 		digit /= 10;
 		c++;
 	}
-	writeBuffer();
-}
-
-void writeBuffer(){
-  GPIO_WriteBit(LED_SEG_GPIO, LATCH_PIN, Bit_RESET);
+	
+	GPIO_WriteBit(LED_SEG_GPIO, LATCH_PIN, Bit_RESET);
   
   //for (int a = sizeof(dataBuffer) - 1 ; a >= 0  ; a--) {
   for (int a = 3; a >= 0  ; a--) {
@@ -33,6 +31,8 @@ void writeBuffer(){
   }
   
   GPIO_WriteBit(LED_SEG_GPIO, LATCH_PIN, Bit_SET);
+
+	
 }
 
 void clearBuffer(void){
@@ -115,7 +115,8 @@ void Control_12V_LEDs(void){
 			GPIO_SetBits(LED_GPIO, LED_5);
 			break;
 		case 5:
-			GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);
+			GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5); 
+			clearBuffer(); 																										// Clearing 7 segment display. Shouldn't be here, but idk where else to put it
 			break;
 	}
 		
