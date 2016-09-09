@@ -70,7 +70,7 @@ void Configure_PD(void){ // That is for Cup Detection Buttons, sensors, whatever
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9 | GPIO_Pin_10 | GPIO_Pin_11 | GPIO_Pin_12;
-	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
 	
 	GPIO_Init(GPIOD, &GPIO_InitStruct);
@@ -221,3 +221,4 @@ uint16_t getTIM5_count2(void){
 void setTIM5_count2(uint16_t s){
 	tim5_count2 = s;
 }
+

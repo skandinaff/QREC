@@ -31,6 +31,7 @@
 ".\targets\stm32f429_discovery\tm_stm32f4_timer_properties.o"
 ".\targets\stm32f429_discovery\tm_stm32f4_button.o"
 ".\targets\stm32f429_discovery\tm_stm32f4_gpio.o"
+".\targets\stm32f429_discovery\tm_stm32f4_pwm.o"
 ".\targets\stm32f429_discovery\stm32f4xx_it.o"
 ".\targets\stm32f429_discovery\system_stm32f4xx.o"
 ".\targets\stm32f429_discovery\main.o"
@@ -40,6 +41,7 @@
 ".\targets\stm32f429_discovery\cup_detection.o"
 ".\targets\stm32f429_discovery\pulse_reading.o"
 ".\targets\stm32f429_discovery\movement_detection.o"
+".\targets\stm32f429_discovery\leds.o"
 --ro-base 0x08000000 --entry 0x08000000 --rw-base 0x20000000 --entry Reset_Handler --first __Vectors --strict --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\project.map" -o .\Targets\STM32F429_Discovery\project.axf

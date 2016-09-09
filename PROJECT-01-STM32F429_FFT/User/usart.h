@@ -20,6 +20,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include "init_periph_irqs.h"
+#include "tm_stm32f4_delay.h"
 
 #define USART_BAUD_RATE 					19200
 

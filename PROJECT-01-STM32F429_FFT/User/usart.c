@@ -1,5 +1,5 @@
 #include "usart.h"
-#include "init_periph_irqs.h"
+
 
 
 //USART variables
@@ -88,7 +88,7 @@ void init_usart(void){
 }
 
 void send_data(unsigned char tx_data[DATA_PACKET_LEN]) {
-    // Older implementation
+    // Older implementation, probably don't need that anymore
     unsigned char i;
 
     for (i = 0; i < DATA_PACKET_LEN; i++) {
@@ -101,6 +101,7 @@ void send_data(unsigned char tx_data[DATA_PACKET_LEN]) {
 }
 
 void usart_put_data_on_lcd(unsigned char* input){
+		//That's completlely irrelevanty since we don't have a screen in final version
     unsigned char output[14];
     sprintf(output, "%02X%02X%02X%02X%02X%02X%02X", input[0], input[1], input[2], input[3], input[4], input[5], input[6]);
 
@@ -128,9 +129,7 @@ void usart_put_data_on_lcd(unsigned char* input){
 }
 
 void USART3_IRQHandler(void) {
-
-	//GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_4); // TODO: remove debug led 
-
+	
     if (USART_GetITStatus(USART3, USART_IT_RXNE) == SET) {
         if ((USART3->SR & (USART_FLAG_NE | USART_FLAG_FE | USART_FLAG_PE | USART_FLAG_ORE)) == 0) {
             rx_buffer[rx_wr_index++] = (uint8_t)(USART_ReceiveData(USART3) & 0xFF);
@@ -159,6 +158,7 @@ void USART3_IRQHandler(void) {
         }
     }
 
+	
 
 }
 
@@ -175,7 +175,9 @@ unsigned char get_char(void) { 															// Data recive
 
 
 bool usart_has_data() {
+
     return rx_counter != 0;
+
 }
 
 

@@ -2,9 +2,15 @@
 #define INIT_PERIPH_IRQS_H
 
 /* Includes for timer to work */
+/* 
+*	Timers in use: TIM2, TIM5
+*
+*
+*/
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx.h"
+#include "tm_stm32f4_delay.h"
 
 #define ONBOARD_LED_RCC RCC_AHB1Periph_GPIOD
 #define ONBOARD_LED_GPIO GPIOD
@@ -52,6 +58,5 @@ void setTIM5_count(uint16_t s);
 
 uint16_t getTIM5_count2(void);
 void setTIM5_count2(uint16_t s);
-
 
 #endif

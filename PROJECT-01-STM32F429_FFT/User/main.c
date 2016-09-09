@@ -59,6 +59,7 @@
 #include "cup_detection.h"
 #include "pulse_reading.h"
 #include "movement_detection.h"
+#include "leds.h"
 
 // Function prototypes
 void PerformQuest(void);
@@ -115,7 +116,7 @@ void PerformQuest(void){
 	while (task_counter == get_task_counter() && getAll_cups_present()) {
 		switch (task_counter) {
 			case 0:	// Clap detection
-				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_1);
+			//	GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_1);
 				DetectClap();
 				break;
 			case 1: // Silence detection
@@ -163,7 +164,7 @@ void check_usart_while_playing(){
 			incoming_packet = usart_packet_parser(packet);
 			if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
 			//TM_ILI9341_Puts(1, 220, "We recevied some data", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		
+			BlinkOnboardLED(2);
 				switch (incoming_packet.instruction) {
 					case INSTR_MASTER_TEST:
 						SendInstruction(INSTR_SLAVE_READY); //TODO: think about, how the device can not be ready...
@@ -230,6 +231,7 @@ int main(void) {
 	Configure_PD_LEDS();	
 	Configure_485();
 	Convigure_12V_LEDS();
+
 	
 	GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
 	
@@ -261,12 +263,13 @@ int main(void) {
 		
 		if (usart_has_data()) {
 			
-			GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			
 			
 			usart_get_data_packet(packet);
 			incoming_packet = usart_packet_parser(packet);
 			
 			if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
+				BlinkOnboardLED(2);
 				switch (incoming_packet.instruction) {
 					case INSTR_MASTER_TEST:
 						SendInstruction(INSTR_SLAVE_READY); //TODO: think about, how the device can not be ready...

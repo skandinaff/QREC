@@ -27,29 +27,20 @@ Project File Date:  09/06/2016
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 2 (build 183)', folder: 'H:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'STM32F429-Discovery'
-compiling init_periph_irqs.c...
-compiling usart.c...
-User\usart.c(105): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
-      sprintf(output, "%02X%02X%02X%02X%02X%02X%02X", input[0], input[1], input[2], input[3], input[4], input[5], input[6]);
-User\usart.c(256): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "const char *"
-      incoming_packet.packet_length = strlen(packet);
-User\usart.c(283): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
-      outgoing_packet.crc8 = usart_crc8(
-RC_INIT_VAL, data_for_crc8); 
-User\usart.c(303): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
-  	char incoming_crc8 = usart_crc8(
-RC_INIT_VAL, data_for_crc8);
-User\usart.c(318): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
-  	uint8_t len = strlen(packet);
-User\usart.c: 5 warnings, 0 errors
-compiling movement_detection.c...
+compiling leds.c...
+User\leds.h(23): warning:  #1-D: last line of file ends without a newline
+  #endif
+User\leds.c(32): warning:  #1-D: last line of file ends without a newline
+  }
+User\leds.c: 2 warnings, 0 errors
 compiling main.c...
-compiling pulse_reading.c...
-compiling detect_whistle.c...
+User\leds.h(23): warning:  #1-D: last line of file ends without a newline
+  #endif
+User\main.c: 1 warning, 0 errors
 linking...
-Program Size: Code=20480 RO-data=35512 RW-data=152 ZI-data=5504  
+Program Size: Code=20576 RO-data=35512 RW-data=152 ZI-data=5504  
 FromELF: creating hex file...
-".\Targets\STM32F429_Discovery\project.axf" - 0 Error(s), 5 Warning(s).
+".\Targets\STM32F429_Discovery\project.axf" - 0 Error(s), 3 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
   F:\workspace\arm\QREC\PROJECT-01-STM32F429_FFT\RTE

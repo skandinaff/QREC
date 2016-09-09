@@ -29,6 +29,7 @@ void set_task_counter(int counter) {
 
 
 uint8_t DetectCups(void) {
+	// TODO: Invert all the states, since schematics reqire that
     c1_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_8);
     c2_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_9);
     c3_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_10);
