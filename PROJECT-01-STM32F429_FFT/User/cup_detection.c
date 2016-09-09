@@ -9,7 +9,7 @@ unsigned char c5_state = 0;
 
 volatile uint16_t cstate;
 
-int _task_counter = 0;
+uint8_t _task_counter = 0; // that will be our inital tasl. Default: 0
 
 bool all_cups_present;
 
@@ -29,7 +29,7 @@ void set_task_counter(int counter) {
 
 
 uint8_t DetectCups(void) {
-	// TODO: Invert all the states, since schematics reqire that
+	// TODO: Invert all the states, since schematics reqire that (c1_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_8); etc)
     c1_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_8);
     c2_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_9);
     c3_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_10);

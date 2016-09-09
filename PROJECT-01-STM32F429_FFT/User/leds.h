@@ -14,10 +14,18 @@
 #include "cup_detection.h"
 #include "pulse_reading.h"
 
-#include "tm_stm32f4_pwm.h"
+#define LED_SEG_GPIO	GPIOE
+#define LATCH_PIN 		GPIO_Pin_5
+#define CLOCK_PIN 		GPIO_Pin_6
+#define DATA_PIN	  	GPIO_Pin_7
+#define NUM_OF_REG		3
 
-//TM_PWM_TIM_t TIM2_Data;
+void addToBuffer(int digit);
+void writeBuffer(void);
+void shiftOut(int myDataPin, int myClockPin, uint8_t myDataOut);
+void clearBuffer(void);
 
 void BlinkOnboardLED(uint8_t L);
-
+void Control_12V_LEDs(void);
+	
 #endif

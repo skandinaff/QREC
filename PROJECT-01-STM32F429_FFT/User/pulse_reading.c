@@ -53,7 +53,8 @@ void ReadPulse(void) {
         if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3) && ((Signal - thresh) > 100) &&
             (Signal - thresh) < 400) {
             Pulse = 1;                               // set the Pulse flag when we think there is a pulse
-            TM_DISCO_LedOn(LED_RED);               // turn on pin 13 LED
+            //TM_DISCO_LedOn(LED_RED);               // turn on pin 13 LED
+							GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
             IBI = getSampleCounterIRQ() - lastBeatTime;         // measure time between beats in mS
             lastBeatTime = getSampleCounterIRQ();;               // keep track of time for next pulse
 
@@ -92,8 +93,8 @@ void ReadPulse(void) {
     }
 
     if (Signal < thresh && Pulse == 1) {   // when the values are going down, the beat is over
-        TM_DISCO_LedOff(LED_RED);              // turn off pin 13 LED
-        //TM_DISCO_LedOff(LED_GREEN);
+        //TM_DISCO_LedOff(LED_RED);              // turn off pin 13 LED
+					GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
         Pulse = 0;                         // reset the Pulse flag so we can do it again
 
         amp = P - T;                           // get amplitude of the pulse wave
@@ -112,6 +113,7 @@ void ReadPulse(void) {
 
 				Pulse = 0;    // Added here to reduce 
         BPM = 0;		// Add this line here, so when no beat detected display shows 0
+				clearBuffer(); // So we're clearing LED indicator
     }
 
 
@@ -130,12 +132,15 @@ void ReadPulse(void) {
         //TM_ILI9341_Puts(1, 45, "BPM: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         if (Pulse == 1) {
             //TM_ILI9341_Puts(100, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
+					//put_char(BPM);
+					addToBuffer(BPM);
         }
 				sprintf(time_str, "%4d: ", getSecondCount());
         //TM_ILI9341_Puts(160, 5, "Time: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				//TM_ILI9341_Puts(190, 5, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				
 				sprintf(pulse_str, "%4d: ", Pulse);
+				
         //TM_ILI9341_Puts(160, 25, "Pulse: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				//TM_ILI9341_Puts(190, 25, pulse_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 

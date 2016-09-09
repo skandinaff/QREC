@@ -15,6 +15,7 @@
 #include "arm_math.h"
 #include "init_periph_irqs.h"
 #include "cup_detection.h"
+#include "leds.h"
 
 /* FFT settings */
 #define SAMPLES					    			512 			/* 256 real party and 256 imaginary parts */

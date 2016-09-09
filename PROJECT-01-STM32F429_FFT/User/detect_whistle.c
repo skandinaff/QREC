@@ -32,18 +32,22 @@ void DetectWhistle(void) {
 
     if (freq >= 1100) {
         TIM_Cmd(TIM2, ENABLE);
-        TM_DISCO_LedOff(LED_RED);
-        TM_DISCO_LedOn(LED_GREEN);
+			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+      //  TM_DISCO_LedOff(LED_RED);
+      //  TM_DISCO_LedOn(LED_GREEN);
     }
     if (freq < 900) {
-        TM_DISCO_LedOn(LED_RED);
-        TM_DISCO_LedOff(LED_GREEN);
+			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+       // TM_DISCO_LedOn(LED_RED);
+       // TM_DISCO_LedOff(LED_GREEN);
         //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         TIM_Cmd(TIM2, DISABLE);
     }
 
 
-    if (getSecondCount() > WHISTLE_TIME) { // TODO: remove hardcode
+    if (getSecondCount() > WHISTLE_TIME) {
         //TM_ILI9341_Puts(10, 25, "You Whistled for N sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         Delayms(2000);
         set_task_counter(get_task_counter() + 1);
@@ -145,7 +149,10 @@ void DetectClap(void) {
         }
     }
 	
-    if (in.maxValue > CLAP_AMPLITUDE) setClaps(getClaps() + 1);
+    if (in.maxValue > CLAP_AMPLITUDE) {
+			setClaps(getClaps() + 1);
+		  BlinkOnboardLED(3);
+		}
 
 		if(getSecondCount() > 60) {
 			//TM_ILI9341_Puts(180, 40, "   ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);

@@ -45,7 +45,7 @@
 #define INSTR_SLAVE_NOT_COMLETED	0x03			
 #define INSTR_SLAVE_COMPLETED			0x04
 //------------- Supplemetery instructions for test purpouses
-#define CINSTR_GOTO_END           0x7F
+#define CINSTR_GOTO_END           0x7F // Not end but next task
 #define CINSTR_RESTART_TASK				0x7E
 
 #define CRC_INIT_VAL 							0x00
