@@ -17,7 +17,7 @@
 #include "leds.h"
 #include "usart.h"
 
-#define TARGET_BPM 120
+#define TARGET_BPM 100
 #define TARGET_TIME 10
 
 

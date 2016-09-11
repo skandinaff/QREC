@@ -71,12 +71,14 @@ bool break_flag = false;
 
 
 uint8_t SendInstruction(unsigned char instruction){
+	GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
 	unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
 	outgoing_packet_t outgoing_packet = usart_assemble_response(instruction);
 	usart_convert_outgoing_packet(packet, outgoing_packet);
 	put_str(packet);
 	Delayms(100);
 	free(packet);
+	GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
 	return 1;
 }
 
@@ -201,8 +203,8 @@ void check_usart_while_playing(){
 							SendInstruction(INSTR_SLAVE_COMPLETED);
 						} else {
 							SendInstruction(INSTR_SLAVE_NOT_COMLETED);
-							put_char('w');
-							put_char(get_task_counter()+1); // +1 since task counter starts with 0
+							//put_char('w');
+							//put_char(get_task_counter()+1); // +1 since task counter starts with 0
 						}
 						break;
 					case INSTR_MASTER_SET_IDLE:
@@ -260,7 +262,7 @@ int main(void) {
 
 	Configure_LED_indicator();
 	
-	GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
+	//GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
 	
 	init_usart();
 	

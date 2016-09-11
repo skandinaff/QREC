@@ -22,8 +22,8 @@
 #define FFT_SIZE				    			SAMPLES / 2		/* FFT size is always the same size as we have samples, so 256 in our case */
 #define FFT_BAR_MAX_HEIGHT		    120 		    /* 120 px on the LCD */
 #define WHISTLE_TIME							5
-#define CLAP_AMPLITUDE 						33
-#define SILENCE_AMPLITUDE					10						// 4 is the absolute minimum, barele above backround noise // TODO: FIXME (was 5.5)
+#define CLAP_AMPLITUDE 						12
+#define SILENCE_AMPLITUDE					3						// 4 is the absolute minimum, barele above backround noise // TODO: FIXME (was 5.5)
 #define SILENCE_TIME							10
 #define SIL_AVG_SAMPLES						10
 #define CORRECTION_VALUE					3

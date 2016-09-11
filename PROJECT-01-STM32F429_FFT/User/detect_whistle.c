@@ -140,7 +140,7 @@ void DetectClap(void) {
     //TM_ILI9341_Puts(180, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     //TM_ILI9341_Puts(180, 25, str2, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     //TM_ILI9341_Puts(180, 40, str3, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
+		addToBuffer(in.maxValue);
 		Delayms(50);
 
     if (getClaps() == 0) {
@@ -196,7 +196,7 @@ void SilenceDetection(void) {
     //TM_ILI9341_Puts(180, 10, amp_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 		//TM_ILI9341_Puts(180, 25, thresh_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     //TM_ILI9341_Puts(180, 40, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		
+		addToBuffer(in.maxValue);
 		
 		
 		if(N < SIL_AVG_SAMPLES){
