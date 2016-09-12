@@ -279,8 +279,10 @@ int main(void) {
 	unsigned char packet[len];
 	incoming_packet_t incoming_packet;
 	
-	addToBuffer(98);
-	//clearBuffer();
+	Test_7Seg();
+	clearBuffer();
+
+
 
 	while (1) {	
 

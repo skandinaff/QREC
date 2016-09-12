@@ -149,3 +149,22 @@ void BlinkOnboardLED(uint8_t L){
 	}
 
 }
+
+void Test_7Seg(void){
+	clearBuffer();
+
+	for(uint8_t i = 0; i <= 9; i++){
+		addToBuffer(i);
+		Delayms(500);
+	}
+	for(uint8_t i = 10; i <= 90; i+=10){
+		addToBuffer(i);
+		Delayms(500);
+	}
+	for(uint16_t i = 100; i <= 900; i+=100){
+		addToBuffer(i);
+		Delayms(500);
+	}
+	addToBuffer(888);
+	Delayms(500);
+}

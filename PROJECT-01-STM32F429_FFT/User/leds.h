@@ -26,5 +26,6 @@ void clearBuffer(void);
 
 void BlinkOnboardLED(uint8_t L);
 void Control_12V_LEDs(void);
+void Test_7Seg(void);
 	
 #endif
