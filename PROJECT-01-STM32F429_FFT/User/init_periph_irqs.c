@@ -62,7 +62,7 @@ void INTTIM5_Config(void){
 												 // Used to calculate BPM value
 }
 
-void Configure_PD(void){ // That is for Cup Detection Buttons, sensors, whatever
+void Configure_CupDetection(void){ // That is for Cup Detection Buttons, sensors, whatever
 	GPIO_InitTypeDef GPIO_InitStruct;
 	
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
@@ -77,22 +77,7 @@ void Configure_PD(void){ // That is for Cup Detection Buttons, sensors, whatever
 	
 }
 
-void Configure_PD_LEDS(void){  // Onboards LEDs
-	GPIO_InitTypeDef GPIO_InitStruct;
-	
-	RCC_AHB1PeriphClockCmd(ONBOARD_LED_RCC, ENABLE);
-	
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
-	GPIO_InitStruct.GPIO_Pin = ONBOARD_LED_1 | ONBOARD_LED_2 | ONBOARD_LED_3 | ONBOARD_LED_4;
-	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
-	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
-	
-	GPIO_Init(ONBOARD_LED_GPIO, &GPIO_InitStruct);
-	
-	GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_1 | ONBOARD_LED_2 | ONBOARD_LED_3 | ONBOARD_LED_4);
-	
-}
+
 
 void Configure_485(void){
 	
@@ -109,22 +94,7 @@ void Configure_485(void){
 	GPIO_Init(RS485_GPIO, &GPIO_InitStruct);
 }
 
-void Configure_12V_LEDS(void){
-	
-	GPIO_InitTypeDef GPIO_InitStruct;
-	
-	RCC_AHB1PeriphClockCmd(LED_RCC, ENABLE);
-	
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_Pin = LED_1 | LED_2 | LED_3 | LED_4 | LED_5;
-	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
-	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
-	
-	GPIO_Init(LED_GPIO, &GPIO_InitStruct);
-	
-	//GPIO_SetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4);
-}
+
 
 void Configure_MotionSensorPort(void){
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -141,21 +111,8 @@ void Configure_MotionSensorPort(void){
 	
 }
 
-void Configure_LED_indicator(void){
-	
-	GPIO_InitTypeDef GPIO_InitStruct;
-	
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
-	
-	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
-	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
-	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
-	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
-	
-	GPIO_Init(GPIOE, &GPIO_InitStruct);
-	
-}
+
+
 
 void TIM2_IRQHandler(void) {
 

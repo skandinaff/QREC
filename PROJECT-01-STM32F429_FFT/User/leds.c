@@ -9,6 +9,54 @@ uint8_t numbers[] = {0x02, 0x9E, 0x24, 0x0C, 0x98, 0x48, 0x40, 0x1E, 0x01, 0x08}
 uint8_t data;
 //uint8_t dataBuffer[3] = {0xFF, 0xFF, 0xFF}; //uint8_t dataBuffer[NUM_OF_REG];
 
+void Configure_12V_LEDS(void){
+	
+	GPIO_InitTypeDef GPIO_InitStruct;
+	
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+	
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_Pin = LED_1 | LED_2 | LED_3 | LED_4 | LED_5 | STATE_LED;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
+	
+	GPIO_Init(GPIOE, &GPIO_InitStruct);
+	
+}
+
+void Configure_LED_indicator(void){
+	
+	GPIO_InitTypeDef GPIO_InitStruct;
+	
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+	
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_6 | GPIO_Pin_7;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
+	
+	GPIO_Init(GPIOE, &GPIO_InitStruct);
+	
+}
+
+void Configure_Onboard_LEDS(void){  // Onboards LEDs
+	GPIO_InitTypeDef GPIO_InitStruct;
+	
+	RCC_AHB1PeriphClockCmd(ONBOARD_LED_RCC, ENABLE);
+	
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
+	GPIO_InitStruct.GPIO_Pin = ONBOARD_LED_1 | ONBOARD_LED_2 | ONBOARD_LED_3 | ONBOARD_LED_4;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
+	
+	GPIO_Init(ONBOARD_LED_GPIO, &GPIO_InitStruct);
+	
+	GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_1 | ONBOARD_LED_2 | ONBOARD_LED_3 | ONBOARD_LED_4);
+	
+}
 
 void addToBuffer(int digit){
 	//memset(dataBuffer, 0, 3); //memset(dataBuffer, 0, sizeof(dataBuffer));

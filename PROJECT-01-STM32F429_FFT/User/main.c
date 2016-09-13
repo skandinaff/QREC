@@ -101,7 +101,6 @@ void PerformQuest(void){
 	
 	switch (task_counter) {
 		case 0:	// Clap detection
-			addToBuffer(5);
 		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			break;
@@ -133,27 +132,37 @@ void PerformQuest(void){
 	while (task_counter == get_task_counter() && getAll_cups_present()) {
 		switch (task_counter) {
 			case 0:	// Clap detection
-			//	GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_1);
+				//	GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_1);
+				addToBuffer(1);
+				Delayms(500);
 			  DetectClap();
 				//Delayms(200);
 				//set_task_counter(get_task_counter() + 1);
 				break;
 			case 1: // Silence detection
 				SilenceDetection();
+				addToBuffer(2);
+				Delayms(500);
 				//Delayms(200);
 				//set_task_counter(get_task_counter() + 1);
 				break;
 			case 2:  // Motion detection
 			  MotionDetection();
+				addToBuffer(3);
+				Delayms(500);
 				//Delayms(200);
 				//set_task_counter(get_task_counter() + 1);
 				break;
 			case 3:  // Whistle Detection
 				DetectWhistle();
+				addToBuffer(4);
+				Delayms(500);
 				//Delayms(200);
 				//set_task_counter(get_task_counter() + 1);
 				break;
 			case 4:  // Pulse Readings
+				addToBuffer(5);
+				Delayms(500);
 				ReadPulse();
 				break;
 		}
@@ -253,13 +262,12 @@ int main(void) {
 
 	/* Initialize ADC */
 	TM_ADC_Init(ADC1, ADC_Channel_3); 		// PA3 Microphone's ADC 
-	//TM_ADC_Init(ADC3, ADC_Channel_11); 		// PC1 PulseSensor's ADC
+	//TM_ADC_Init(ADC3, ADC_Channel_11); 		// PC1 PulseSensor's ADC, will be initialized after tasks with microphone are through
 
-	Configure_PD();	
-	Configure_PD_LEDS();	
+	Configure_CupDetection();	
+	Configure_Onboard_LEDS();	
 	Configure_485();
 	Configure_12V_LEDS();
-
 	Configure_LED_indicator();
 	
 	//GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
@@ -279,7 +287,8 @@ int main(void) {
 	unsigned char packet[len];
 	incoming_packet_t incoming_packet;
 	
-	Test_7Seg();
+	//Test_7Seg();
+	
 	clearBuffer();
 
 
@@ -310,6 +319,7 @@ int main(void) {
 					case INSTR_MASTER_WORK_START:
 						while (get_task_counter() <= TASK_COUNT) {
 							Control_12V_LEDs();
+							GPIO_SetBits(LED_GPIO, STATE_LED);
 							PerformQuest();
 							if(break_flag){
 								GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);

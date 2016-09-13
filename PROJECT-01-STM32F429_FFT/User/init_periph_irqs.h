@@ -19,25 +19,17 @@
 #define ONBOARD_LED_3 GPIO_Pin_1
 #define ONBOARD_LED_4 GPIO_Pin_0
 
-#define LED_RCC RCC_AHB1Periph_GPIOE
-#define LED_GPIO GPIOE
-#define LED_1 GPIO_Pin_8
-#define LED_2 GPIO_Pin_9
-#define LED_3 GPIO_Pin_10
-#define LED_4 GPIO_Pin_11
-#define LED_5 GPIO_Pin_12
+
 
 #define RS485_EN_PIN GPIO_Pin_8
 #define RS485_GPIO GPIOC
 
 void INTTIM2_Config(void);
 void INTTIM5_Config(void);
-void Configure_PD(void);
-void Configure_PD_LEDS(void);
+void Configure_CupDetection(void);
 void Configure_485(void);
-void Configure_12V_LEDS(void);
 void Configure_MotionSensorPort(void);
-void Configure_LED_indicator(void);
+
 
 uint16_t getSecondCount(void);
 void setSecondsCount(uint16_t s);
