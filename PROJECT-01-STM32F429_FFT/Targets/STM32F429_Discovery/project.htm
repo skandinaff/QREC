@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Targets\STM32F429_Discovery\project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Targets\STM32F429_Discovery\project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Wed Sep 14 13:05:21 2016
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Wed Sep 14 16:24:25 2016
 <BR><P>
 <H3>Maximum Stack Usage =        336 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1537,6 +1537,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BlinkOnboardLED
@@ -1642,7 +1643,7 @@ Global Symbols
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[dc]"></a>check_usart_while_playing</STRONG> (Thumb, 234 bytes, Stack size 32 bytes, main.o(.text))
+<P><STRONG><a name="[dc]"></a>check_usart_while_playing</STRONG> (Thumb, 248 bytes, Stack size 32 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112 + In Cycle
 <LI>Call Chain = check_usart_while_playing &rArr;  PerformQuest (Cycle)
 </UL>
@@ -2033,27 +2034,26 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[e6]"></a>setSilenceThresh</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, detect_whistle.o(.text))
+<P><STRONG><a name="[e6]"></a>setSilenceThresh</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, detect_whistle.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
+</UL>
+
+<P><STRONG><a name="[ec]"></a>getSilenceThresh</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, detect_whistle.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[ec]"></a>getSilenceThresh</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, detect_whistle.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
-</UL>
-
-<P><STRONG><a name="[f2]"></a>SilenceDetection</STRONG> (Thumb, 242 bytes, Stack size 96 bytes, detect_whistle.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 272 + Unknown Stack Size
-<LI>Call Chain = SilenceDetection &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
+<P><STRONG><a name="[f2]"></a>SilenceDetection</STRONG> (Thumb, 226 bytes, Stack size 64 bytes, detect_whistle.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = SilenceDetection &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 </UL>
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
-<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ComputeFFT
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_task_counter
+<LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSilenceThresh
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSecondsCount
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_task_counter
 </UL>
@@ -2062,11 +2062,13 @@ Global Symbols
 
 <P><STRONG><a name="[22e]"></a>DrawBar</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, detect_whistle.o(.text), UNUSED)
 
-<P><STRONG><a name="[e7]"></a>resetSilenceThresh</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, detect_whistle.o(.text))
+<P><STRONG><a name="[22f]"></a>is_silence_thresh_set</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, detect_whistle.o(.text), UNUSED)
+
+<P><STRONG><a name="[e7]"></a>resetSilenceThresh</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, detect_whistle.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[22f]"></a>reset_task_counter</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, cup_detection.o(.text), UNUSED)
+<P><STRONG><a name="[230]"></a>reset_task_counter</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, cup_detection.o(.text), UNUSED)
 
 <P><STRONG><a name="[e3]"></a>get_task_counter</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, cup_detection.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
@@ -2110,15 +2112,15 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[230]"></a>getCstate</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, cup_detection.o(.text), UNUSED)
+<P><STRONG><a name="[231]"></a>getCstate</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, cup_detection.o(.text), UNUSED)
 
-<P><STRONG><a name="[231]"></a>setCstate</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, cup_detection.o(.text), UNUSED)
+<P><STRONG><a name="[232]"></a>setCstate</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, cup_detection.o(.text), UNUSED)
 
-<P><STRONG><a name="[232]"></a>getQS</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, pulse_reading.o(.text), UNUSED)
+<P><STRONG><a name="[233]"></a>getQS</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, pulse_reading.o(.text), UNUSED)
 
-<P><STRONG><a name="[233]"></a>setQS</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, pulse_reading.o(.text), UNUSED)
+<P><STRONG><a name="[234]"></a>setQS</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, pulse_reading.o(.text), UNUSED)
 
-<P><STRONG><a name="[f5]"></a>ReadPulse</STRONG> (Thumb, 476 bytes, Stack size 24 bytes, pulse_reading.o(.text))
+<P><STRONG><a name="[f5]"></a>ReadPulse</STRONG> (Thumb, 470 bytes, Stack size 24 bytes, pulse_reading.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = ReadPulse &rArr; addToBuffer &rArr; shiftOut
 </UL>
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
@@ -2139,13 +2141,13 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[f3]"></a>MotionDetection</STRONG> (Thumb, 136 bytes, Stack size 32 bytes, movement_detection.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 168 + Unknown Stack Size
-<LI>Call Chain = MotionDetection &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
+<P><STRONG><a name="[f3]"></a>MotionDetection</STRONG> (Thumb, 130 bytes, Stack size 16 bytes, movement_detection.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = MotionDetection &rArr; addToBuffer &rArr; shiftOut
 </UL>
 <BR>[Calls]<UL><LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_task_counter
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSecondsCount
@@ -2200,6 +2202,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 </UL>
 
@@ -2277,8 +2280,6 @@ Global Symbols
 <LI><a href="#[127]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_char_common
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_put_data_on_lcd
-<LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
@@ -2315,7 +2316,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_x
 </UL>
 
-<P><STRONG><a name="[234]"></a>_printf_longlong_hex</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, _printf_hex_int.o(.text), UNUSED)
+<P><STRONG><a name="[235]"></a>_printf_longlong_hex</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, _printf_hex_int.o(.text), UNUSED)
 
 <P><STRONG><a name="[129]"></a>__printf</STRONG> (Thumb, 308 bytes, Stack size 40 bytes, __printf_flags_wp.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40 + Unknown Stack Size
@@ -2343,13 +2344,13 @@ Global Symbols
 <LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 </UL>
 
-<P><STRONG><a name="[235]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)
+<P><STRONG><a name="[236]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)
 
-<P><STRONG><a name="[236]"></a>__rt_memcpy_w</STRONG> (Thumb, 100 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)
+<P><STRONG><a name="[237]"></a>__rt_memcpy_w</STRONG> (Thumb, 100 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)
 
-<P><STRONG><a name="[237]"></a>_memcpy_lastbytes_aligned</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rt_memcpy_w.o(.text), UNUSED)
+<P><STRONG><a name="[238]"></a>_memcpy_lastbytes_aligned</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, rt_memcpy_w.o(.text), UNUSED)
 
-<P><STRONG><a name="[238]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
+<P><STRONG><a name="[239]"></a>__use_two_region_memory</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
 <P><STRONG><a name="[1]"></a>__rt_heap_escrow</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, heapauxi.o(.text), UNUSED)
 
@@ -2361,9 +2362,9 @@ Global Symbols
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;malloc
 </UL>
 
-<P><STRONG><a name="[239]"></a>__use_no_heap</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, hguard.o(.text), UNUSED)
+<P><STRONG><a name="[23a]"></a>__use_no_heap</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, hguard.o(.text), UNUSED)
 
-<P><STRONG><a name="[23a]"></a>__heap$guard</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, hguard.o(.text), UNUSED)
+<P><STRONG><a name="[23b]"></a>__heap$guard</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, hguard.o(.text), UNUSED)
 
 <P><STRONG><a name="[6]"></a>_terminate_user_alloc</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, init_alloc.o(.text), UNUSED)
 
@@ -2408,7 +2409,7 @@ Global Symbols
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_int_dec
 </UL>
 
-<P><STRONG><a name="[23b]"></a>__lib_sel_fp_printf</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, _printf_fp_dec.o(.text), UNUSED)
+<P><STRONG><a name="[23c]"></a>__lib_sel_fp_printf</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, _printf_fp_dec.o(.text), UNUSED)
 
 <P><STRONG><a name="[138]"></a>_printf_fp_dec_real</STRONG> (Thumb, 620 bytes, Stack size 104 bytes, _printf_fp_dec.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = _printf_fp_dec_real &rArr; _fp_digits &rArr; _btod_etento &rArr; _btod_emul &rArr; _e2e
@@ -2437,13 +2438,13 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> noretval__2sprintf.o(.text)
 </UL>
-<P><STRONG><a name="[23c]"></a>__user_libspace</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
+<P><STRONG><a name="[23d]"></a>__user_libspace</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
 
 <P><STRONG><a name="[13d]"></a>__user_perproc_libspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, libspace.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__user_setup_stackheap
 </UL>
 
-<P><STRONG><a name="[23d]"></a>__user_perthread_libspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
+<P><STRONG><a name="[23e]"></a>__user_perthread_libspace</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, libspace.o(.text), UNUSED)
 
 <P><STRONG><a name="[81]"></a>__rt_locale</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, rt_locale_intlibspace.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_lib_init_lc_common
@@ -2493,11 +2494,11 @@ Global Symbols
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__Heap_Broken
 </UL>
 
-<P><STRONG><a name="[23e]"></a>__I$use$semihosting</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
+<P><STRONG><a name="[23f]"></a>__I$use$semihosting</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[23f]"></a>__use_no_semihosting_swi</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
+<P><STRONG><a name="[240]"></a>__use_no_semihosting_swi</STRONG> (Thumb, 2 bytes, Stack size 0 bytes, use_no_semi.o(.text), UNUSED)
 
-<P><STRONG><a name="[240]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, indicate_semi.o(.text), UNUSED)
+<P><STRONG><a name="[241]"></a>__semihosting_library_function</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, indicate_semi.o(.text), UNUSED)
 
 <P><STRONG><a name="[85]"></a>__user_setup_stackheap</STRONG> (Thumb, 74 bytes, Stack size 8 bytes, sys_stackheap_outer.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8 + Unknown Stack Size
@@ -2635,8 +2636,7 @@ Global Symbols
 <P><STRONG><a name="[11b]"></a>__aeabi_f2d</STRONG> (Thumb, 0 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = __aeabi_f2d
 </UL>
-<BR>[Called By]<UL><LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 </UL>
 
 <P><STRONG><a name="[147]"></a>_f2d</STRONG> (Thumb, 86 bytes, Stack size 16 bytes, f2d.o(x$fpl$f2d), UNUSED)
@@ -2652,9 +2652,9 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__rt_lib_init_fp_1
 </UL>
 
-<P><STRONG><a name="[241]"></a>__fplib_config_fpu_vfp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, fpinit.o(x$fpl$fpinit), UNUSED)
+<P><STRONG><a name="[242]"></a>__fplib_config_fpu_vfp</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, fpinit.o(x$fpl$fpinit), UNUSED)
 
-<P><STRONG><a name="[242]"></a>__fplib_config_pureend_doubles</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, fpinit.o(x$fpl$fpinit), UNUSED)
+<P><STRONG><a name="[243]"></a>__fplib_config_pureend_doubles</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, fpinit.o(x$fpl$fpinit), UNUSED)
 
 <P><STRONG><a name="[77]"></a>_printf_fp_dec</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, printf1.o(x$fpl$printf1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = _printf_fp_dec &rArr; _printf_fp_dec_real &rArr; _fp_digits &rArr; _btod_etento &rArr; _btod_emul &rArr; _e2e

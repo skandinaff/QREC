@@ -5,9 +5,10 @@
 float32_t Input[SAMPLES];
 float32_t Output[FFT_SIZE];
 uint8_t claps = 0;
-uint32_t silence_thresh = SILENCE_AMPLITUDE;
-uint32_t silence_thresh_avg;
+float32_t silence_thresh = SILENCE_AMPLITUDE;
+float32_t silence_thresh_avg;
 uint8_t N = 0;
+bool silence_thresh_is_set = 0;
 
 void DetectWhistle(void) {
     //TM_ILI9341_Puts(150, 10, "           ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -178,27 +179,24 @@ void SilenceDetection(void) {
     FFT_OUT_t in;
     in = ComputeFFT();
 
-    //TM_ILI9341_Puts(10, 10, "Peak Ampl:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		//TM_ILI9341_Puts(10, 25, "Current Thresh:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    //TM_ILI9341_Puts(10, 40, "Seconds passed:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-    Delayms(50);
-
-    char amp_str[16];
+		/*	Display Section
+	  TM_ILI9341_Puts(10, 10, "Peak Ampl:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		TM_ILI9341_Puts(10, 25, "Current Thresh:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    TM_ILI9341_Puts(10, 40, "Seconds passed:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	  char amp_str[16];
     char time_str[8];
 		char thresh_str[8];
-
     sprintf(amp_str, "%.2f", in.maxValue);
     sprintf(time_str, "%d", getSecondCount());
 		sprintf(thresh_str, "%d", getSilenceThresh());
-
+		TM_ILI9341_Puts(180, 25, "    ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    TM_ILI9341_Puts(180, 10, amp_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		TM_ILI9341_Puts(180, 25, thresh_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    TM_ILI9341_Puts(180, 40, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		*/
+		addToBuffer(getSecondCount());
 	
-		//TM_ILI9341_Puts(180, 25, "    ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		
-    //TM_ILI9341_Puts(180, 10, amp_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		//TM_ILI9341_Puts(180, 25, thresh_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    //TM_ILI9341_Puts(180, 40, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		
+		Delayms(10); // This delay is essential for correct timing. Default value = 10
 		//addToBuffer(in.maxValue);
 		
 		
@@ -206,8 +204,10 @@ void SilenceDetection(void) {
 			silence_thresh_avg += in.maxValue;
 			//TM_ILI9341_Puts(10, 65, "Acquiring threshold value", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 		}
-		if(N >= SIL_AVG_SAMPLES){
-			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) - CORRECTION_VALUE ); // Add correction value, 4 seems to be optimal
+		if(N >= SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
+			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + CORRECTION_VALUE ); 			// Add correction value, 4 seems to be optimal
+			addToBuffer(getSilenceThresh());
+			Delayms(1000);
 			//TM_ILI9341_Puts(10, 65, "                         ", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 		} 
 		if(N<SIL_AVG_SAMPLES + 1) N++;
@@ -215,12 +215,13 @@ void SilenceDetection(void) {
 		
     if (in.maxValue < getSilenceThresh()) {
         TIM_Cmd(TIM2, ENABLE);
-				addToBuffer(getSecondCount());
     }
 		
-    if (in.maxValue > getSilenceThresh()) setSecondsCount(0); // Here, instead of comparing MAX to a threshold (SILENCE_AMPLITEUD) 
-																														 // Should be comparing average between min and max 
-																														 // from a previous iterationto a max 
+    if (in.maxValue > getSilenceThresh()) {
+			setSecondsCount(0); 
+		}																							// Here, instead of comparing MAX to a threshold (SILENCE_AMPLITEUD) 
+																									// Should be comparing average between min and max 
+																									// from a previous iterationto a max 
 
 		
     if (getSecondCount() > SILENCE_TIME) { //Silence time
@@ -257,12 +258,17 @@ uint8_t getClaps(void) {
 	return claps;
 }
 
-void setSilenceThresh(uint32_t st) {
+void setSilenceThresh(float32_t st) {
+	silence_thresh_is_set = 1;
 	silence_thresh = st;
 }
 
-uint32_t getSilenceThresh(void) {
+float32_t getSilenceThresh(void) {
 	return silence_thresh;
+}
+
+bool is_silence_thresh_set(void){
+	return silence_thresh_is_set;
 }
 
 void resetSilenceThresh(void){

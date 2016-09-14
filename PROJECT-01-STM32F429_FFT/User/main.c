@@ -235,6 +235,8 @@ void check_usart_while_playing(){
 						break;
 					case SIL_THR_REQUEST:
 						SendInstruction(getSilenceThresh());
+						//put_char(getSilenceThresh());
+						//put_char('w');
 						break;
 				}	
 			}

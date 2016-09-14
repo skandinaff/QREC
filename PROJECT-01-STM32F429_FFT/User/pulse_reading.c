@@ -50,7 +50,7 @@ void ReadPulse(void) {
 
         //Here I should add a condition that will check signal's amplitude, to avoiud measuremets that are just above 0
 
-        if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3) && ((Signal - thresh) > 50) &&
+        if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3) && /*((Signal - thresh) > 5) &&*/
             (Signal - thresh) < 700) { // Last condition is to avoid huge spikes
             Pulse = 1;                               // set the Pulse flag when we think there is a pulse
             //TM_DISCO_LedOn(LED_RED);               // turn on pin 13 LED
@@ -104,7 +104,7 @@ void ReadPulse(void) {
     }
 
     if (N > 1000) {                           // if N milliseconds go by without a beat 
-        thresh = 2048;                          // set thresh default
+        thresh = 2058;                          // set thresh default
         P = 2048;                               // set P default
         T = 2048;                               // set T default
         lastBeatTime = getSampleCounterIRQ();;          // bring the lastBeatTime up to date
@@ -130,12 +130,16 @@ void ReadPulse(void) {
 
         //sprintf(BPM_result_str, "%4d: ", BPM);
         //TM_ILI9341_Puts(1, 45, "BPM: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				
         if (Pulse == 1) {
             //TM_ILI9341_Puts(100, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 					//put_char(BPM);
 					//if(BPM < 100) clearBuffer(); // So we're clearing LED indicator
 					addToBuffer(BPM);
+					//Delayms(125);
+					//clearBuffer();
         }
+				
 				//sprintf(time_str, "%4d: ", getSecondCount());
         //TM_ILI9341_Puts(160, 5, "Time: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				//TM_ILI9341_Puts(190, 5, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
