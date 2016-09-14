@@ -121,9 +121,8 @@ void DetectClap(void) {
     FFT_OUT_t in;
     in = ComputeFFT();
 		
-	//uint8_t claps = 0;
 
-
+/*  Display Section
     //TM_ILI9341_Puts(10, 10, "Peak Ampl:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     //TM_ILI9341_Puts(10, 25, "Claps detected:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     //TM_ILI9341_Puts(10, 40, "Seconds passed:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -140,8 +139,11 @@ void DetectClap(void) {
     //TM_ILI9341_Puts(180, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     //TM_ILI9341_Puts(180, 25, str2, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     //TM_ILI9341_Puts(180, 40, str3, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				
+*/
+
 		addToBuffer(in.maxValue);
-		Delayms(50);
+		Delayms(10); // This delay is essential for correct timing. Default value = 10
 
     if (getClaps() == 0) {
         if (in.maxValue > CLAP_AMPLITUDE) {
@@ -196,7 +198,8 @@ void SilenceDetection(void) {
     //TM_ILI9341_Puts(180, 10, amp_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 		//TM_ILI9341_Puts(180, 25, thresh_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     //TM_ILI9341_Puts(180, 40, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-		addToBuffer(in.maxValue);
+		
+		//addToBuffer(in.maxValue);
 		
 		
 		if(N < SIL_AVG_SAMPLES){
@@ -204,7 +207,7 @@ void SilenceDetection(void) {
 			//TM_ILI9341_Puts(10, 65, "Acquiring threshold value", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 		}
 		if(N >= SIL_AVG_SAMPLES){
-			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + CORRECTION_VALUE ); // Add correction value, 4 seems to be optimal
+			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) - CORRECTION_VALUE ); // Add correction value, 4 seems to be optimal
 			//TM_ILI9341_Puts(10, 65, "                         ", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 		} 
 		if(N<SIL_AVG_SAMPLES + 1) N++;
@@ -212,6 +215,7 @@ void SilenceDetection(void) {
 		
     if (in.maxValue < getSilenceThresh()) {
         TIM_Cmd(TIM2, ENABLE);
+				addToBuffer(getSecondCount());
     }
 		
     if (in.maxValue > getSilenceThresh()) setSecondsCount(0); // Here, instead of comparing MAX to a threshold (SILENCE_AMPLITEUD) 

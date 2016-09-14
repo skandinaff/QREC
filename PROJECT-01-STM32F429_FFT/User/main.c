@@ -40,6 +40,14 @@
 		PC10 USART TX
 		PC11 USART RX
 
+Task's order:
+
+		Clap
+		Silence
+		Motion
+		Whistle
+		Pulse
+
 */
 
 
@@ -220,6 +228,13 @@ void check_usart_while_playing(){
 						break;
 					case TEST_DISP:
 						Test_7Seg();
+						break;
+					case TASK_REQUEST:
+						//put_char(get_task_counter()+1);
+					  SendInstruction(get_task_counter()+1);
+						break;
+					case SIL_THR_REQUEST:
+						SendInstruction(getSilenceThresh());
 						break;
 				}	
 			}

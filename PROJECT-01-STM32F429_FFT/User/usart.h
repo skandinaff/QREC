@@ -10,6 +10,8 @@
 * 0xC1 0x10 0x7F 0x2D 0xC0 Go to the next task
 * 0xC1 0x10 0x7E 0x2A 0xC0 Restart current task
 * 0xC1 0x10 0x7D 0x23 0xC0 Test 7 segement display
+* 0xC1 0x10 0x7C 0x24 0xC0 Ask what task is now active
+* 0xC1 0x10 0x7A 0x36 0xC0 Ask what is threshold in Silence Detection
 *
 * ---------------------------------------------------------- */
 
@@ -34,6 +36,8 @@
 #define STOP_BYTE									0xC0
 #define RESTRICTED_BYTE           0x7B
 #define TEST_DISP									0x7D
+#define TASK_REQUEST							0x7C
+#define SIL_THR_REQUEST						0x7A
 
 //------------- Instructions from main device
 #define INSTR_MASTER_TEST					0x01

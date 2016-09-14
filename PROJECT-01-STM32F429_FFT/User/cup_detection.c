@@ -24,6 +24,7 @@ int get_task_counter(void) {
 
 
 void set_task_counter(int counter) {
+		if(counter > _task_counter) BlinkOnboardLED(4); // To indicate change of task
     _task_counter = counter;
 }
 

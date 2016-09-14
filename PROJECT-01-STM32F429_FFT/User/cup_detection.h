@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "stm32f4xx_gpio.h"
+#include "leds.h"
 
 void reset_task_counter(void);
 int get_task_counter(void);
