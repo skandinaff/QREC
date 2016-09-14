@@ -9,6 +9,7 @@
 * -- Custom commands, not listed in original protocol
 * 0xC1 0x10 0x7F 0x2D 0xC0 Go to the next task
 * 0xC1 0x10 0x7E 0x2A 0xC0 Restart current task
+* 0xC1 0x10 0x7D 0x23 0xC0 Test 7 segement display
 *
 * ---------------------------------------------------------- */
 
@@ -32,6 +33,7 @@
 #define SLAVE_START_BYTE	        0xC2
 #define STOP_BYTE									0xC0
 #define RESTRICTED_BYTE           0x7B
+#define TEST_DISP									0x7D
 
 //------------- Instructions from main device
 #define INSTR_MASTER_TEST					0x01

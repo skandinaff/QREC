@@ -215,4 +215,5 @@ void Test_7Seg(void){
 	}
 	addToBuffer(888);
 	Delayms(500);
+	clearBuffer();
 }

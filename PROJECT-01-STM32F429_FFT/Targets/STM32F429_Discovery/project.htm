@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Targets\STM32F429_Discovery\project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Targets\STM32F429_Discovery\project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Tue Sep 13 11:03:15 2016
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Wed Sep 14 00:59:19 2016
 <BR><P>
-<H3>Maximum Stack Usage =        344 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        336 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 __rt_entry_main &rArr; main &rArr; PerformQuest &rArr; DetectWhistle &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 <P>
@@ -294,7 +294,7 @@ Global Symbols
 <P><STRONG><a name="[169]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[88]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 344 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 336 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; PerformQuest &rArr; DetectWhistle &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 </UL>
 <BR>[Calls]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -687,7 +687,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ADC_INT_InitPin
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_usart
 <LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_Onboard_LEDS
-<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_MotionSensorPort
+<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_MotionSensorPort
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_LED_indicator
 <LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_CupDetection
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_485
@@ -757,7 +757,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[b3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ADC_INT_InitPin
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_usart
 <LI><a href="#[f8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_Onboard_LEDS
-<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_MotionSensorPort
+<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_MotionSensorPort
 <LI><a href="#[fb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_LED_indicator
 <LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_CupDetection
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_485
@@ -768,8 +768,8 @@ Global Symbols
 
 <P><STRONG><a name="[19d]"></a>GPIO_PinLockConfig</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, stm32f4xx_gpio.o(.text), UNUSED)
 
-<P><STRONG><a name="[11d]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectCups
+<P><STRONG><a name="[11e]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectCups
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 </UL>
 
@@ -779,7 +779,7 @@ Global Symbols
 
 <P><STRONG><a name="[1a0]"></a>GPIO_ReadOutputData</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text), UNUSED)
 
-<P><STRONG><a name="[ed]"></a>GPIO_SetBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
+<P><STRONG><a name="[ee]"></a>GPIO_SetBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_12V_LEDs
@@ -795,10 +795,10 @@ Global Symbols
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[122]"></a>GPIO_WriteBit</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shiftOut
+<P><STRONG><a name="[123]"></a>GPIO_WriteBit</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shiftOut
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearBuffer
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 </UL>
 
 <P><STRONG><a name="[1a1]"></a>GPIO_Write</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text), UNUSED)
@@ -1534,14 +1534,13 @@ Global Symbols
 <P><STRONG><a name="[da]"></a>Delayms</STRONG> (Thumb, 22 bytes, Stack size 8 bytes, tm_stm32f4_delay.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Delayms
 </UL>
-<BR>[Called By]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
 <LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BlinkOnboardLED
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SendInstruction
 </UL>
 
@@ -1643,7 +1642,7 @@ Global Symbols
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[dc]"></a>check_usart_while_playing</STRONG> (Thumb, 198 bytes, Stack size 32 bytes, main.o(.text))
+<P><STRONG><a name="[dc]"></a>check_usart_while_playing</STRONG> (Thumb, 208 bytes, Stack size 32 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112 + In Cycle
 <LI>Call Chain = check_usart_while_playing &rArr;  PerformQuest (Cycle)
 </UL>
@@ -1661,6 +1660,7 @@ Global Symbols
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setClaps
 <LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;resetSilenceThresh
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_task_counter
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BlinkOnboardLED
 <LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 <LI><a href="#[d4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SendInstruction
@@ -1668,40 +1668,38 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[ea]"></a>PerformQuest</STRONG> (Thumb, 220 bytes, Stack size 24 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 328 + Unknown Stack Size
+<P><STRONG><a name="[ea]"></a>PerformQuest</STRONG> (Thumb, 176 bytes, Stack size 16 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 320 + Unknown Stack Size
 <LI>Call Chain = PerformQuest &rArr; DetectWhistle &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 </UL>
 <BR>[Calls]<UL><LI><a href="#[93]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_DeInit
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
-<LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
+<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ADC_Init
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTIM5_count
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSecondsCount
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_task_counter
-<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
+<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
 <LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
-<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_MotionSensorPort
+<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_MotionSensorPort
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[89]"></a>main</STRONG> (Thumb, 292 bytes, Stack size 16 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 344 + Unknown Stack Size
+<P><STRONG><a name="[89]"></a>main</STRONG> (Thumb, 302 bytes, Stack size 16 bytes, main.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 336 + Unknown Stack Size
 <LI>Call Chain = main &rArr; PerformQuest &rArr; DetectWhistle &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 </UL>
 <BR>[Calls]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[d5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ToggleBits
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
+<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[6b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SystemInit
 <LI><a href="#[d0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_DELAY_Init
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
@@ -1717,6 +1715,7 @@ Global Symbols
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_usart
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_task_counter
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearBuffer
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
 <LI><a href="#[f6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM2_Config
 <LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_12V_LEDs
@@ -1753,7 +1752,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[109]"></a>usart_put_data_on_lcd</STRONG> (Thumb, 40 bytes, Stack size 48 bytes, usart.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR><BR>[Calls]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
 
 <P><STRONG><a name="[39]"></a>USART3_IRQHandler</STRONG> (Thumb, 178 bytes, Stack size 24 bytes, usart.o(.text))
@@ -1895,7 +1894,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[ee]"></a>Configure_MotionSensorPort</STRONG> (Thumb, 44 bytes, Stack size 16 bytes, init_periph_irqs.o(.text))
+<P><STRONG><a name="[ef]"></a>Configure_MotionSensorPort</STRONG> (Thumb, 44 bytes, Stack size 16 bytes, init_periph_irqs.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = Configure_MotionSensorPort &rArr; GPIO_Init
 </UL>
 <BR>[Calls]<UL><LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
@@ -1943,7 +1942,7 @@ Global Symbols
 
 <P><STRONG><a name="[225]"></a>setQrSecondsCount</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text), UNUSED)
 
-<P><STRONG><a name="[11e]"></a>getSampleCounterIRQ</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
+<P><STRONG><a name="[11f]"></a>getSampleCounterIRQ</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 </UL>
 
@@ -1957,7 +1956,7 @@ Global Symbols
 
 <P><STRONG><a name="[22a]"></a>setCounter2</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text), UNUSED)
 
-<P><STRONG><a name="[120]"></a>getTIM5_count</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
+<P><STRONG><a name="[121]"></a>getTIM5_count</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 </UL>
 
@@ -1967,7 +1966,7 @@ Global Symbols
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[11f]"></a>getTIM5_count2</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
+<P><STRONG><a name="[120]"></a>getTIM5_count2</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 </UL>
 
@@ -1996,11 +1995,11 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
+<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ComputeFFT
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_task_counter
@@ -2024,13 +2023,13 @@ Global Symbols
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ComputeFFT
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_task_counter
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSecondsCount
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_task_counter
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BlinkOnboardLED
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
@@ -2050,13 +2049,13 @@ Global Symbols
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_f2d
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ComputeFFT
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_task_counter
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSecondsCount
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_task_counter
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
@@ -2091,18 +2090,18 @@ Global Symbols
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[11c]"></a>DetectCups</STRONG> (Thumb, 78 bytes, Stack size 16 bytes, cup_detection.o(.text))
+<P><STRONG><a name="[11d]"></a>DetectCups</STRONG> (Thumb, 78 bytes, Stack size 16 bytes, cup_detection.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = DetectCups
 </UL>
-<BR>[Calls]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<BR>[Calls]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
+<BR>[Called By]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
 </UL>
 
-<P><STRONG><a name="[ec]"></a>getAll_cups_present</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, cup_detection.o(.text))
+<P><STRONG><a name="[ed]"></a>getAll_cups_present</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, cup_detection.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = getAll_cups_present &rArr; DetectCups
 </UL>
-<BR>[Calls]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectCups
+<BR>[Calls]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectCups
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
@@ -2120,18 +2119,18 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
+<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ADC_Read
-<LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getTIM5_count2
-<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getTIM5_count
-<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSampleCounterIRQ
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
+<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getTIM5_count2
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getTIM5_count
+<LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSampleCounterIRQ
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_task_counter
 <LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTIM5_count
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSecondsCount
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_task_counter
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
@@ -2141,8 +2140,8 @@ Global Symbols
 <LI>Call Chain = MotionDetection &rArr; __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
-<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_task_counter
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSecondsCount
@@ -2172,42 +2171,41 @@ Global Symbols
 <P><STRONG><a name="[f8]"></a>Configure_Onboard_LEDS</STRONG> (Thumb, 56 bytes, Stack size 16 bytes, leds.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = Configure_Onboard_LEDS &rArr; GPIO_Init
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
+<BR>[Calls]<UL><LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[b5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 <LI><a href="#[b4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_AHB1PeriphClockCmd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[121]"></a>shiftOut</STRONG> (Thumb, 104 bytes, Stack size 24 bytes, leds.o(.text))
+<P><STRONG><a name="[122]"></a>shiftOut</STRONG> (Thumb, 104 bytes, Stack size 24 bytes, leds.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = shiftOut
 </UL>
-<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
+<BR>[Calls]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearBuffer
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
+<BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
+<LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearBuffer
 </UL>
 
-<P><STRONG><a name="[ef]"></a>addToBuffer</STRONG> (Thumb, 80 bytes, Stack size 24 bytes, leds.o(.text))
+<P><STRONG><a name="[11c]"></a>addToBuffer</STRONG> (Thumb, 80 bytes, Stack size 24 bytes, leds.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = addToBuffer &rArr; shiftOut
 </UL>
-<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
-<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shiftOut
+<BR>[Calls]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shiftOut
 </UL>
-<BR>[Called By]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
 <LI><a href="#[f1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[f0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
 <P><STRONG><a name="[fd]"></a>clearBuffer</STRONG> (Thumb, 46 bytes, Stack size 16 bytes, leds.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = clearBuffer &rArr; shiftOut
 </UL>
-<BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
-<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shiftOut
+<BR>[Calls]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shiftOut
 </UL>
-<BR>[Called By]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
+<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
 <LI><a href="#[fe]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_12V_LEDs
 <LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -2216,7 +2214,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Control_12V_LEDs &rArr; clearBuffer &rArr; shiftOut
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
+<LI><a href="#[ee]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_task_counter
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearBuffer
 </UL>
@@ -2234,10 +2232,15 @@ Global Symbols
 <LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[123]"></a>Test_7Seg</STRONG> (Thumb, 100 bytes, Stack size 16 bytes, leds.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
+<P><STRONG><a name="[eb]"></a>Test_7Seg</STRONG> (Thumb, 102 bytes, Stack size 16 bytes, leds.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = Test_7Seg &rArr; addToBuffer &rArr; shiftOut
+</UL>
+<BR>[Calls]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[fd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearBuffer
-<LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
+</UL>
+<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[dc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
 <P><STRONG><a name="[d6]"></a>malloc</STRONG> (Thumb, 94 bytes, Stack size 16 bytes, h1_alloc.o(.text))
@@ -2261,7 +2264,7 @@ Global Symbols
 <LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__Heap_ProvideMemory
 </UL>
 
-<P><STRONG><a name="[eb]"></a>__2sprintf</STRONG> (Thumb, 34 bytes, Stack size 32 bytes, noretval__2sprintf.o(.text))
+<P><STRONG><a name="[ec]"></a>__2sprintf</STRONG> (Thumb, 34 bytes, Stack size 32 bytes, noretval__2sprintf.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136 + Unknown Stack Size
 <LI>Call Chain = __2sprintf &rArr; _printf_char_common &rArr; __printf
 </UL>
@@ -2422,11 +2425,11 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[128]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__printf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
 
 <P><STRONG><a name="[6d]"></a>_sputc</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, _sputc.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
+<BR><BR>[Called By]<UL><LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> noretval__2sprintf.o(.text)
 </UL>

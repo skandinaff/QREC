@@ -132,37 +132,18 @@ void PerformQuest(void){
 	while (task_counter == get_task_counter() && getAll_cups_present()) {
 		switch (task_counter) {
 			case 0:	// Clap detection
-				//	GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_1);
-				addToBuffer(1);
-				Delayms(500);
 			  DetectClap();
-				//Delayms(200);
-				//set_task_counter(get_task_counter() + 1);
 				break;
 			case 1: // Silence detection
 				SilenceDetection();
-				addToBuffer(2);
-				Delayms(500);
-				//Delayms(200);
-				//set_task_counter(get_task_counter() + 1);
 				break;
 			case 2:  // Motion detection
 			  MotionDetection();
-				addToBuffer(3);
-				Delayms(500);
-				//Delayms(200);
-				//set_task_counter(get_task_counter() + 1);
 				break;
 			case 3:  // Whistle Detection
 				DetectWhistle();
-				addToBuffer(4);
-				Delayms(500);
-				//Delayms(200);
-				//set_task_counter(get_task_counter() + 1);
 				break;
 			case 4:  // Pulse Readings
-				addToBuffer(5);
-				Delayms(500);
 				ReadPulse();
 				break;
 		}
@@ -236,6 +217,9 @@ void check_usart_while_playing(){
 						setTIM5_count(0);
 						set_task_counter(get_task_counter());
 						PerformQuest();
+						break;
+					case TEST_DISP:
+						Test_7Seg();
 						break;
 				}	
 			}
@@ -346,6 +330,9 @@ int main(void) {
 					case CINSTR_GOTO_END:
 						set_task_counter(TASK_COUNT + 1); // TODO: TAKE A LOOK
 						PerformQuest();
+						break;
+					case TEST_DISP:
+						Test_7Seg();
 						break;
 				}				
 			}
