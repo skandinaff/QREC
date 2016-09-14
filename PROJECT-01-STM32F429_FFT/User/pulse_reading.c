@@ -51,10 +51,13 @@ void ReadPulse(void) {
         //Here I should add a condition that will check signal's amplitude, to avoiud measuremets that are just above 0
 
         if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3) && /*((Signal - thresh) > 5) &&*/
-            (Signal - thresh) < 700) { // Last condition is to avoid huge spikes
+            (Signal - thresh) < 700) { 
+							/* Signal-thresh < 700 is to avoid huge spikes  
+									Signal-thresh > 5 is to avoid little fluctutations, like ambient noise
+							*/
             Pulse = 1;                               // set the Pulse flag when we think there is a pulse
-            //TM_DISCO_LedOn(LED_RED);               // turn on pin 13 LED
-							GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+							//TM_DISCO_LedOn(LED_RED);               // turn on pin 13 LED
+							GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4); // Red LED turns on when we have a beat
             IBI = getSampleCounterIRQ() - lastBeatTime;         // measure time between beats in mS
             lastBeatTime = getSampleCounterIRQ();;               // keep track of time for next pulse
 
@@ -103,14 +106,14 @@ void ReadPulse(void) {
         T = thresh;
     }
 
-    if (N > 1000) {                           // if N milliseconds go by without a beat 
+    if (N > 1000) {                           // if N milliseconds go by without a beat (Original value 2500, I mostly used 1000)
         thresh = 2058;                          // set thresh default
         P = 2048;                               // set P default
         T = 2048;                               // set T default
         lastBeatTime = getSampleCounterIRQ();;          // bring the lastBeatTime up to date
         firstBeat = 1;                      // set these to avoid noise
         secondBeat = 0;                    // when we get the heartbeat back
-
+				/* These were added by me */
 				Pulse = 0;    // Added here to reduce 
         BPM = 0;		// Add this line here, so when no beat detected display shows 0
 

@@ -809,6 +809,11 @@
               <FilePath>.\User\detect_whistle.c</FilePath>
             </File>
             <File>
+              <FileName>detect_whistle.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\detect_whistle.h</FilePath>
+            </File>
+            <File>
               <FileName>cup_detection.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\cup_detection.c</FilePath>
@@ -822,6 +827,11 @@
               <FileName>pulse_reading.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\User\pulse_reading.c</FilePath>
+            </File>
+            <File>
+              <FileName>pulse_reading.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\pulse_reading.h</FilePath>
             </File>
             <File>
               <FileName>movement_detection.c</FileName>
@@ -842,16 +852,6 @@
               <FileName>leds.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\User\leds.h</FilePath>
-            </File>
-            <File>
-              <FileName>detect_whistle.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\User\detect_whistle.h</FilePath>
-            </File>
-            <File>
-              <FileName>pulse_reading.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\User\pulse_reading.h</FilePath>
             </File>
           </Files>
         </Group>

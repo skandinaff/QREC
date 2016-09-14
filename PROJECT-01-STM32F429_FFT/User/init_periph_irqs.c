@@ -36,10 +36,12 @@ void INTTIM2_Config(void){
 }
 
 void INTTIM5_Config(void){
-
+	
+	/* This timer should give us interrupt every 2ms for pulse sensor 
+		Actually it gives one per 1ms */
 	
   NVIC_InitTypeDef NVIC_InitStructure_TIM5;
-  /* Enable the TIM3 gloabal Interrupt */
+  /* Enable the TIM5 gloabal Interrupt */
   NVIC_InitStructure_TIM5.NVIC_IRQChannel = TIM5_IRQn;
   NVIC_InitStructure_TIM5.NVIC_IRQChannelPreemptionPriority = 0;
   NVIC_InitStructure_TIM5.NVIC_IRQChannelSubPriority = 1;
@@ -47,7 +49,7 @@ void INTTIM5_Config(void){
   NVIC_Init(&NVIC_InitStructure_TIM5);
 
 	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
-  /* TIM3 clock enable */
+  /* TIM5 clock enable */
   RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
   /* Time base configuration */
   TIM_TimeBaseStructure.TIM_Period = 100 - 1;  // 1 MHz down to 1 KHz (1 ms)
@@ -57,7 +59,7 @@ void INTTIM5_Config(void){
   TIM_TimeBaseInit(TIM5, &TIM_TimeBaseStructure);
   /* TIM IT enable */
   TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE);
-  /* TIM3 enable counter */
+  /* TIM5 enable counter */
   TIM_Cmd(TIM5, ENABLE); // This timer runs all the time. 
 												 // Used to calculate BPM value
 }
@@ -130,17 +132,17 @@ void TIM5_IRQHandler(void) {
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET) {
 		TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
 
-		sampleCounterIRQ += 1;
+		sampleCounterIRQ += 1;	// This increments a counter for pulse sensor
 
 
 		counter += 1;          // This horrible thing here helps to get ~0.250ms refresh rate for drawing signal
 		counter2 += 1;
 		
-		if (counter == 50) {	// This gives you 
+		if (counter == 50) {	// This gives you 50*0.25=12.5s (why did I need that??)
 			tim5_count += 1;
 			counter = 0;
 		}
-		if (counter2 == 150) {
+		if (counter2 == 150) { //And this gives you 37.5s (why did I need that )
 			tim5_count2 += 1;
 			counter2 = 0;
 		}
