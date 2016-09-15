@@ -26,12 +26,13 @@ void DetectWhistle(void) {
     /*** Thus code takes frequency at a maximum amplitude and detects if it's in range of whistle ***/
     freq = in.maxIndex * (45000 / 256);  // If a condition is added here, that cut's off low frequencies, just reaching
     // certain frequency is enough to trigger the event
-    char str[64];
-    sprintf(str, "%.0f Hz", freq);
+    
+		//char str[64];
+    //sprintf(str, "%.0f Hz", freq);
 
     if (in.maxIndex > 0) //TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-    if (freq >= 1100) {
+    if (freq >= 1100 && freq < 1500) {
         TIM_Cmd(TIM2, ENABLE);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
@@ -93,7 +94,7 @@ FFT_OUT_t ComputeFFT(void) {
 
         /* Real part, must be between -1 and 1 */
         Input[(uint16_t) out.i] =
-                (float32_t)((float32_t) TM_ADC_Read(ADC3, ADC_Channel_11) - (float32_t) 2048.0) / (float32_t) 2048.0;
+                (float32_t)((float32_t) TM_ADC_Read(ADC1, ADC_Channel_3) - (float32_t) 2048.0) / (float32_t) 2048.0;
         /* Imaginary part */
         Input[(uint16_t)(out.i + 1)] = 0;
     }
@@ -219,6 +220,7 @@ void SilenceDetection(void) {
 		
     if (in.maxValue > getSilenceThresh()) {
 			setSecondsCount(0); 
+			//BlinkOnboardLED(3);
 			K++;
 		}																							// Here, instead of comparing MAX to a threshold (SILENCE_AMPLITEUD) 
 																									// Should be comparing average between min and max 

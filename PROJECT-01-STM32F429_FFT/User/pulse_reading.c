@@ -28,7 +28,7 @@ uint16_t old_tim5_count = 0;
 void ReadPulse(void) {
     //TM_ILI9341_DrawPixel(getTIM5_count(), 240 - thresh / 17, ILI9341_COLOR_RED);
 
-    Signal = TM_ADC_Read(ADC1, ADC_Channel_3);              // read the Pulse Sensor from PC1 (3, 11)
+    Signal = TM_ADC_Read(ADC2, ADC_Channel_8);              // read the Pulse Sensor from PC1 (3, 11)
     //sampleCounter += 2; // 2 (ms)                         // keep track of the time in mS with this variable
     // We've assigned this variable incrementation to a timer iinterrupts
     uint16_t N = getSampleCounterIRQ() - lastBeatTime;       // monitor the time since the last beat to avoid noise
@@ -50,7 +50,7 @@ void ReadPulse(void) {
 
         //Here I should add a condition that will check signal's amplitude, to avoiud measuremets that are just above 0
 
-        if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3)  && ((Signal - thresh) > 15) && (Signal - thresh) < 700) { 
+        if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3)  && ((Signal - thresh) > 20) && (Signal - thresh) < 700) { 
 							/* Signal-thresh < 700 is to avoid huge spikes  
 									Signal-thresh > 5 is to avoid little fluctutations, like ambient noise
 							*/
@@ -160,9 +160,10 @@ void ReadPulse(void) {
     }
 				
 		*/
+		if(BPM > 200) BPM = 0; // Neglect values higher than 200, as it really almost impossible
 		
 		if (Pulse == 1) addToBuffer(BPM);
-		
+				
     if (BPM > TARGET_BPM) {
         TIM_Cmd(TIM2, ENABLE);
         if (getSecondCount() >= TARGET_TIME) {
