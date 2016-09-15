@@ -7,7 +7,7 @@ float32_t Output[FFT_SIZE];
 uint8_t claps = 0;
 float32_t silence_thresh = SILENCE_AMPLITUDE;
 float32_t silence_thresh_avg;
-uint8_t N = 0;
+uint8_t N = 0, K = 0;
 bool silence_thresh_is_set = 0;
 
 void DetectWhistle(void) {
@@ -93,7 +93,7 @@ FFT_OUT_t ComputeFFT(void) {
 
         /* Real part, must be between -1 and 1 */
         Input[(uint16_t) out.i] =
-                (float32_t)((float32_t) TM_ADC_Read(ADC1, ADC_Channel_3) - (float32_t) 2048.0) / (float32_t) 2048.0;
+                (float32_t)((float32_t) TM_ADC_Read(ADC3, ADC_Channel_11) - (float32_t) 2048.0) / (float32_t) 2048.0;
         /* Imaginary part */
         Input[(uint16_t)(out.i + 1)] = 0;
     }
@@ -219,6 +219,7 @@ void SilenceDetection(void) {
 		
     if (in.maxValue > getSilenceThresh()) {
 			setSecondsCount(0); 
+			K++;
 		}																							// Here, instead of comparing MAX to a threshold (SILENCE_AMPLITEUD) 
 																									// Should be comparing average between min and max 
 																									// from a previous iterationto a max 
@@ -233,6 +234,10 @@ void SilenceDetection(void) {
 				setSilenceThresh(SILENCE_AMPLITUDE);
         Delayms(1000);
     }
+		if(K > 5) {
+			resetSilenceThresh();
+			K=0;
+		}
 		
 }
 

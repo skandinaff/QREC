@@ -28,7 +28,7 @@ uint16_t old_tim5_count = 0;
 void ReadPulse(void) {
     //TM_ILI9341_DrawPixel(getTIM5_count(), 240 - thresh / 17, ILI9341_COLOR_RED);
 
-    Signal = TM_ADC_Read(ADC3, ADC_Channel_11);              // read the Pulse Sensor from PC1
+    Signal = TM_ADC_Read(ADC1, ADC_Channel_3);              // read the Pulse Sensor from PC1 (3, 11)
     //sampleCounter += 2; // 2 (ms)                         // keep track of the time in mS with this variable
     // We've assigned this variable incrementation to a timer iinterrupts
     uint16_t N = getSampleCounterIRQ() - lastBeatTime;       // monitor the time since the last beat to avoid noise
@@ -50,8 +50,7 @@ void ReadPulse(void) {
 
         //Here I should add a condition that will check signal's amplitude, to avoiud measuremets that are just above 0
 
-        if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3) && /*((Signal - thresh) > 5) &&*/
-            (Signal - thresh) < 700) { 
+        if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3)  && ((Signal - thresh) > 15) && (Signal - thresh) < 700) { 
 							/* Signal-thresh < 700 is to avoid huge spikes  
 									Signal-thresh > 5 is to avoid little fluctutations, like ambient noise
 							*/
@@ -59,7 +58,7 @@ void ReadPulse(void) {
 							//TM_DISCO_LedOn(LED_RED);               // turn on pin 13 LED
 							GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4); // Red LED turns on when we have a beat
             IBI = getSampleCounterIRQ() - lastBeatTime;         // measure time between beats in mS
-            lastBeatTime = getSampleCounterIRQ();;               // keep track of time for next pulse
+            lastBeatTime = getSampleCounterIRQ();               // keep track of time for next pulse
 
             if (secondBeat == 1) {                        // if this is the second beat, if secondBeat == TRUE
                 secondBeat = 0;                  // clear secondBeat flag
@@ -106,7 +105,7 @@ void ReadPulse(void) {
         T = thresh;
     }
 
-    if (N > 1000) {                           // if N milliseconds go by without a beat (Original value 2500, I mostly used 1000)
+    if (N > 2500) {                           // if N milliseconds go by without a beat (Original value 2500, I mostly used 1000)
         thresh = 2058;                          // set thresh default
         P = 2048;                               // set P default
         T = 2048;                               // set T default
@@ -119,54 +118,51 @@ void ReadPulse(void) {
 
     }
 
-
-    {
-
-        //sprintf(adc_result_str, "%4d: ", Signal);
-        //TM_ILI9341_Puts(1, 5, "RAW ADC: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+		/*
+				//Display section
+				sprintf(adc_result_str, "%4d: ", Signal);
+        TM_ILI9341_Puts(1, 5, "RAW ADC: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         if (getTIM5_count2() != old_tim5_count)
-            //TM_ILI9341_Puts(100, 5, adc_result_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+            TM_ILI9341_Puts(100, 5, adc_result_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-        //sprintf(thresh_restult_str, "%4d: ", thresh);
-        //TM_ILI9341_Puts(1, 25, "Thresh: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-        //TM_ILI9341_Puts(100, 25, thresh_restult_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        sprintf(thresh_restult_str, "%4d: ", thresh);
+        TM_ILI9341_Puts(1, 25, "Thresh: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        TM_ILI9341_Puts(100, 25, thresh_restult_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-        //sprintf(BPM_result_str, "%4d: ", BPM);
-        //TM_ILI9341_Puts(1, 45, "BPM: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        sprintf(BPM_result_str, "%4d: ", BPM);
+        TM_ILI9341_Puts(1, 45, "BPM: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				
         if (Pulse == 1) {
-            //TM_ILI9341_Puts(100, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
-					//put_char(BPM);
-					//if(BPM < 100) clearBuffer(); // So we're clearing LED indicator
+            TM_ILI9341_Puts(100, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
+					put_char(BPM);
+					if(BPM < 100) clearBuffer(); // So we're clearing LED indicator
 					addToBuffer(BPM);
-					//Delayms(125);
-					//clearBuffer();
+					Delayms(125);
+					clearBuffer();
         }
 				
-				//sprintf(time_str, "%4d: ", getSecondCount());
-        //TM_ILI9341_Puts(160, 5, "Time: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				//TM_ILI9341_Puts(190, 5, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				sprintf(time_str, "%4d: ", getSecondCount());
+        TM_ILI9341_Puts(160, 5, "Time: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				TM_ILI9341_Puts(190, 5, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				
-				//sprintf(pulse_str, "%4d: ", Pulse);
+				sprintf(pulse_str, "%4d: ", Pulse);
 				
-        //TM_ILI9341_Puts(160, 25, "Pulse: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				//TM_ILI9341_Puts(190, 25, pulse_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+        TM_ILI9341_Puts(160, 25, "Pulse: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				TM_ILI9341_Puts(190, 25, pulse_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				
+				old_tim5_count = getTIM5_count2();
 
-
+				if (getTIM5_count() >= 320) {
+					setTIM5_count(1);
+        TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+				
+				TM_ILI9341_DrawPixel(getTIM5_count(), 240 - Signal / 17, 0x1234);
     }
-
-
-    old_tim5_count = getTIM5_count2();
-
-    if (getTIM5_count() >= 320) {
-        setTIM5_count(1);
-        //TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-
-    }
-
-
-    //TM_ILI9341_DrawPixel(getTIM5_count(), 240 - Signal / 17, 0x1234);
-
+				
+		*/
+		
+		if (Pulse == 1) addToBuffer(BPM);
+		
     if (BPM > TARGET_BPM) {
         TIM_Cmd(TIM2, ENABLE);
         if (getSecondCount() >= TARGET_TIME) {

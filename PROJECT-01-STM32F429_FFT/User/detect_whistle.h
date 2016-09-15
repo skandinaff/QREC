@@ -29,7 +29,7 @@
 #define SILENCE_AMPLITUDE					3						// 4 is the absolute minimum, barele above backround noise // TODO: FIXME (was 5.5)
 #define SILENCE_TIME							10
 #define SIL_AVG_SAMPLES						10
-#define CORRECTION_VALUE					2.5
+#define CORRECTION_VALUE					4.5
 
 typedef struct {
 		float32_t maxValue;							

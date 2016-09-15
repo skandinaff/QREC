@@ -130,7 +130,8 @@ void PerformQuest(void){
 		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			ADC_DeInit(); //Turn ADC off after task is done
-			TM_ADC_Init(ADC3, ADC_Channel_11); 		// PC1 PulseSensor's ADC
+			Delayms(100);
+			TM_ADC_Init(ADC1, ADC_Channel_3); 		// PC1 PulseSensor's ADC
 		
 			setTIM5_count(1);
 
@@ -262,8 +263,8 @@ int main(void) {
 	//TM_ILI9341_Rotate(TM_ILI9341_Orientation_Landscape_1);
 
 	/* Initialize ADC */
-	TM_ADC_Init(ADC1, ADC_Channel_3); 		// PA3 Microphone's ADC 
-	//TM_ADC_Init(ADC3, ADC_Channel_11); 		// PC1 PulseSensor's ADC, will be initialized after tasks with microphone are through
+	//TM_ADC_Init(ADC1, ADC_Channel_3); 		// PA3 Microphone's ADC 
+	TM_ADC_Init(ADC3, ADC_Channel_11); 		// PC1 PulseSensor's ADC, will be initialized after tasks with microphone are through
 
 	Configure_CupDetection();	
 	Configure_Onboard_LEDS();	
