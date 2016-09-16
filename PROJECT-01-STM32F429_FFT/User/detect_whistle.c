@@ -147,6 +147,8 @@ void DetectClap(void) {
 		addToBuffer(in.maxValue);
 		Delayms(10); // This delay is essential for correct timing. Default value = 10
 
+
+
     if (getClaps() == 0) {
         if (in.maxValue > CLAP_AMPLITUDE) {
             TIM_Cmd(TIM2, ENABLE);
@@ -195,8 +197,8 @@ void SilenceDetection(void) {
 		TM_ILI9341_Puts(180, 25, thresh_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     TM_ILI9341_Puts(180, 40, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 		*/
+
 		addToBuffer(getSecondCount());
-	
 		Delayms(10); // This delay is essential for correct timing. Default value = 10
 		//addToBuffer(in.maxValue);
 		
@@ -218,7 +220,7 @@ void SilenceDetection(void) {
         TIM_Cmd(TIM2, ENABLE);
     }
 		
-    if (in.maxValue > getSilenceThresh()) {
+    if (in.maxValue > getSilenceThresh() && silence_thresh_is_set == 1) {
 			setSecondsCount(0); 
 			//BlinkOnboardLED(3);
 			K++;
