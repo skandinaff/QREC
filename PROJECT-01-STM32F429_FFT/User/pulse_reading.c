@@ -109,7 +109,7 @@ void ReadPulse(void) {
         thresh = 2058;                          // set thresh default
         P = 2048;                               // set P default
         T = 2048;                               // set T default
-        lastBeatTime = getSampleCounterIRQ();;          // bring the lastBeatTime up to date
+        lastBeatTime = getSampleCounterIRQ();         // bring the lastBeatTime up to date
         firstBeat = 1;                      // set these to avoid noise
         secondBeat = 0;                    // when we get the heartbeat back
 				/* These were added by me */

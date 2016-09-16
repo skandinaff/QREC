@@ -145,7 +145,7 @@ void DetectClap(void) {
 */
 
 		addToBuffer(in.maxValue);
-		Delayms(10); // This delay is essential for correct timing. Default value = 10
+		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
 
     if (getClaps() == 0) {
         if (in.maxValue > CLAP_AMPLITUDE) {
@@ -197,7 +197,7 @@ void SilenceDetection(void) {
 		*/
 		addToBuffer(getSecondCount());
 	
-		Delayms(10); // This delay is essential for correct timing. Default value = 10
+		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
 		//addToBuffer(in.maxValue);
 		
 		
@@ -218,7 +218,7 @@ void SilenceDetection(void) {
         TIM_Cmd(TIM2, ENABLE);
     }
 		
-    if (in.maxValue > getSilenceThresh()) {
+    if (in.maxValue > getSilenceThresh() && silence_thresh_is_set == 1) {
 			setSecondsCount(0); 
 			//BlinkOnboardLED(3);
 			K++;

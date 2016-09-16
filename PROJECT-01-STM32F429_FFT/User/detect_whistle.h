@@ -30,6 +30,8 @@
 #define SILENCE_TIME							10
 #define SIL_AVG_SAMPLES						10
 #define CORRECTION_VALUE					4.5
+/* Common settings */
+#define DELAY_VALUE								20
 
 typedef struct {
 		float32_t maxValue;							

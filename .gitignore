@@ -97,3 +97,6 @@ PROJECT-01-STM32F429_FFT/project.uvguix.skandinaff
 *.dep
 *.skandinaff
 PROJECT-01-STM32F429_FFT/project.uvoptx
+*.dep
+*.htm
+PROJECT-01-STM32F429_FFT/Targets/STM32F429_Discovery/project.axf

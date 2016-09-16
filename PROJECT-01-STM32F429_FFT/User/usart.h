@@ -12,6 +12,7 @@
 * 0xC1 0x10 0x7D 0x23 0xC0 Test 7 segement display
 * 0xC1 0x10 0x7C 0x24 0xC0 Ask what task is now active
 * 0xC1 0x10 0x7A 0x36 0xC0 Ask what is threshold in Silence Detection
+* 0xC1 0x10 0x79 0x3F 0xC0 Perform system reset
 *
 * ---------------------------------------------------------- */
 
@@ -38,6 +39,7 @@
 #define TEST_DISP									0x7D
 #define TASK_REQUEST							0x7C
 #define SIL_THR_REQUEST						0x7A
+#define SYS_RESET									0x79
 
 //------------- Instructions from main device
 #define INSTR_MASTER_TEST					0x01

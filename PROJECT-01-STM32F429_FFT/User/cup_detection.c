@@ -31,17 +31,19 @@ void set_task_counter(int counter) {
 
 uint8_t DetectCups(void) {
 	// TODO: Invert all the states, since schematics reqire that (c1_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_8); etc)
-    c1_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_8);
-    c2_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_9);
-    c3_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_10);
-    c4_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
-    c5_state = GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_12);
+    c1_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_8);
+    c2_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_9);
+    c3_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_10);
+    c4_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
+    c5_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_12);
 
     return c1_state + c2_state + c3_state + c4_state + c5_state;
 }
 
 
 bool getAll_cups_present(void) {
+		if(DetectCups() == 5) GPIO_SetBits(LED_GPIO, STATE_LED);
+		if(DetectCups() != 5) GPIO_ResetBits(LED_GPIO, STATE_LED);
     return DetectCups() == 5;
 }
 
