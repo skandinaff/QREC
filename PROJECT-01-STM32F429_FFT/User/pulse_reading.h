@@ -6,6 +6,11 @@
 #include "tm_stm32f4_disco.h"
 #include "tm_stm32f4_general.h"
 
+#include "stm32f4xx_gpio.h"
+#include "stm32f4xx_rcc.h"
+#include "stm32f4xx.h"
+#include "tm_stm32f4_delay.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
@@ -21,7 +26,7 @@
 #define TARGET_BPM 100
 #define TARGET_TIME 10
 
-
+void INTTIM5_Config(void);
 void ReadPulse(void);
 uint16_t getQS(void);
 void setQS(uint16_t s);

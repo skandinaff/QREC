@@ -102,7 +102,7 @@ void PerformQuest(void){
 
 	if (!getAll_cups_present()) {
     setSecondsCount(0);	
-		//check_usart_while_playing();
+		check_usart_while_playing();
 		//TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	}
 

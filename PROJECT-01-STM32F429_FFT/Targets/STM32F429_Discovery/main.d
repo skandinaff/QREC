@@ -1,7 +1,7 @@
 .\targets\stm32f429_discovery\main.o: User\main.c
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4.h
-.\targets\stm32f429_discovery\main.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdint.h
+.\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cmInstr.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cmFunc.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4_simd.h
@@ -37,16 +37,17 @@
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sai.h
 .\targets\stm32f429_discovery\main.o: User\defines.h
-.\targets\stm32f429_discovery\main.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdio.h
-.\targets\stm32f429_discovery\main.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\string.h
-.\targets\stm32f429_discovery\main.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdbool.h
-.\targets\stm32f429_discovery\main.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdlib.h
+.\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+.\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\targets\stm32f429_discovery\main.o: User\usart.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_usart.h
 .\targets\stm32f429_discovery\main.o: .\TM\attributes.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_gpio.h
 .\targets\stm32f429_discovery\main.o: User\init_periph_irqs.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_delay.h
+.\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_general.h
 .\targets\stm32f429_discovery\main.o: User\detect_whistle.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_adc.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_disco.h
@@ -54,7 +55,7 @@
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_timer_properties.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\arm_math.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4.h
-.\targets\stm32f429_discovery\main.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\math.h
+.\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\targets\stm32f429_discovery\main.o: User\cup_detection.h
 .\targets\stm32f429_discovery\main.o: User\leds.h
 .\targets\stm32f429_discovery\main.o: User\detect_whistle.h
@@ -65,7 +66,6 @@
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_spi.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_fonts.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_sdram.h
-.\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_general.h
 .\targets\stm32f429_discovery\main.o: User\pulse_reading.h
 .\targets\stm32f429_discovery\main.o: User\leds.h
 .\targets\stm32f429_discovery\main.o: User\movement_detection.h

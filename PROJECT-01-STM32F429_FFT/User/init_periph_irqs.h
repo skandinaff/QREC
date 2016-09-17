@@ -25,7 +25,7 @@
 #define RS485_GPIO GPIOC
 
 void INTTIM2_Config(void);
-void INTTIM5_Config(void);
+
 void Configure_CupDetection(void);
 void Configure_485(void);
 void Configure_MotionSensorPort(void);
@@ -33,23 +33,5 @@ void Configure_MotionSensorPort(void);
 
 uint16_t getSecondCount(void);
 void setSecondsCount(uint16_t s);
-
-uint16_t getQrSecondCount(void);
-void setQrSecondsCount(uint16_t s);
-
-uint32_t getSampleCounterIRQ(void);
-void setSampleCounterIRQ(uint32_t s);
-
-uint16_t getCounter(void);
-void setCounter(uint16_t s);
-
-uint16_t getCounter2(void);
-void setCounter2(uint16_t s);
-
-uint16_t getTIM5_count(void);
-void setTIM5_count(uint16_t s);
-
-uint16_t getTIM5_count2(void);
-void setTIM5_count2(uint16_t s);
 
 #endif

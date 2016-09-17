@@ -24,9 +24,38 @@ char pulse_str[15];
 
 volatile uint32_t sampleCounterIRQ = 0;          // used to determine pulse timing, triggered by Timer 5 IRQ
 
+void INTTIM5_Config(void){
+	
+	/* This timer should give us interrupt every 2ms for pulse sensor 
+		Actually it gives one per 1ms */
+	
+  NVIC_InitTypeDef NVIC_InitStructure_TIM5;
+  /* Enable the TIM5 gloabal Interrupt */
+  NVIC_InitStructure_TIM5.NVIC_IRQChannel = TIM5_IRQn;
+  NVIC_InitStructure_TIM5.NVIC_IRQChannelPreemptionPriority = 0;
+  NVIC_InitStructure_TIM5.NVIC_IRQChannelSubPriority = 1;
+  NVIC_InitStructure_TIM5.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_InitStructure_TIM5);
+
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+  /* TIM5 clock enable */
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5, ENABLE);
+  /* Time base configuration */
+  TIM_TimeBaseStructure.TIM_Period = 100 - 1;  // 1 MHz down to 1 KHz (1 ms)
+  TIM_TimeBaseStructure.TIM_Prescaler = 900 - 1; // 24 MHz Clock down to 1 MHz (adjust per your clock)
+  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+  TIM_TimeBaseInit(TIM5, &TIM_TimeBaseStructure);
+  /* TIM IT enable */
+  TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE);
+  /* TIM5 enable counter */
+  TIM_Cmd(TIM5, ENABLE); // This timer runs all the time. 
+												 // Used to calculate BPM value
+}
+
 void TIM5_IRQHandler(void) { // IRQ for pulse readings
 
-	TM_GENERAL_DisableInterrupts(); 
+//	TM_GENERAL_DisableInterrupts(); 
 
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET) {
 		TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
@@ -118,7 +147,7 @@ void TIM5_IRQHandler(void) { // IRQ for pulse readings
         BPM = 0;		// Add this line here, so when no beat detected display shows 0
     }
 	}
-	TM_GENERAL_EnableInterrupts(); 	
+//	TM_GENERAL_EnableInterrupts(); 	
 }
 
 void ReadPulse(void) {
