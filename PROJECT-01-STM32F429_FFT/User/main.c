@@ -110,7 +110,7 @@ void PerformQuest(void){
 	
 	switch (task_counter) {
 		case 0:	// Clap detection
-				TM_ADC_Init(ADC1, ADC_Channel_3);
+			TM_ADC_Init(ADC1, ADC_Channel_3);
 		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			break;
@@ -129,14 +129,9 @@ void PerformQuest(void){
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			break;
 		case 4:  // Pulse Readings
-				TM_ADC_Init(ADC2, ADC_Channel_8);
+			TM_ADC_Init(ADC2, ADC_Channel_8);
 		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
-			//ADC_DeInit(); //Turn ADC off after task is done
-			//Delayms(100);
-			//TM_ADC_Init(ADC1, ADC_Channel_3); 		// PC1 PulseSensor's ADC
-		
-			setTIM5_count(1);
 
 			break;
 	}
@@ -191,7 +186,6 @@ void check_usart_while_playing(){
 			usart_get_data_packet(packet);
 			incoming_packet = usart_packet_parser(packet);
 			if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
-			//TM_ILI9341_Puts(1, 220, "We recevied some data", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 			BlinkOnboardLED(2);
 				switch (incoming_packet.instruction) {
 					case INSTR_MASTER_TEST:
@@ -205,15 +199,9 @@ void check_usart_while_playing(){
 							SendInstruction(INSTR_SLAVE_COMPLETED);
 						} else {
 							SendInstruction(INSTR_SLAVE_NOT_COMLETED);
-							//put_char('w');
-							//put_char(get_task_counter()+1); // +1 since task counter starts with 0
 						}
 						break;
 					case INSTR_MASTER_SET_IDLE:
-						/*setTIM5_count(0);
-					  setSecondsCount(0);
-						TIM_Cmd(TIM2, DISABLE);
-						TIM_Cmd(TIM5, DISABLE);*/
 						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
 						setClaps(0);
 						break_flag = true;
@@ -227,7 +215,6 @@ void check_usart_while_playing(){
 						setClaps(0);
 						setSilenceThresh(SILENCE_AMPLITUDE);
 						resetSilenceThresh();
-						setTIM5_count(0);
 						set_task_counter(get_task_counter());
 						PerformQuest();
 						break;

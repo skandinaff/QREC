@@ -2,12 +2,8 @@
 
 long secondsCount = 0;
 long tim2_count = 0;
-long tim5_count = 0;
-long tim5_count2 = 0;
-long counter = 0;
-long counter2 = 0;
 
-volatile uint32_t sampleCounterIRQ = 0;          // used to determine pulse timing, triggered by Timer 5 IRQ
+
 
 void INTTIM2_Config(void){
 
@@ -126,30 +122,6 @@ void TIM2_IRQHandler(void) {
 
 
 
-void TIM5_IRQHandler(void) {
-
-
-	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET) {
-		TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
-
-		sampleCounterIRQ += 1;	// This increments a counter for pulse sensor
-
-
-		counter += 1;          // This horrible thing here helps to get ~0.250ms refresh rate for drawing signal
-		counter2 += 1;
-		
-		if (counter == 50) {	// This gives you 50*0.25=12.5s (why did I need that??)
-			tim5_count += 1;
-			counter = 0;
-		}
-		if (counter2 == 150) { //And this gives you 37.5s (why did I need that )
-			tim5_count2 += 1;
-			counter2 = 0;
-		}
-
-	}
-}
-
 uint16_t getSecondCount(void){
 	return secondsCount;
 }
@@ -158,42 +130,4 @@ void setSecondsCount(uint16_t s){
 	secondsCount = s;
 }
 
-uint16_t getQrSecondCount(void){
-	return tim2_count;
-}
-
-void setQrSecondsCount(uint16_t s){
-	tim2_count = s;
-}
-
-uint32_t getSampleCounterIRQ(void){
-	return sampleCounterIRQ;
-}
-void setSampleCounterIRQ(uint32_t s){
-	sampleCounterIRQ = s;
-}
-uint16_t getCounter(void){
-	return counter;
-}
-void setCounter(uint16_t s){
-	counter = s;
-}
-uint16_t getCounter2(void){
-	return counter2;
-}
-void setCounter2(uint16_t s){
-	counter2 = s;
-}
-uint16_t getTIM5_count(void){
-	return tim5_count;
-}
-void setTIM5_count(uint16_t s){
-	tim5_count = s;
-}
-uint16_t getTIM5_count2(void){
-	return tim5_count2;
-}
-void setTIM5_count2(uint16_t s){
-	tim5_count2 = s;
-}
 

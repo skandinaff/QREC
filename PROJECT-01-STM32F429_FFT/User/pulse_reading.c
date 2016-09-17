@@ -22,16 +22,20 @@ char thresh_restult_str[15];
 char time_str[15];
 char pulse_str[15];
 
-uint16_t old_tim5_count = 0;
+volatile uint32_t sampleCounterIRQ = 0;          // used to determine pulse timing, triggered by Timer 5 IRQ
+
+void TIM5_IRQHandler(void) { // IRQ for pulse readings
 
 
-void ReadPulse(void) {
-    //TM_ILI9341_DrawPixel(getTIM5_count(), 240 - thresh / 17, ILI9341_COLOR_RED);
+	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET) {
+		TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
 
-    Signal = TM_ADC_Read(ADC2, ADC_Channel_8);              // read the Pulse Sensor from PC1 (3, 11)
+		sampleCounterIRQ += 1;	// This increments a counter for pulse sensor
+		
+		Signal = TM_ADC_Read(ADC2, ADC_Channel_8);              // read the Pulse Sensor from PC1 (3, 11)
     //sampleCounter += 2; // 2 (ms)                         // keep track of the time in mS with this variable
     // We've assigned this variable incrementation to a timer iinterrupts
-    uint16_t N = getSampleCounterIRQ() - lastBeatTime;       // monitor the time since the last beat to avoid noise
+    uint16_t N = sampleCounterIRQ - lastBeatTime;       // monitor the time since the last beat to avoid noise
 
     //  find the peak and trough of the pulse wave
     if (Signal < thresh && N > (IBI / 5) * 3) {       // avoid dichrotic noise by waiting 3/5 of last IBI
@@ -55,10 +59,9 @@ void ReadPulse(void) {
 									Signal-thresh > 5 is to avoid little fluctutations, like ambient noise
 							*/
             Pulse = 1;                               // set the Pulse flag when we think there is a pulse
-							//TM_DISCO_LedOn(LED_RED);               // turn on pin 13 LED
-							GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4); // Red LED turns on when we have a beat
-            IBI = getSampleCounterIRQ() - lastBeatTime;         // measure time between beats in mS
-            lastBeatTime = getSampleCounterIRQ();               // keep track of time for next pulse
+						GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4); // Red LED turns on when we have a beat
+            IBI = sampleCounterIRQ - lastBeatTime;         // measure time between beats in mS
+            lastBeatTime = sampleCounterIRQ;               // keep track of time for next pulse
 
             if (secondBeat == 1) {                        // if this is the second beat, if secondBeat == TRUE
                 secondBeat = 0;                  // clear secondBeat flag
@@ -68,8 +71,7 @@ void ReadPulse(void) {
                 }
             }
 
-            if (firstBeat ==
-                1) {                         // if it's the first time we found a beat, if firstBeat == TRUE
+            if (firstBeat == 1) {                         // if it's the first time we found a beat, if firstBeat == TRUE
                 firstBeat = 0;                   // clear firstBeat flag
                 secondBeat = 1;                   // set the second beat flag
 
@@ -95,10 +97,8 @@ void ReadPulse(void) {
     }
 
     if (Signal < thresh && Pulse == 1) {   // when the values are going down, the beat is over
-        //TM_DISCO_LedOff(LED_RED);              // turn off pin 13 LED
-					GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
         Pulse = 0;                         // reset the Pulse flag so we can do it again
-
         amp = P - T;                           // get amplitude of the pulse wave
         thresh = amp / 2 + T;                    // set thresh at 50% of the amplitude
         P = thresh;                            // reset these for next time
@@ -109,7 +109,7 @@ void ReadPulse(void) {
         thresh = 2058;                          // set thresh default
         P = 2048;                               // set P default
         T = 2048;                               // set T default
-        lastBeatTime = getSampleCounterIRQ();         // bring the lastBeatTime up to date
+        lastBeatTime = sampleCounterIRQ;         // bring the lastBeatTime up to date
         firstBeat = 1;                      // set these to avoid noise
         secondBeat = 0;                    // when we get the heartbeat back
 				/* These were added by me */
@@ -118,48 +118,13 @@ void ReadPulse(void) {
 
     }
 
-		/*
-				//Display section
-				sprintf(adc_result_str, "%4d: ", Signal);
-        TM_ILI9341_Puts(1, 5, "RAW ADC: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-        if (getTIM5_count2() != old_tim5_count)
-            TM_ILI9341_Puts(100, 5, adc_result_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-        sprintf(thresh_restult_str, "%4d: ", thresh);
-        TM_ILI9341_Puts(1, 25, "Thresh: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-        TM_ILI9341_Puts(100, 25, thresh_restult_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	}
+}
 
-        sprintf(BPM_result_str, "%4d: ", BPM);
-        TM_ILI9341_Puts(1, 45, "BPM: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				
-        if (Pulse == 1) {
-            TM_ILI9341_Puts(100, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
-					put_char(BPM);
-					if(BPM < 100) clearBuffer(); // So we're clearing LED indicator
-					addToBuffer(BPM);
-					Delayms(125);
-					clearBuffer();
-        }
-				
-				sprintf(time_str, "%4d: ", getSecondCount());
-        TM_ILI9341_Puts(160, 5, "Time: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				TM_ILI9341_Puts(190, 5, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				
-				sprintf(pulse_str, "%4d: ", Pulse);
-				
-        TM_ILI9341_Puts(160, 25, "Pulse: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				TM_ILI9341_Puts(190, 25, pulse_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				
-				old_tim5_count = getTIM5_count2();
+void ReadPulse(void) {
 
-				if (getTIM5_count() >= 320) {
-					setTIM5_count(1);
-        TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-				
-				TM_ILI9341_DrawPixel(getTIM5_count(), 240 - Signal / 17, 0x1234);
-    }
-				
-		*/
+		
 		if(BPM > 200) BPM = 0; // Neglect values higher than 200, as it really almost impossible
 		
 		if (Pulse == 1) addToBuffer(BPM);
@@ -167,7 +132,6 @@ void ReadPulse(void) {
     if (BPM > TARGET_BPM) {
         TIM_Cmd(TIM2, ENABLE);
         if (getSecondCount() >= TARGET_TIME) {
-            //TM_ILI9341_Puts(1, 65, "You have >120 BPM for >10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
             Delayms(2000);
             set_task_counter(get_task_counter() + 1);
 						// After task is done, we're cleaning all the counters
@@ -176,7 +140,6 @@ void ReadPulse(void) {
         }
     } else {
         TIM_Cmd(TIM2, DISABLE);
-        //TM_ILI9341_Puts(1, 65, "                              ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         setSecondsCount(0);
     }
 
