@@ -4,6 +4,7 @@
 #include "tm_stm32f4_ili9341_ltdc.h"
 #include "tm_stm32f4_adc.h"
 #include "tm_stm32f4_disco.h"
+#include "tm_stm32f4_general.h"
 
 #include <stdio.h>
 #include <string.h>

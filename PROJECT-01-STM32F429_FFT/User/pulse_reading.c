@@ -26,6 +26,7 @@ volatile uint32_t sampleCounterIRQ = 0;          // used to determine pulse timi
 
 void TIM5_IRQHandler(void) { // IRQ for pulse readings
 
+	TM_GENERAL_DisableInterrupts(); 
 
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET) {
 		TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
@@ -115,11 +116,9 @@ void TIM5_IRQHandler(void) { // IRQ for pulse readings
 				/* These were added by me */
 				Pulse = 0;    // Added here to reduce 
         BPM = 0;		// Add this line here, so when no beat detected display shows 0
-
     }
-
-
 	}
+	TM_GENERAL_EnableInterrupts(); 	
 }
 
 void ReadPulse(void) {

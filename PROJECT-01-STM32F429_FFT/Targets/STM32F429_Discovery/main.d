@@ -65,6 +65,7 @@
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_spi.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_fonts.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_sdram.h
+.\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_general.h
 .\targets\stm32f429_discovery\main.o: User\pulse_reading.h
 .\targets\stm32f429_discovery\main.o: User\leds.h
 .\targets\stm32f429_discovery\main.o: User\movement_detection.h
