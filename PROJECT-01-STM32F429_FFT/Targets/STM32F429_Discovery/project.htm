@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Targets\STM32F429_Discovery\project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Targets\STM32F429_Discovery\project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Sun Sep 18 00:54:58 2016
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Sun Sep 18 14:10:49 2016
 <BR><P>
 <H3>Maximum Stack Usage =        272 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -568,8 +568,8 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = NVIC_Init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_usart
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
-<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM2_Config
+<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
+<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM2_Config
 </UL>
 
 <P><STRONG><a name="[150]"></a>NVIC_SetVectorTable</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, misc.o(.text), UNUSED)
@@ -675,8 +675,8 @@ Global Symbols
 
 <P><STRONG><a name="[f9]"></a>RCC_APB1PeriphClockCmd</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, stm32f4xx_rcc.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;init_usart
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
-<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM2_Config
+<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
+<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM2_Config
 </UL>
 
 <P><STRONG><a name="[a6]"></a>RCC_APB2PeriphClockCmd</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, stm32f4xx_rcc.o(.text))
@@ -745,7 +745,7 @@ Global Symbols
 
 <P><STRONG><a name="[115]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectCups
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
+<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 </UL>
 
 <P><STRONG><a name="[180]"></a>GPIO_ReadInputData</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text), UNUSED)
@@ -757,7 +757,7 @@ Global Symbols
 <P><STRONG><a name="[db]"></a>GPIO_SetBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM5_IRQHandler
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_12V_LEDs
 <LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_Onboard_LEDS
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
@@ -767,7 +767,7 @@ Global Symbols
 <P><STRONG><a name="[f6]"></a>GPIO_ResetBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM5_IRQHandler
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_12V_LEDs
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -905,8 +905,8 @@ Global Symbols
 <P><STRONG><a name="[108]"></a>TIM_TimeBaseInit</STRONG> (Thumb, 96 bytes, Stack size 12 bytes, stm32f4xx_tim.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = TIM_TimeBaseInit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
-<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM2_Config
+<BR>[Called By]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
+<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM2_Config
 </UL>
 
 <P><STRONG><a name="[1a1]"></a>TIM_TimeBaseStructInit</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, stm32f4xx_tim.o(.text), UNUSED)
@@ -934,12 +934,12 @@ Global Symbols
 <P><STRONG><a name="[1ac]"></a>TIM_SetClockDivision</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, stm32f4xx_tim.o(.text), UNUSED)
 
 <P><STRONG><a name="[f7]"></a>TIM_Cmd</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, stm32f4xx_tim.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<BR><BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
+<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -1068,8 +1068,8 @@ Global Symbols
 <P><STRONG><a name="[1d9]"></a>TIM_CCPreloadControl</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, stm32f4xx_tim.o(.text), UNUSED)
 
 <P><STRONG><a name="[109]"></a>TIM_ITConfig</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, stm32f4xx_tim.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
-<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM2_Config
+<BR><BR>[Called By]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
+<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM2_Config
 </UL>
 
 <P><STRONG><a name="[1da]"></a>TIM_GenerateEvent</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f4xx_tim.o(.text), UNUSED)
@@ -1507,11 +1507,11 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Delayms
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BlinkOnboardLED
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SendInstruction
@@ -1643,7 +1643,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[e1]"></a>PerformQuest</STRONG> (Thumb, 150 bytes, Stack size 16 bytes, main.o(.text))
+<P><STRONG><a name="[e1]"></a>PerformQuest</STRONG> (Thumb, 154 bytes, Stack size 16 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 256<LI>Call Chain = PerformQuest &rArr; SilenceDetection &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 </UL>
 <BR>[Calls]<UL><LI><a href="#[db]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
@@ -1651,11 +1651,12 @@ Global Symbols
 <LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSecondsCount
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_task_counter
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
+<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_MotionSensorPort
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
@@ -1663,7 +1664,7 @@ Global Symbols
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[80]"></a>main</STRONG> (Thumb, 288 bytes, Stack size 16 bytes, main.o(.text))
+<P><STRONG><a name="[80]"></a>main</STRONG> (Thumb, 284 bytes, Stack size 16 bytes, main.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 272<LI>Call Chain = main &rArr; PerformQuest &rArr; SilenceDetection &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
@@ -1685,8 +1686,7 @@ Global Symbols
 <LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_task_counter
 <LI><a href="#[f4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearBuffer
 <LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
-<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM5_Config
-<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM2_Config
+<LI><a href="#[ed]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;INTTIM2_Config
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_12V_LEDs
 <LI><a href="#[ef]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_Onboard_LEDS
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_LED_indicator
@@ -1822,7 +1822,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[cb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SendInstruction
 </UL>
 
-<P><STRONG><a name="[ec]"></a>INTTIM2_Config</STRONG> (Thumb, 80 bytes, Stack size 24 bytes, init_periph_irqs.o(.text))
+<P><STRONG><a name="[ed]"></a>INTTIM2_Config</STRONG> (Thumb, 80 bytes, Stack size 24 bytes, init_periph_irqs.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = INTTIM2_Config &rArr; TIM_TimeBaseInit
 </UL>
 <BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ITConfig
@@ -1869,19 +1869,19 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f427_437xx.o(RESET)
 </UL>
 <P><STRONG><a name="[112]"></a>getSecondCount</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<BR><BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 </UL>
 
 <P><STRONG><a name="[dd]"></a>setSecondsCount</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<BR><BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
@@ -1899,12 +1899,12 @@ Global Symbols
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_cfft_radix4_f32
 <LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 </UL>
 
-<P><STRONG><a name="[ea]"></a>DetectWhistle</STRONG> (Thumb, 160 bytes, Stack size 64 bytes, detect_whistle.o(.text))
+<P><STRONG><a name="[eb]"></a>DetectWhistle</STRONG> (Thumb, 160 bytes, Stack size 64 bytes, detect_whistle.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = DetectWhistle &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
@@ -1927,7 +1927,7 @@ Global Symbols
 
 <P><STRONG><a name="[206]"></a>getClaps</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, detect_whistle.o(.text), UNUSED)
 
-<P><STRONG><a name="[e7]"></a>DetectClap</STRONG> (Thumb, 168 bytes, Stack size 64 bytes, detect_whistle.o(.text))
+<P><STRONG><a name="[e8]"></a>DetectClap</STRONG> (Thumb, 168 bytes, Stack size 64 bytes, detect_whistle.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = DetectClap &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
@@ -1945,12 +1945,12 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[df]"></a>resetSilenceThresh</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, detect_whistle.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<BR><BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
 <P><STRONG><a name="[de]"></a>setSilenceThresh</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, detect_whistle.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<BR><BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
@@ -1958,7 +1958,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[e8]"></a>SilenceDetection</STRONG> (Thumb, 250 bytes, Stack size 64 bytes, detect_whistle.o(.text))
+<P><STRONG><a name="[e9]"></a>SilenceDetection</STRONG> (Thumb, 250 bytes, Stack size 64 bytes, detect_whistle.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = SilenceDetection &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
@@ -1983,11 +1983,11 @@ Global Symbols
 <P><STRONG><a name="[209]"></a>reset_task_counter</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, cup_detection.o(.text), UNUSED)
 
 <P><STRONG><a name="[da]"></a>get_task_counter</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, cup_detection.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<BR><BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[f5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_12V_LEDs
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
@@ -1999,11 +1999,11 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BlinkOnboardLED
 </UL>
-<BR>[Called By]<UL><LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<BR>[Called By]<UL><LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
@@ -2030,7 +2030,7 @@ Global Symbols
 
 <P><STRONG><a name="[20b]"></a>setCstate</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, cup_detection.o(.text), UNUSED)
 
-<P><STRONG><a name="[ed]"></a>INTTIM5_Config</STRONG> (Thumb, 88 bytes, Stack size 24 bytes, pulse_reading.o(.text))
+<P><STRONG><a name="[e7]"></a>INTTIM5_Config</STRONG> (Thumb, 88 bytes, Stack size 24 bytes, pulse_reading.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 36<LI>Call Chain = INTTIM5_Config &rArr; TIM_TimeBaseInit
 </UL>
 <BR>[Calls]<UL><LI><a href="#[109]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_ITConfig
@@ -2039,7 +2039,7 @@ Global Symbols
 <LI><a href="#[f9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_APB1PeriphClockCmd
 <LI><a href="#[fc]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;NVIC_Init
 </UL>
-<BR>[Called By]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<BR>[Called By]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
 <P><STRONG><a name="[43]"></a>TIM5_IRQHandler</STRONG> (Thumb, 378 bytes, Stack size 24 bytes, pulse_reading.o(.text))
@@ -2057,7 +2057,7 @@ Global Symbols
 
 <P><STRONG><a name="[20d]"></a>setQS</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, pulse_reading.o(.text), UNUSED)
 
-<P><STRONG><a name="[eb]"></a>ReadPulse</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, pulse_reading.o(.text))
+<P><STRONG><a name="[ec]"></a>ReadPulse</STRONG> (Thumb, 110 bytes, Stack size 16 bytes, pulse_reading.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = ReadPulse &rArr; addToBuffer &rArr; shiftOut
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
@@ -2071,7 +2071,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[e9]"></a>MotionDetection</STRONG> (Thumb, 130 bytes, Stack size 16 bytes, movement_detection.o(.text))
+<P><STRONG><a name="[ea]"></a>MotionDetection</STRONG> (Thumb, 130 bytes, Stack size 16 bytes, movement_detection.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = MotionDetection &rArr; addToBuffer &rArr; shiftOut
 </UL>
 <BR>[Calls]<UL><LI><a href="#[f7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
@@ -2130,10 +2130,10 @@ Global Symbols
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shiftOut
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[ec]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 </UL>
 
 <P><STRONG><a name="[f4]"></a>clearBuffer</STRONG> (Thumb, 46 bytes, Stack size 16 bytes, leds.o(.text))
@@ -2165,7 +2165,7 @@ Global Symbols
 <LI><a href="#[d1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_task_counter
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[d3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
@@ -2249,9 +2249,9 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_memcpy4
 </UL>
 <BR>[Called By]<UL><LI><a href="#[10c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ComputeFFT
-<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[ea]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
-<LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<LI><a href="#[e9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
+<LI><a href="#[e8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 </UL>
 
 <P><STRONG><a name="[20f]"></a>__aeabi_memcpy8</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text), UNUSED)

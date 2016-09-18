@@ -82,37 +82,37 @@
         <Book>
           <Number>0</Number>
           <Title>STM32F429I-Discovery Quick Start Guide (STM32F429I-Discovery)</Title>
-          <Path>H:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\Documentation\32F429IDISCOVERY_QSG.pdf</Path>
+          <Path>D:\Keil_v5.2\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\Documentation\32F429IDISCOVERY_QSG.pdf</Path>
         </Book>
         <Book>
           <Number>1</Number>
           <Title>STM32F429I-Discovery: Blinky Lab (STM32F429I-Discovery)</Title>
-          <Path>H:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\Documentation\STMicroelectronics_Blinky_Lab.pdf</Path>
+          <Path>D:\Keil_v5.2\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\Documentation\STMicroelectronics_Blinky_Lab.pdf</Path>
         </Book>
         <Book>
           <Number>2</Number>
           <Title>Getting Started (STM32F429I-Discovery)</Title>
-          <Path>H:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\MDK\Boards\ST\STM32F429I-Discovery\Documentation\DM00092920.pdf</Path>
+          <Path>D:\Keil_v5.2\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\MDK\Boards\ST\STM32F429I-Discovery\Documentation\DM00092920.pdf</Path>
         </Book>
         <Book>
           <Number>3</Number>
           <Title>User Manual (STM32F429I-Discovery)</Title>
-          <Path>H:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\MDK\Boards\ST\STM32F429I-Discovery\Documentation\DM00093903.pdf</Path>
+          <Path>D:\Keil_v5.2\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\MDK\Boards\ST\STM32F429I-Discovery\Documentation\DM00093903.pdf</Path>
         </Book>
         <Book>
           <Number>4</Number>
           <Title>Bill of Materials (STM32F429I-Discovery)</Title>
-          <Path>H:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\MDK\Boards\ST\STM32F429I-Discovery\Documentation\stm32f429i-disco_bom.zip</Path>
+          <Path>D:\Keil_v5.2\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\MDK\Boards\ST\STM32F429I-Discovery\Documentation\stm32f429i-disco_bom.zip</Path>
         </Book>
         <Book>
           <Number>5</Number>
           <Title>Gerber Files (STM32F429I-Discovery)</Title>
-          <Path>H:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\MDK\Boards\ST\STM32F429I-Discovery\Documentation\stm32f429i-disco_gerber.zip</Path>
+          <Path>D:\Keil_v5.2\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\MDK\Boards\ST\STM32F429I-Discovery\Documentation\stm32f429i-disco_gerber.zip</Path>
         </Book>
         <Book>
           <Number>6</Number>
           <Title>Schematics (STM32F429I-Discovery)</Title>
-          <Path>H:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\MDK\Boards\ST\STM32F429I-Discovery\Documentation\stm32f429i-disco_sch.zip</Path>
+          <Path>D:\Keil_v5.2\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\MDK\Boards\ST\STM32F429I-Discovery\Documentation\stm32f429i-disco_sch.zip</Path>
         </Book>
         <Book>
           <Number>7</Number>
@@ -191,9 +191,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>310</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134229904</Address>
+          <LineNumber>144</LineNumber>
+          <EnabledFlag>0</EnabledFlag>
+          <Address>134229176</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -202,14 +202,30 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>.\User\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\project\User/main.c\310</Expression>
+          <Expression>\\project\User/main.c\144</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
+          <LineNumber>311</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134229332</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\User\main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\project\User/main.c\311</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
           <LineNumber>143</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134229744</Address>
+          <Address>134229172</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -221,11 +237,11 @@
           <Expression>\\project\User/main.c\143</Expression>
         </Bp>
         <Bp>
-          <Number>2</Number>
+          <Number>3</Number>
           <Type>0</Type>
           <LineNumber>178</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134231986</Address>
+          <Address>134231414</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -237,11 +253,11 @@
           <Expression>\\project\User/detect_whistle.c\178</Expression>
         </Bp>
         <Bp>
-          <Number>3</Number>
+          <Number>4</Number>
           <Type>0</Type>
           <LineNumber>146</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134229750</Address>
+          <Address>134229178</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -253,27 +269,11 @@
           <Expression>\\project\User/main.c\146</Expression>
         </Bp>
         <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>142</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>134229740</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\User\main.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\project\User/main.c\142</Expression>
-        </Bp>
-        <Bp>
           <Number>5</Number>
           <Type>0</Type>
-          <LineNumber>145</LineNumber>
+          <LineNumber>147</LineNumber>
           <EnabledFlag>0</EnabledFlag>
-          <Address>134229746</Address>
+          <Address>134229182</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -282,7 +282,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>.\User\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\project\User/main.c\145</Expression>
+          <Expression>\\project\User/main.c\147</Expression>
         </Bp>
         <Bp>
           <Number>6</Number>
@@ -335,6 +335,38 @@
         <Bp>
           <Number>9</Number>
           <Type>0</Type>
+          <LineNumber>131</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>.\User\main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+        <Bp>
+          <Number>10</Number>
+          <Type>0</Type>
+          <LineNumber>310</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>.\User\main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+        <Bp>
+          <Number>11</Number>
+          <Type>0</Type>
           <LineNumber>138</LineNumber>
           <EnabledFlag>0</EnabledFlag>
           <Address>0</Address>
@@ -349,7 +381,7 @@
           <Expression></Expression>
         </Bp>
         <Bp>
-          <Number>10</Number>
+          <Number>12</Number>
           <Type>0</Type>
           <LineNumber>141</LineNumber>
           <EnabledFlag>0</EnabledFlag>
@@ -365,9 +397,9 @@
           <Expression></Expression>
         </Bp>
         <Bp>
-          <Number>11</Number>
+          <Number>13</Number>
           <Type>0</Type>
-          <LineNumber>147</LineNumber>
+          <LineNumber>142</LineNumber>
           <EnabledFlag>0</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
@@ -381,7 +413,23 @@
           <Expression></Expression>
         </Bp>
         <Bp>
-          <Number>12</Number>
+          <Number>14</Number>
+          <Type>0</Type>
+          <LineNumber>145</LineNumber>
+          <EnabledFlag>0</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>.\User\main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+        <Bp>
+          <Number>15</Number>
           <Type>0</Type>
           <LineNumber>150</LineNumber>
           <EnabledFlag>0</EnabledFlag>

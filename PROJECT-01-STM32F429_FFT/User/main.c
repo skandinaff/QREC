@@ -95,7 +95,6 @@ void PerformQuest(void){
 	int task_counter = get_task_counter();
 
 	//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-
 	//char state[1];
 	//sprintf(state, "%d", task_counter);
 	//TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -129,6 +128,7 @@ void PerformQuest(void){
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			break;
 		case 4:  // Pulse Readings
+			INTTIM5_Config();
 			TM_ADC_Init(ADC2, ADC_Channel_8);
 		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
@@ -249,7 +249,7 @@ int main(void) {
 	//TM_DISCO_LedInit(); /* Initialize LED's on board */
 
 	INTTIM2_Config();
-	INTTIM5_Config();
+
 
 	/* Initialize LCD */
 	

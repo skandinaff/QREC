@@ -55,13 +55,13 @@ void INTTIM5_Config(void){
 
 void TIM5_IRQHandler(void) { // IRQ for pulse readings
 
-//	TM_GENERAL_DisableInterrupts(); 
+	TM_GENERAL_DisableInterrupts(); 
 
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET) {
 		TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
 
 		sampleCounterIRQ += 1;	// This increments a counter for pulse sensor
-		
+
 		Signal = TM_ADC_Read(ADC2, ADC_Channel_8);              // read the Pulse Sensor from PC1 (3, 11)
     //sampleCounter += 2; // 2 (ms)                         // keep track of the time in mS with this variable
     // We've assigned this variable incrementation to a timer iinterrupts
@@ -147,7 +147,7 @@ void TIM5_IRQHandler(void) { // IRQ for pulse readings
         BPM = 0;		// Add this line here, so when no beat detected display shows 0
     }
 	}
-//	TM_GENERAL_EnableInterrupts(); 	
+	TM_GENERAL_EnableInterrupts(); 	
 }
 
 void ReadPulse(void) {
