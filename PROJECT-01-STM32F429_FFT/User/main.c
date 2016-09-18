@@ -215,6 +215,7 @@ void check_usart_while_playing(){
 						TIM_Cmd(TIM2, DISABLE);
 						TIM_Cmd(TIM5, DISABLE);*/
 						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
+						GPIO_ResetBits(LED_GPIO, STATE_LED);
 						setClaps(0);
 						break_flag = true;
 						return;
@@ -327,6 +328,7 @@ int main(void) {
 						break;
 					case INSTR_MASTER_WORK_START:
 						while (get_task_counter() <= TASK_COUNT) {
+							GPIO_SetBits(LED_GPIO, STATE_LED);
 							Control_12V_LEDs();
 							//if(getAll_cups_present() == 1) GPIO_SetBits(LED_GPIO, STATE_LED);
 							//if(getAll_cups_present() == 0) GPIO_ResetBits(LED_GPIO, STATE_LED);

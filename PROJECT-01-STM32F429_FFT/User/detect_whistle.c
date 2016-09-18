@@ -147,31 +147,38 @@ void DetectClap(void) {
 		addToBuffer(in.maxValue);
 		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
 
-    if (getClaps() == 0) {
-        if (in.maxValue > CLAP_AMPLITUDE) {
-            TIM_Cmd(TIM2, ENABLE);
-        }
-    }
-	
-    if (in.maxValue > CLAP_AMPLITUDE) {
-			setClaps(getClaps() + 1);
-		  BlinkOnboardLED(3);
-		}
+    float32_t freq;
 
-		if(getSecondCount() > 60) {
-			//TM_ILI9341_Puts(180, 40, "   ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-			setSecondsCount(0);
-			setClaps(0);
-		}
+    freq = in.maxIndex * (45000 / 256); 
+
+		if(freq > 500 && freq < 1200) {
+
+			if (getClaps() == 0) {
+					if (in.maxValue > CLAP_AMPLITUDE) {
+							TIM_Cmd(TIM2, ENABLE);
+					}
+			}
 		
-    if (getSecondCount() > 5 && getClaps() > 10) {
-        TIM_Cmd(TIM2, DISABLE);
-        setSecondsCount(0);
+			if (in.maxValue > CLAP_AMPLITUDE) {
+				setClaps(getClaps() + 1);
+				BlinkOnboardLED(3);
+			}
+
+			if(getSecondCount() > 60) {
+				//TM_ILI9341_Puts(180, 40, "   ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+				setSecondsCount(0);
 				setClaps(0);
-        //TM_ILI9341_Puts(10, 60, "You did clap 3 times", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				set_task_counter(get_task_counter() + 1);
-        Delayms(1000);
-    }
+			}
+			
+			if (getSecondCount() > 5 && getClaps() > 10) {
+					TIM_Cmd(TIM2, DISABLE);
+					setSecondsCount(0);
+					setClaps(0);
+					//TM_ILI9341_Puts(10, 60, "You did clap 3 times", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+					set_task_counter(get_task_counter() + 1);
+					Delayms(1000);
+			}
+		}
 }
 
 
@@ -201,6 +208,7 @@ void SilenceDetection(void) {
 		//addToBuffer(in.maxValue);
 		
 		
+		
 		if(N < SIL_AVG_SAMPLES){
 			silence_thresh_avg += in.maxValue;
 			//TM_ILI9341_Puts(10, 65, "Acquiring threshold value", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
@@ -213,33 +221,40 @@ void SilenceDetection(void) {
 		} 
 		if(N<SIL_AVG_SAMPLES + 1) N++;
 
-		
-    if (in.maxValue < getSilenceThresh()) {
-        TIM_Cmd(TIM2, ENABLE);
-    }
-		
-    if (in.maxValue > getSilenceThresh() && silence_thresh_is_set == 1) {
-			setSecondsCount(0); 
-			//BlinkOnboardLED(3);
-			K++;
-		}																							// Here, instead of comparing MAX to a threshold (SILENCE_AMPLITEUD) 
-																									// Should be comparing average between min and max 
-																									// from a previous iterationto a max 
+		float32_t freq;
 
-		
-    if (getSecondCount() > SILENCE_TIME) { //Silence time
-        TIM_Cmd(TIM2, DISABLE);
-        //TM_ILI9341_Puts(10, 60, "You were silent for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+    freq = in.maxIndex * (45000 / 256); 
 
-        set_task_counter(get_task_counter() + 1);
-				setSecondsCount(0);
-				setSilenceThresh(SILENCE_AMPLITUDE);
-        Delayms(1000);
-    }
-		if(K > 5) {
-			resetSilenceThresh();
-			K=0;
+		if(freq > 200 && freq < 5000) {
+			
+			if (in.maxValue < getSilenceThresh()) {
+					TIM_Cmd(TIM2, ENABLE);
+			}
+			
+			if (in.maxValue > getSilenceThresh() && silence_thresh_is_set == 1) {
+				setSecondsCount(0); 
+				//BlinkOnboardLED(3);
+				K++;
+			}																							// Here, instead of comparing MAX to a threshold (SILENCE_AMPLITEUD) 
+																										// Should be comparing average between min and max 
+																										// from a previous iterationto a max 
 		}
+			
+			if (getSecondCount() > SILENCE_TIME) { //Silence time
+					TIM_Cmd(TIM2, DISABLE);
+					//TM_ILI9341_Puts(10, 60, "You were silent for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
+					set_task_counter(get_task_counter() + 1);
+					setSecondsCount(0);
+					setSilenceThresh(SILENCE_AMPLITUDE);
+					Delayms(1000);
+			}
+			if(K > 5) {
+				resetSilenceThresh();
+				K=0;
+			}
+			
+		
 		
 }
 
