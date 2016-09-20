@@ -19,7 +19,7 @@
 #define ONBOARD_LED_3 GPIO_Pin_1
 #define ONBOARD_LED_4 GPIO_Pin_0
 
-
+#define PULSE_CAP_SENS GPIO_Pin_2
 
 #define RS485_EN_PIN GPIO_Pin_8
 #define RS485_GPIO GPIOC
@@ -29,7 +29,7 @@ void INTTIM5_Config(void);
 void Configure_CupDetection(void);
 void Configure_485(void);
 void Configure_MotionSensorPort(void);
-
+void Configure_Pulse_CapSens(void);
 
 uint16_t getSecondCount(void);
 void setSecondsCount(uint16_t s);

@@ -30,12 +30,17 @@
 		Pins used in production board:
 		
 		PA3 - Microphone
-		PC1 - Pulse Sensor
+		PB0 - Pulse Sensor
+		PA2 - Pulse Capacitive Detector
 		
 		PD0..PD3 - Extra LEDs
 		PD8..PD12 - Reeds
 		PE8..PE12 - Big 12V LEDs
-		PE0..PE7 - PIRs
+		PE0..PE3 - PIRs
+		PE4 - Status LED
+		PE5 - 7 Seg. Disp. LATCH
+		PE6 - 7 Seg. Disp. CLK
+		PE7 - 7 Seg. Disp. DATA OUT
 		
 		PC10 USART TX
 		PC11 USART RX
@@ -195,7 +200,7 @@ void check_usart_while_playing(){
 			BlinkOnboardLED(2);
 				switch (incoming_packet.instruction) {
 					case INSTR_MASTER_TEST:
-						SendInstruction(INSTR_SLAVE_READY); //TODO: think about, how the device can not be ready...
+						SendInstruction(INSTR_SLAVE_NOT_READY); 
 						break;
 					case INSTR_MASTER_WORK_START:
 						
@@ -279,9 +284,8 @@ int main(void) {
 	Configure_485();
 	Configure_12V_LEDS();
 	Configure_LED_indicator();
-	
-	//GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
-	
+	Configure_Pulse_CapSens();
+		
 	init_usart();
 	
 	GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_1);

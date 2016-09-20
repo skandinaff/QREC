@@ -35,7 +35,7 @@ void MotionDetection(void) {
 					  TIM_Cmd(TIM2, DISABLE);
             setSecondsCount(0);					
             set_task_counter(get_task_counter() + 1);
-
+						
 
         }
     }

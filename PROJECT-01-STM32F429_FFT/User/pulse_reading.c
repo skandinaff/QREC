@@ -28,7 +28,12 @@ uint16_t old_tim5_count = 0;
 void ReadPulse(void) {
     //TM_ILI9341_DrawPixel(getTIM5_count(), 240 - thresh / 17, ILI9341_COLOR_RED);
 
-    Signal = TM_ADC_Read(ADC2, ADC_Channel_8);              // read the Pulse Sensor from PC1 (3, 11)
+ 		if(GPIO_ReadInputDataBit(GPIOA, PULSE_CAP_SENS)) {
+			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+			Signal = TM_ADC_Read(ADC2, ADC_Channel_8);              // read the Pulse Sensor from PB0 
+		}
+		if(!GPIO_ReadInputDataBit(GPIOA, PULSE_CAP_SENS)) GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+		
     //sampleCounter += 2; // 2 (ms)                         // keep track of the time in mS with this variable
     // We've assigned this variable incrementation to a timer iinterrupts
     uint16_t N = getSampleCounterIRQ() - lastBeatTime;       // monitor the time since the last beat to avoid noise
@@ -57,6 +62,7 @@ void ReadPulse(void) {
             Pulse = 1;                               // set the Pulse flag when we think there is a pulse
 							//TM_DISCO_LedOn(LED_RED);               // turn on pin 13 LED
 							GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4); // Red LED turns on when we have a beat
+							GPIO_ResetBits(LED_GPIO, LED_5); // And here we make a beat with task LED
             IBI = getSampleCounterIRQ() - lastBeatTime;         // measure time between beats in mS
             lastBeatTime = getSampleCounterIRQ();               // keep track of time for next pulse
 
@@ -97,6 +103,7 @@ void ReadPulse(void) {
     if (Signal < thresh && Pulse == 1) {   // when the values are going down, the beat is over
         //TM_DISCO_LedOff(LED_RED);              // turn off pin 13 LED
 					GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+					GPIO_SetBits(LED_GPIO, LED_5);	// And here we make a beat with task LED
         Pulse = 0;                         // reset the Pulse flag so we can do it again
 
         amp = P - T;                           // get amplitude of the pulse wave
@@ -115,7 +122,9 @@ void ReadPulse(void) {
 				/* These were added by me */
 				Pulse = 0;    // Added here to reduce 
         BPM = 0;		// Add this line here, so when no beat detected display shows 0
-
+				clearBuffer();
+				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+				GPIO_SetBits(LED_GPIO, LED_5);	// And here we make a beat with task LED
     }
 
 		/*
