@@ -86,7 +86,7 @@ void init_usart(void){
 
 
 }
-
+/*
 void send_data(unsigned char tx_data[DATA_PACKET_LEN]) {
     // Older implementation, probably don't need that anymore
     unsigned char i;
@@ -99,6 +99,7 @@ void send_data(unsigned char tx_data[DATA_PACKET_LEN]) {
     }
 
 }
+*/
 
 void usart_put_data_on_lcd(unsigned char* input){
 		//That's completlely irrelevanty since we don't have a screen in final version
@@ -331,19 +332,13 @@ uint8_t usart_crc8(uint8_t init, uint8_t *packet){
 	
 }
 
-void usart_convert_outgoing_packet (unsigned char* packet, outgoing_packet_t outgoing_packet){ //, bool crc8) {
+void usart_convert_outgoing_packet (unsigned char* packet, outgoing_packet_t outgoing_packet){ 
     packet[0] = outgoing_packet.slave_start_byte;
     packet[1] = outgoing_packet.slave_address;
     packet[2] = outgoing_packet.instruction;
-	//if (crc8){
     packet[3] = outgoing_packet.crc8;
     packet[4] = outgoing_packet.stop_byte;
     packet[5] = '\0';
-	//} else {
-		packet[3] = outgoing_packet.stop_byte;
-    packet[4] = '\0';
-	//}
-	
 }
 
 

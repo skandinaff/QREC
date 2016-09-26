@@ -42,9 +42,6 @@
 .\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 .\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
 .\targets\stm32f429_discovery\main.o: User\usart.h
-.\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_usart.h
-.\targets\stm32f429_discovery\main.o: .\TM\attributes.h
-.\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_gpio.h
 .\targets\stm32f429_discovery\main.o: User\init_periph_irqs.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_delay.h
 .\targets\stm32f429_discovery\main.o: User\detect_whistle.h

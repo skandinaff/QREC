@@ -9,7 +9,7 @@ unsigned char c5_state = 0;
 
 volatile uint16_t cstate;
 
-uint8_t _task_counter = 0; // that will be our inital tasl. Default: 0
+uint8_t _task_counter = 0; // that will be our inital task. Default: 0
 
 bool all_cups_present;
 
