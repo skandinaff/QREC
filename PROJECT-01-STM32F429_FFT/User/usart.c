@@ -26,6 +26,9 @@ volatile uint8_t tx_buffer[TX_BUFFER_SIZE];
 volatile uint16_t tx_wr_index=0,tx_rd_index=0;
 volatile uint16_t tx_counter=0;
 
+char data_for_crc8[3];
+char incoming_crc8;
+bool break_flag = false;
 
 void init_usart(void){
 
@@ -86,21 +89,6 @@ void init_usart(void){
 
 
 }
-/*
-void send_data(unsigned char tx_data[DATA_PACKET_LEN]) {
-    // Older implementation, probably don't need that anymore
-    unsigned char i;
-
-    for (i = 0; i < DATA_PACKET_LEN; i++) {
-        while (USART_GetFlagStatus(USART3, USART_FLAG_TC) == RESET);
-        USART_SendData(USART3, tx_data[i]);
-        //memset(&rx_data[0], 0, sizeof(rx_data)); // Clear the buffer once data sent out
-
-    }
-
-}
-*/
-
 void usart_put_data_on_lcd(unsigned char* input){
 		//That's completlely irrelevanty since we don't have a screen in final version
     unsigned char output[14];
@@ -342,5 +330,100 @@ void usart_convert_outgoing_packet (unsigned char* packet, outgoing_packet_t out
 }
 
 
+void check_usart_while_playing(){
+		incoming_packet_t incoming_packet;
+	
+		unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
+	
+		if (usart_has_data()) {
+			
+			usart_get_data_packet(packet);
+			incoming_packet = usart_packet_parser(packet);
+			if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
+			//TM_ILI9341_Puts(1, 220, "We recevied some data", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			BlinkOnboardLED(2);
+				switch (incoming_packet.instruction) {
+					case INSTR_MASTER_TEST:
+						SendInstruction(INSTR_SLAVE_NOT_READY); 
+						break;
+					case INSTR_MASTER_WORK_START:
+						
+						break;
+					case INSTR_MASTER_STATUS_REQ:				
+						if (get_task_counter() == TASK_COUNT) {
+							SendInstruction(INSTR_SLAVE_COMPLETED);
+						} else {
+							SendInstruction(INSTR_SLAVE_NOT_COMLETED);
+							//put_char('w');
+							//put_char(get_task_counter()+1); // +1 since task counter starts with 0
+						}
+						break;
+					case INSTR_MASTER_SET_IDLE:
+						/*setTIM5_count(0);
+					  setSecondsCount(0);
+						TIM_Cmd(TIM2, DISABLE);
+						TIM_Cmd(TIM5, DISABLE);*/
+						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
+						GPIO_ResetBits(LED_GPIO, STATE_LED);
+						setClaps(0);
+						break_flag = true;
+						return;
+					case CINSTR_GOTO_END:
+						set_task_counter(get_task_counter() + 1); // Skips a task
+						if(get_task_counter() == TASK_COUNT ) set_task_counter(TASK_COUNT);
+						PerformQuest();
+						break;
+					case CINSTR_RESTART_TASK:
+						setSecondsCount(0);
+						setClaps(0);
+						setSilenceThresh(SILENCE_AMPLITUDE);
+						resetSilenceThresh();
+						setTIM5_count(0);
+						set_task_counter(get_task_counter());
+						PerformQuest();
+						break;
+					case TEST_DISP:
+						Test_7Seg();
+						break;
+					case TASK_REQUEST:
+						//put_char(get_task_counter()+1);
+					  SendInstruction(get_task_counter()+1);
+						break;
+					case SIL_THR_REQUEST:
+						SendInstruction(getSilenceThresh());
+						//put_char(getSilenceThresh());
+						//put_char('w');
+						break;
+					case SYS_RESET:
+						NVIC_SystemReset();
+						break;
+				}	
+			}
+		}
+		
+		free(packet);
 
+}
+
+
+uint8_t SendInstruction(unsigned char instruction){
+	GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
+	unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
+	outgoing_packet_t outgoing_packet = usart_assemble_response(instruction);
+	usart_convert_outgoing_packet(packet, outgoing_packet);
+	put_str(packet);
+	Delayms(100);
+	free(packet);
+	GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
+	return 1;
+}
+
+void set_break_flag(bool bf) {
+    break_flag = bf;
+}
+
+
+bool get_break_flag(void) {
+    return break_flag;
+}
 

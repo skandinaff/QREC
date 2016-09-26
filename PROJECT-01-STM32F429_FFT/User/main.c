@@ -73,192 +73,8 @@ Task's order:
 #include "pulse_reading.h"
 #include "movement_detection.h"
 #include "leds.h"
+#include "quest.h"
 
-// Function prototypes
-void PerformQuest(void);
-uint8_t SendInstruction(unsigned char instruction);
-void idle(void);
-void check_usart_while_playing(void);
-
-bool break_flag = false;
-
-
-uint8_t SendInstruction(unsigned char instruction){
-	GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
-	unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
-	outgoing_packet_t outgoing_packet = usart_assemble_response(instruction);
-	usart_convert_outgoing_packet(packet, outgoing_packet);
-	put_str(packet);
-	Delayms(100);
-	free(packet);
-	GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
-	return 1;
-}
-
-
-void PerformQuest(void){
-	int task_counter = get_task_counter();
-
-	//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-
-	//char state[1];
-	//sprintf(state, "%d", task_counter);
-	//TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-	if (!getAll_cups_present()) {
-    setSecondsCount(0);	
-		check_usart_while_playing();
-		//TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-	}
-
-	
-	
-	switch (task_counter) {
-		case 0:	// Clap detection
-				TM_ADC_Init(ADC1, ADC_Channel_3);
-		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
-			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
-			break;
-		case 1: // Silence detection
-			//setSilenceThresh(SILENCE_AMPLITUDE); 
-		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
-			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
-			break;
-		case 2:  // Motion detection
-			Configure_MotionSensorPort();
-		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
-			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
-			break;
-		case 3:  // Whistle Detection
-		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
-			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
-			break;
-		case 4:  // Pulse Readings
-				TM_ADC_Init(ADC2, ADC_Channel_8);
-		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
-			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
-			//ADC_DeInit(); //Turn ADC off after task is done
-			//Delayms(100);
-			//TM_ADC_Init(ADC1, ADC_Channel_3); 		// PC1 PulseSensor's ADC
-		
-			setTIM5_count(1);
-
-			break;
-	}
-
-	while (task_counter == get_task_counter() && getAll_cups_present() ) {
-		switch (task_counter) {
-			case 0:	// Clap detection
-			  DetectClap();
-				break;
-			case 1: // Silence detection
-				SilenceDetection();
-				break;
-			case 2:  // Motion detection
-			  MotionDetection();
-				break;
-			case 3:  // Whistle Detection
-				DetectWhistle();
-				break;
-			case 4:  // Pulse Readings
-				ReadPulse();
-				break;
-		}
-
-		/*
-		if (usart_break_required()) {
-			break_flag = true;
-			return;
-		}
-		 */
-
-		// TODO:
-		/* 1) check usart
-			 2) if can be handled, then handle it right here!
-			 3) if can not be handled, then break out of this function to the outer while
-			 5) let the outer while handle the request (reset the state)
-		 */
-		check_usart_while_playing();
-		if (break_flag) return;
-	}
-
-
-	//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-}
-
-void check_usart_while_playing(){
-		incoming_packet_t incoming_packet;
-	
-		unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
-	
-		if (usart_has_data()) {
-			
-			usart_get_data_packet(packet);
-			incoming_packet = usart_packet_parser(packet);
-			if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
-			//TM_ILI9341_Puts(1, 220, "We recevied some data", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-			BlinkOnboardLED(2);
-				switch (incoming_packet.instruction) {
-					case INSTR_MASTER_TEST:
-						SendInstruction(INSTR_SLAVE_NOT_READY); 
-						break;
-					case INSTR_MASTER_WORK_START:
-						
-						break;
-					case INSTR_MASTER_STATUS_REQ:				
-						if (get_task_counter() == TASK_COUNT) {
-							SendInstruction(INSTR_SLAVE_COMPLETED);
-						} else {
-							SendInstruction(INSTR_SLAVE_NOT_COMLETED);
-							//put_char('w');
-							//put_char(get_task_counter()+1); // +1 since task counter starts with 0
-						}
-						break;
-					case INSTR_MASTER_SET_IDLE:
-						/*setTIM5_count(0);
-					  setSecondsCount(0);
-						TIM_Cmd(TIM2, DISABLE);
-						TIM_Cmd(TIM5, DISABLE);*/
-						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
-						GPIO_ResetBits(LED_GPIO, STATE_LED);
-						setClaps(0);
-						break_flag = true;
-						return;
-					case CINSTR_GOTO_END:
-						set_task_counter(get_task_counter() + 1); // Skips a task
-						PerformQuest();
-						break;
-					case CINSTR_RESTART_TASK:
-						setSecondsCount(0);
-						setClaps(0);
-						setSilenceThresh(SILENCE_AMPLITUDE);
-						resetSilenceThresh();
-						setTIM5_count(0);
-						set_task_counter(get_task_counter());
-						PerformQuest();
-						break;
-					case TEST_DISP:
-						Test_7Seg();
-						break;
-					case TASK_REQUEST:
-						//put_char(get_task_counter()+1);
-					  SendInstruction(get_task_counter()+1);
-						break;
-					case SIL_THR_REQUEST:
-						SendInstruction(getSilenceThresh());
-						//put_char(getSilenceThresh());
-						//put_char('w');
-						break;
-					case SYS_RESET:
-						NVIC_SystemReset();
-						break;
-				}	
-			}
-		}
-		
-		free(packet);
-
-}
 
 int main(void) {
 	SystemInit(); /* Initialize system */
@@ -275,10 +91,6 @@ int main(void) {
 	//TM_ILI9341_Init();
 	//TM_ILI9341_Rotate(TM_ILI9341_Orientation_Landscape_1);
 
-	/* Initialize ADC */
-	//TM_ADC_Init(ADC1, ADC_Channel_3); 		// PA3 Microphone's ADC 
-	//TM_ADC_Init(ADC2, ADC_Channel_8); 		// PC1 PulseSensor's ADC, will be initialized after tasks with microphone are through
-
 	Configure_CupDetection();	
 	Configure_Onboard_LEDS();	
 	Configure_485();
@@ -288,12 +100,9 @@ int main(void) {
 		
 	init_usart();
 	
-	GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_1);
+	GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_1); // LED indicating that board is ON
 
-	
 	Delayms(300);
-	
-
 	
 	//TM_ILI9341_Puts(1, 41, "Status: Idle", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
@@ -328,22 +137,20 @@ int main(void) {
 				BlinkOnboardLED(2);
 				switch (incoming_packet.instruction) {
 					case INSTR_MASTER_TEST:
-						SendInstruction(INSTR_SLAVE_READY); //TODO: think about, how the device can not be ready...
+						SendInstruction(INSTR_SLAVE_READY);
 						break;
 					case INSTR_MASTER_WORK_START:
 						while (get_task_counter() <= TASK_COUNT) {
 							GPIO_SetBits(LED_GPIO, STATE_LED);
 							Control_12V_LEDs();
-							//if(getAll_cups_present() == 1) GPIO_SetBits(LED_GPIO, STATE_LED);
-							//if(getAll_cups_present() == 0) GPIO_ResetBits(LED_GPIO, STATE_LED);
 							PerformQuest();
-							if(break_flag){
+							if(get_break_flag()){
 								GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);
 								set_task_counter(0);
 								setSecondsCount(0);
 								TIM_Cmd(TIM2, DISABLE);
 								//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-								break_flag = false;
+								set_break_flag(false);
 								break;
 							}
 						}
@@ -360,7 +167,8 @@ int main(void) {
 						set_task_counter(0);
 						break;
 					case CINSTR_GOTO_END:
-						set_task_counter(TASK_COUNT + 1); // TODO: TAKE A LOOK
+						set_task_counter(TASK_COUNT + 1);
+						if(get_task_counter() == TASK_COUNT ) set_task_counter(TASK_COUNT); // Maybe I should go back to task 1, but, meh..
 						PerformQuest();
 						break;
 					case TEST_DISP:

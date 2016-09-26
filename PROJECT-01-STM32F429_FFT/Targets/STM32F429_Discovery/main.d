@@ -44,6 +44,8 @@
 .\targets\stm32f429_discovery\main.o: User\usart.h
 .\targets\stm32f429_discovery\main.o: User\init_periph_irqs.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_delay.h
+.\targets\stm32f429_discovery\main.o: User\leds.h
+.\targets\stm32f429_discovery\main.o: User\usart.h
 .\targets\stm32f429_discovery\main.o: User\detect_whistle.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_adc.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_disco.h
@@ -54,8 +56,6 @@
 .\targets\stm32f429_discovery\main.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
 .\targets\stm32f429_discovery\main.o: User\cup_detection.h
 .\targets\stm32f429_discovery\main.o: User\leds.h
-.\targets\stm32f429_discovery\main.o: User\detect_whistle.h
-.\targets\stm32f429_discovery\main.o: User\cup_detection.h
 .\targets\stm32f429_discovery\main.o: User\pulse_reading.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_ili9341_ltdc.h
 .\targets\stm32f429_discovery\main.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h
@@ -63,5 +63,5 @@
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_fonts.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_sdram.h
 .\targets\stm32f429_discovery\main.o: User\pulse_reading.h
-.\targets\stm32f429_discovery\main.o: User\leds.h
+.\targets\stm32f429_discovery\main.o: User\quest.h
 .\targets\stm32f429_discovery\main.o: User\movement_detection.h

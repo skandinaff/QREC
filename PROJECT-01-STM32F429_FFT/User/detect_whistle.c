@@ -144,8 +144,10 @@ void DetectClap(void) {
 				
 */
 
+// TODO: remove this in production. For tests only
 		addToBuffer(in.maxValue);
 		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
+// ***
 
     float32_t freq;
 
@@ -202,13 +204,12 @@ void SilenceDetection(void) {
 		TM_ILI9341_Puts(180, 25, thresh_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     TM_ILI9341_Puts(180, 40, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 		*/
-		addToBuffer(getSecondCount());
 	
+// TODO: remove this in production. For tests only
+		addToBuffer(getSecondCount());
 		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
 		//addToBuffer(in.maxValue);
-		
-		
-		
+// ***
 		if(N < SIL_AVG_SAMPLES){
 			silence_thresh_avg += in.maxValue;
 			//TM_ILI9341_Puts(10, 65, "Acquiring threshold value", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);

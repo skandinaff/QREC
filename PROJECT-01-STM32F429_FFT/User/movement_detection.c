@@ -24,8 +24,9 @@ void MotionDetection(void) {
         //TM_ILI9341_Puts(1, 65, "                              ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     } else {
         TIM_Cmd(TIM2, ENABLE);
+			// TODO: remove this in production. For tests only
 				addToBuffer(getSecondCount());
-
+			// ***
         //sprintf(scd, "%d", getSecondCount());
         //TM_ILI9341_Puts(20, 65, scd, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 

@@ -6,12 +6,12 @@
 * 0xC1 0x10 0x02 0x59 0xC0 Work Start
 * 0xC1 0x10 0x03 0x5E 0xC0 Stauts request
 * 0xC1 0x10 0x04 0x4B 0xC0 Idle		
-* -- Custom commands, not listed in original protocol
+* -- Custom commands, not listed in the original protocol
 * 0xC1 0x10 0x7F 0x2D 0xC0 Go to the next task
 * 0xC1 0x10 0x7E 0x2A 0xC0 Restart current task
 * 0xC1 0x10 0x7D 0x23 0xC0 Test 7 segement display
 * 0xC1 0x10 0x7C 0x24 0xC0 Ask what task is now active
-* 0xC1 0x10 0x7A 0x36 0xC0 Ask what is threshold in Silence Detection
+* 0xC1 0x10 0x7A 0x36 0xC0 Ask what is threshold value in Silence Detection
 * 0xC1 0x10 0x79 0x3F 0xC0 Perform system reset
 *
 * ---------------------------------------------------------- */
@@ -24,8 +24,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include "stdlib.h"
 #include "init_periph_irqs.h"
 #include "tm_stm32f4_delay.h"
+#include "leds.h"
+#include "quest.h"
 
 #define USART_BAUD_RATE 					19200
 
@@ -38,7 +41,7 @@
 #define RESTRICTED_BYTE           0x7B
 #define TEST_DISP									0x7D
 #define TASK_REQUEST							0x7C
-#define SIL_THR_REQUEST						0x7A
+#define SIL_THR_REQUEST						0x7A	
 #define SYS_RESET									0x79
 
 //------------- Instructions from main device
@@ -82,7 +85,6 @@ typedef struct {
 } outgoing_packet_t;
 
 void init_usart(void);
-void send_data(unsigned char tx_data[DATA_PACKET_LEN]); 
 void usart_put_data_on_lcd(unsigned char* input);
 void USART3_IRQHandler(void);
 unsigned char get_char(void);
@@ -97,5 +99,9 @@ void usart_convert_outgoing_packet (unsigned char* packet, outgoing_packet_t out
 uint8_t usart_crc8(uint8_t init, uint8_t *packet);
 bool usart_validate_crc8(incoming_packet_t incoming_packet);
 bool usart_break_required(void);
+uint8_t SendInstruction(unsigned char instruction);
+void check_usart_while_playing(void);
+void set_break_flag(bool bf);
+bool get_break_flag(void);
 
 #endif

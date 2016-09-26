@@ -218,3 +218,8 @@ void Test_7Seg(void){
 	Delayms(500);
 	clearBuffer();
 }
+
+void ClearOnboardLEDS(void){
+		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+}
