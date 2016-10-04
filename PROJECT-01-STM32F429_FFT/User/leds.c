@@ -146,6 +146,7 @@ void shiftOut(int myDataPin, int myClockPin, uint8_t myDataOut) {
 
 void Control_12V_LEDs(void){
 
+	if(getAll_cups_present()){ // Helps physically see if cups are placed or not
 	switch( get_task_counter() ) {
 		case 0:
 			GPIO_SetBits(LED_GPIO, LED_1);
@@ -168,7 +169,7 @@ void Control_12V_LEDs(void){
 			clearBuffer(); 																										// Clearing 7 segment display. Shouldn't be here, but idk where else to put it
 			break;
 	}
-		
+}		
 }
 
 void BlinkOnboardLED(uint8_t L){
