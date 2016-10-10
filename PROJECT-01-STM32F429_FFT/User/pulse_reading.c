@@ -55,7 +55,7 @@ void ReadPulse(void) {
 
         //Here I should add a condition that will check signal's amplitude, to avoiud measuremets that are just above 0
 
-        if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3)  && ((Signal - thresh) > 20) && (Signal - thresh) < 700) { 
+        if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3)  && ((P - T) > 100) && (P - T) < 700) { 
 							/* Signal-thresh < 700 is to avoid huge spikes  
 									Signal-thresh > 5 is to avoid little fluctutations, like ambient noise
 							*/
@@ -120,7 +120,7 @@ void ReadPulse(void) {
         firstBeat = 1;                      // set these to avoid noise
         secondBeat = 0;                    // when we get the heartbeat back
 				/* These were added by me */
-				Pulse = 0;    // Added here to reduce 
+				//Pulse = 0;    // Added here to reduce 
         BPM = 0;		// Add this line here, so when no beat detected display shows 0
 				clearBuffer();
 				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
