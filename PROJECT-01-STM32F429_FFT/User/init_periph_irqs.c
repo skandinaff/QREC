@@ -60,7 +60,7 @@ void INTTIM5_Config(void){
   /* TIM IT enable */
   TIM_ITConfig(TIM5, TIM_IT_Update, ENABLE);
   /* TIM5 enable counter */
-  TIM_Cmd(TIM5, ENABLE); // This timer runs all the time. 
+  //TIM_Cmd(TIM5, ENABLE); // This timer runs all the time. 
 												 // Used to calculate BPM value
 }
 

@@ -34,6 +34,7 @@ void PerformQuest(void){
 			ClearOnboardLEDS();
 			break;
 		case 4:  // Pulse Readings
+			TIM_Cmd(TIM5, ENABLE); 
 			TM_ADC_Init(ADC2, ADC_Channel_8);
 			ClearOnboardLEDS();
 			setTIM5_count(1);

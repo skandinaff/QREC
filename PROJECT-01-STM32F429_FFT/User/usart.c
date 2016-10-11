@@ -360,9 +360,9 @@ void check_usart_while_playing(){
 						break;
 					case INSTR_MASTER_SET_IDLE:
 						/*setTIM5_count(0);
-					  setSecondsCount(0);
+					  setSecondsCount(0); */
 						TIM_Cmd(TIM2, DISABLE);
-						TIM_Cmd(TIM5, DISABLE);*/
+						TIM_Cmd(TIM5, DISABLE);
 						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
 						GPIO_ResetBits(LED_GPIO, STATE_LED);
 						setClaps(0);

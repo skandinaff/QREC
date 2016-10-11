@@ -55,7 +55,7 @@ void ReadPulse(void) {
 
         //Here I should add a condition that will check signal's amplitude, to avoiud measuremets that are just above 0
 
-        if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3)  && ((P - T) > 100) && (P - T) < 700) { 
+        if ((Signal > thresh) && (Pulse == 0) && (N > (IBI / 5) * 3)  && ((P - T) > AMP_LOW_LIM) && (P - T) < AMP_HIGH_LIM) { 
 							/* Signal-thresh < 700 is to avoid huge spikes  
 									Signal-thresh > 5 is to avoid little fluctutations, like ambient noise
 							*/
@@ -182,6 +182,10 @@ void ReadPulse(void) {
 						// After task is done, we're cleaning all the counters
             setSecondsCount(0);
 						BPM = 0;
+						setSampleCounterIRQ(0);
+						setTIM5_count(0);
+						setTIM5_count2(0);
+						TIM_Cmd(TIM5, DISABLE);
         }
     } else {
         TIM_Cmd(TIM2, DISABLE);

@@ -37,9 +37,9 @@ uint8_t DetectCups(void) {
     c4_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
     c5_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_12);
 
-    return c1_state + c2_state + c3_state + c4_state + c5_state;
+    //return c1_state + c2_state + c3_state + c4_state + c5_state;
 		// For debug with no reed used this instead:
-		//return 5;
+		return 5;
 }
 
 
