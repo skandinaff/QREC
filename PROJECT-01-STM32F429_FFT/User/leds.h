@@ -29,7 +29,7 @@
 #define STATE_LED			GPIO_Pin_4
 #define NUM_OF_REG		3
 
-void addToBuffer(int digit);
+void addToBuffer(int digit, bool dot, bool dot2);
 void shiftOut(int myDataPin, int myClockPin, uint8_t myDataOut);
 void clearBuffer(void);
 void Configure_12V_LEDS(void);
@@ -39,5 +39,6 @@ void BlinkOnboardLED(uint8_t L);
 void Control_12V_LEDs(void);
 void Test_7Seg(void);
 void ClearOnboardLEDS(void);
-	
+void set_dot2_always_on(void);
+
 #endif

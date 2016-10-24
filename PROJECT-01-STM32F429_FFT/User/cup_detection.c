@@ -12,6 +12,7 @@ volatile uint16_t cstate;
 uint8_t _task_counter = 0; // that will be our inital task. Default: 0
 
 bool all_cups_present;
+bool cups_override = false;
 
 void reset_task_counter(void) {
     _task_counter = 0;
@@ -37,14 +38,14 @@ uint8_t DetectCups(void) {
     c4_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
     c5_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_12);
 
-    //return c1_state + c2_state + c3_state + c4_state + c5_state;
+    return c1_state + c2_state + c3_state + c4_state + c5_state;
 		// For debug with no reed used this instead:
-		return 5;
+		//return 5;
 }
 
 
 bool getAll_cups_present(void) {
-
+		if(cups_override) return true;
     return DetectCups() == 5;
 }
 
@@ -56,4 +57,12 @@ uint16_t getCstate(void) {
 
 void setCstate(uint16_t s) {
     cstate = s;
+}
+
+void set_cups_override(void){
+	cups_override = true;
+}
+
+bool get_cups_override(void){
+	return cups_override;
 }

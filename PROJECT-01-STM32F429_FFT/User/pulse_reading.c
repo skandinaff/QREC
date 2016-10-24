@@ -62,7 +62,8 @@ void ReadPulse(void) {
             Pulse = 1;                               // set the Pulse flag when we think there is a pulse
 							//TM_DISCO_LedOn(LED_RED);               // turn on pin 13 LED
 							GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4); // Red LED turns on when we have a beat
-							GPIO_ResetBits(LED_GPIO, LED_5); // And here we make a beat with task LED
+							addToBuffer(1,true,false);
+							Delayms(5);
             IBI = getSampleCounterIRQ() - lastBeatTime;         // measure time between beats in mS
             lastBeatTime = getSampleCounterIRQ();               // keep track of time for next pulse
 
@@ -103,7 +104,7 @@ void ReadPulse(void) {
     if (Signal < thresh && Pulse == 1) {   // when the values are going down, the beat is over
         //TM_DISCO_LedOff(LED_RED);              // turn off pin 13 LED
 					GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
-					GPIO_SetBits(LED_GPIO, LED_5);	// And here we make a beat with task LED
+					//addToBuffer(0,true);
         Pulse = 0;                         // reset the Pulse flag so we can do it again
 
         amp = P - T;                           // get amplitude of the pulse wave
@@ -169,10 +170,18 @@ void ReadPulse(void) {
     }
 				
 		*/
+		
+		if(BPM && get_cups_override()) {
+			GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
+			put_char(BPM);
+			GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
+		}
+		
+		
 		if(BPM > 200) BPM = 0; // Neglect values higher than 200, as it really almost impossible
 		
-		if (Pulse == 1) addToBuffer(BPM);
-				
+		if (Pulse == 1) addToBuffer(BPM,false,false);
+					
     if (BPM > TARGET_BPM) {
         TIM_Cmd(TIM2, ENABLE);
         if (getSecondCount() >= TARGET_TIME) {
@@ -186,6 +195,7 @@ void ReadPulse(void) {
 						setTIM5_count(0);
 						setTIM5_count2(0);
 						TIM_Cmd(TIM5, DISABLE);
+						if(get_cups_override()) GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
         }
     } else {
         TIM_Cmd(TIM2, DISABLE);

@@ -167,6 +167,7 @@ int main(void) {
 						set_task_counter(0);
 						break;
 					case CINSTR_GOTO_END:
+						set_cups_override();
 						set_task_counter(TASK_COUNT + 1);
 						if(get_task_counter() == TASK_COUNT ) set_task_counter(TASK_COUNT); // Maybe I should go back to task 1, but, meh..
 						PerformQuest();
@@ -176,6 +177,11 @@ int main(void) {
 						break;
 					case SYS_RESET:
 						NVIC_SystemReset();
+						break;
+					case PULSE:
+						set_cups_override();
+						set_task_counter(4);
+						PerformQuest();
 						break;
 				}				
 			}

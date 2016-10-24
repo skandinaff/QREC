@@ -17,5 +17,7 @@ uint8_t DetectCups(void);
 uint16_t getCstate(void);
 void setCstate(uint16_t s);
 bool getAll_cups_present(void);
-
+bool get_cups_override(void);
+void set_cups_override(void);
+	
 #endif

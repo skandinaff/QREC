@@ -3,10 +3,13 @@
 
 
 //uint8_t numbers[10] = {one, two, three, four, five, six, seven, eight, nine, zero};
-uint8_t numbers[] = {0x02, 0x9E, 0x24, 0x0C, 0x98, 0x48, 0x40, 0x1E, 0x01, 0x08};
+uint8_t numbers_wd[] = {0x02, 0x9E, 0x24, 0x0C, 0x98, 0x48, 0x40, 0x1E, 0x01, 0x08};
+uint8_t numbers[] = {0x03, 0x9F, 0x25, 0x0D, 0x99, 0x49, 0x41, 0x1F, 0x01, 0x09};
 
 
 uint8_t data;
+
+bool dot2_always_on = false;
 //uint8_t dataBuffer[3] = {0xFF, 0xFF, 0xFF}; //uint8_t dataBuffer[NUM_OF_REG];
 
 void Configure_12V_LEDS(void){
@@ -58,16 +61,54 @@ void Configure_Onboard_LEDS(void){  // Onboards LEDs
 	
 }
 
-void addToBuffer(int digit){
+void addToBuffer(int digit, bool dot1, bool dot2){
 	//memset(dataBuffer, 0, 3); //memset(dataBuffer, 0, sizeof(dataBuffer));
 	uint8_t dataBuffer[3] = {0xFF, 0xFF, 0xFF};
 	
-	int c = 0;
-	while(digit > 0){
-		uint8_t b = numbers[digit % 10];
-		dataBuffer[c] = b;
-		digit /= 10;
-		c++;
+	
+	if(dot2_always_on) {
+		dataBuffer[0] = 0xFF;
+		dataBuffer[1] = 0xFE;
+		dataBuffer[2] = 0xFF;}
+	
+	if(dot1 == false && dot2 == false){
+
+		
+		int c = 0;
+		while(digit > 0){
+			uint8_t b = numbers[digit % 10];
+			dataBuffer[c] = b;
+			digit /= 10;
+			c++;
+		}
+	}	
+	
+
+	
+	if(dot1 == true){
+		if(digit==1){
+			dataBuffer[0] = 0xFE;
+			dataBuffer[1] = 0xFF;
+			dataBuffer[2] = 0xFF;
+		}
+		if(digit==0){
+			dataBuffer[0] = 0xFF;
+			dataBuffer[1] = 0xFF;
+			dataBuffer[2] = 0xFF;
+		}
+	}
+	
+	if(dot2 == true){
+		if(digit==1){
+			dataBuffer[0] = 0xFF;
+			dataBuffer[1] = 0xFE;
+			dataBuffer[2] = 0xFF;
+		}
+		if(digit==0){
+			dataBuffer[0] = 0xFF;
+			dataBuffer[1] = 0xFF;
+			dataBuffer[2] = 0xFF;
+		}
 	}
 	
 	GPIO_WriteBit(LED_SEG_GPIO, LATCH_PIN, Bit_RESET);
@@ -204,18 +245,22 @@ void Test_7Seg(void){
 	clearBuffer();
 
 	for(uint8_t i = 0; i <= 9; i++){
-		addToBuffer(i);
-		Delayms(500);
+		addToBuffer(i,false,false);
+		Delayms(250);
 	}
 	for(uint8_t i = 10; i <= 90; i+=10){
-		addToBuffer(i);
-		Delayms(500);
+		addToBuffer(i,false,false);
+		Delayms(250);
 	}
 	for(uint16_t i = 100; i <= 900; i+=100){
-		addToBuffer(i);
-		Delayms(500);
+		addToBuffer(i,false,false);
+		Delayms(250);
 	}
-	addToBuffer(888);
+	addToBuffer(888,false,false);
+	Delayms(500);
+	addToBuffer(1,true,false);
+	Delayms(500);
+	addToBuffer(1,false,true);
 	Delayms(500);
 	clearBuffer();
 }
@@ -223,4 +268,8 @@ void Test_7Seg(void){
 void ClearOnboardLEDS(void){
 		  GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+}
+
+void set_dot2_always_on(void){
+	dot2_always_on = true;
 }

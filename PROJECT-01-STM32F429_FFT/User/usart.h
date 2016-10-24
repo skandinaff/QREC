@@ -13,9 +13,11 @@
 * 0xC1 0x10 0x7C 0x24 0xC0 Ask what task is now active
 * 0xC1 0x10 0x7A 0x36 0xC0 Ask what is threshold value in Silence Detection
 * 0xC1 0x10 0x79 0x3F 0xC0 Perform system reset
+* 0xC1 0x10 0x78 0x38 0xC0 Go Straight to Pulse Reading
 *
 * ---------------------------------------------------------- */
 
+//TODO: In idle don't anwere to StatReq, in Game don't answer to Test
 
 #ifndef USART_H
 #define USART_H
@@ -43,6 +45,7 @@
 #define TASK_REQUEST							0x7C
 #define SIL_THR_REQUEST						0x7A	
 #define SYS_RESET									0x79
+#define PULSE											0x78
 
 //------------- Instructions from main device
 #define INSTR_MASTER_TEST					0x01

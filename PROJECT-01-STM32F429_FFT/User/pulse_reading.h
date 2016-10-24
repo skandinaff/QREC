@@ -20,7 +20,7 @@
 #define TARGET_BPM 100
 #define TARGET_TIME 10
 #define AMP_LOW_LIM 100
-#define AMP_HIGH_LIM 700
+#define AMP_HIGH_LIM 900
 
 void ReadPulse(void);
 uint16_t getQS(void);

@@ -47,7 +47,7 @@ void init_usart(void){
     GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
     GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
     GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
-    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_25MHz;
+    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOC, &GPIO_InitStruct);
 
     //Enable clock for USART3
@@ -367,6 +367,7 @@ void check_usart_while_playing(){
 						GPIO_ResetBits(LED_GPIO, STATE_LED);
 						setClaps(0);
 						break_flag = true;
+						set_task_counter(0);
 						return;
 					case CINSTR_GOTO_END:
 						set_task_counter(get_task_counter() + 1); // Skips a task
@@ -424,6 +425,7 @@ void set_break_flag(bool bf) {
 
 
 bool get_break_flag(void) {
+	
     return break_flag;
 }
 
