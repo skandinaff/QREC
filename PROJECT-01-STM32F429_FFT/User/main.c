@@ -156,12 +156,12 @@ int main(void) {
 						}
 
 						break;
-					case INSTR_MASTER_STATUS_REQ:				
+					case INSTR_MASTER_STATUS_REQ:				/*
 						if (get_task_counter() == TASK_COUNT) {
 							SendInstruction(INSTR_SLAVE_COMPLETED);
 						} else {
 							SendInstruction(INSTR_SLAVE_NOT_COMLETED);
-						}
+						}*/
 						break;
 					case INSTR_MASTER_SET_IDLE:
 						set_task_counter(0);

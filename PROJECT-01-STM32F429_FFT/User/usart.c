@@ -344,7 +344,7 @@ void check_usart_while_playing(){
 			BlinkOnboardLED(2);
 				switch (incoming_packet.instruction) {
 					case INSTR_MASTER_TEST:
-						SendInstruction(INSTR_SLAVE_NOT_READY); 
+						//SendInstruction(INSTR_SLAVE_NOT_READY); 
 						break;
 					case INSTR_MASTER_WORK_START:
 						
@@ -366,7 +366,7 @@ void check_usart_while_playing(){
 						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
 						GPIO_ResetBits(LED_GPIO, STATE_LED);
 						setClaps(0);
-						break_flag = true;
+						set_break_flag(true);
 						set_task_counter(0);
 						return;
 					case CINSTR_GOTO_END:
