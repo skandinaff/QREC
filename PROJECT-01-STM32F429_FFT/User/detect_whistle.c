@@ -32,7 +32,7 @@ void DetectWhistle(void) {
 
     if (in.maxIndex > 0) //TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-    if (freq >= 1100 && freq < 1500) {
+    if (freq >= 1100 && freq < 2400) {  // TODO: try two interwals
         TIM_Cmd(TIM2, ENABLE);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
