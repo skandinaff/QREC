@@ -97,6 +97,8 @@ int main(void) {
 	Configure_12V_LEDS();
 	Configure_LED_indicator();
 	Configure_Pulse_CapSens();
+	
+	INTTIM3_Config();
 		
 	init_usart();
 	
@@ -182,6 +184,23 @@ int main(void) {
 						set_cups_override();
 						set_task_counter(4);
 						PerformQuest();
+						break;
+					case WS_TEST_MODE:
+							set_cups_override();
+							while (get_task_counter() <= TASK_COUNT) {
+							GPIO_SetBits(LED_GPIO, STATE_LED);
+							Control_12V_LEDs();
+							PerformQuest();
+							if(get_break_flag()){
+								GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);
+								set_task_counter(0);
+								setSecondsCount(0);
+								TIM_Cmd(TIM2, DISABLE);
+								//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+								set_break_flag(false);
+							}
+						}
+								break;
 						break;
 				}				
 			}

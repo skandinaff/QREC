@@ -11,6 +11,7 @@
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx.h"
 #include "tm_stm32f4_delay.h"
+#include "leds.h"
 
 #define ONBOARD_LED_RCC RCC_AHB1Periph_GPIOD
 #define ONBOARD_LED_GPIO GPIOD
@@ -30,6 +31,8 @@ void Configure_CupDetection(void);
 void Configure_485(void);
 void Configure_MotionSensorPort(void);
 void Configure_Pulse_CapSens(void);
+
+void INTTIM2_Config(void);
 
 uint16_t getSecondCount(void);
 void setSecondsCount(uint16_t s);
@@ -51,5 +54,11 @@ void setTIM5_count(uint16_t s);
 
 uint16_t getTIM5_count2(void);
 void setTIM5_count2(uint16_t s);
+
+uint16_t getLEDCount(void);
+void setLEDCount(uint16_t s);
+
+uint16_t get_xLED(void);
+void set_xLED(uint16_t s);
 
 #endif

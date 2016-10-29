@@ -14,6 +14,7 @@
 * 0xC1 0x10 0x7A 0x36 0xC0 Ask what is threshold value in Silence Detection
 * 0xC1 0x10 0x79 0x3F 0xC0 Perform system reset
 * 0xC1 0x10 0x78 0x38 0xC0 Go Straight to Pulse Reading
+* 0xC1 0x10 0x77 0x15 0xC0 Start quest with cups override, for test purpouses
 *
 * ---------------------------------------------------------- */
 
@@ -46,6 +47,7 @@
 #define SIL_THR_REQUEST						0x7A	
 #define SYS_RESET									0x79
 #define PULSE											0x78
+#define WS_TEST_MODE							0x77
 
 //------------- Instructions from main device
 #define INSTR_MASTER_TEST					0x01

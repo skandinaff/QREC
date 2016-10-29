@@ -7,7 +7,36 @@ long tim5_count2 = 0;
 long counter = 0;
 long counter2 = 0;
 
+long led_counter = 0;
+int xLED = 0;
+
 volatile uint32_t sampleCounterIRQ = 0;          // used to determine pulse timing, triggered by Timer 5 IRQ
+
+void INTTIM3_Config(void){
+
+	
+  NVIC_InitTypeDef NVIC_InitStructure;
+  /* Enable the TIM2 gloabal Interrupt */
+  NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_Init(&NVIC_InitStructure);
+
+	TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+  /* TIM2 clock enable */
+  RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+  /* Time base configuration */
+  TIM_TimeBaseStructure.TIM_Period = 100000 - 1; //
+  TIM_TimeBaseStructure.TIM_Prescaler = 1200 - 1; // 
+  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
+  TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+  /* TIM IT enable */
+  TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+  /* TIM2 enable counter */
+  TIM_Cmd(TIM3, ENABLE); // We are enableing it on demand
+}
 
 void INTTIM2_Config(void){
 
@@ -136,7 +165,13 @@ void TIM2_IRQHandler(void) {
 		}
 }
 
-
+void TIM3_IRQHandler(void) {
+	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
+		led_counter += 1;
+		if(xLED!=0) GPIO_ToggleBits(LED_GPIO, xLED);
+		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+		}
+}
 
 void TIM5_IRQHandler(void) {
 
@@ -168,6 +203,22 @@ uint16_t getSecondCount(void){
 
 void setSecondsCount(uint16_t s){
 	secondsCount = s;
+}
+
+uint16_t getLEDCount(void){
+	return led_counter;
+}
+
+void setLEDCount(uint16_t s){
+	led_counter = s;
+}
+
+uint16_t get_xLED(void){
+	return xLED;
+}
+
+void set_xLED(uint16_t s){
+	xLED = s;
 }
 
 uint16_t getQrSecondCount(void){

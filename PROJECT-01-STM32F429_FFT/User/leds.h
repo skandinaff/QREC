@@ -40,5 +40,6 @@ void Control_12V_LEDs(void);
 void Test_7Seg(void);
 void ClearOnboardLEDS(void);
 void set_dot2_always_on(void);
+void Pulse_12V_LEDs(void);
 
 #endif

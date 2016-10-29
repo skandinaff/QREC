@@ -372,6 +372,7 @@ void check_usart_while_playing(){
 					case CINSTR_GOTO_END:
 						set_task_counter(get_task_counter() + 1); // Skips a task
 						if(get_task_counter() == TASK_COUNT ) set_task_counter(TASK_COUNT);
+						Control_12V_LEDs();
 						PerformQuest();
 						break;
 					case CINSTR_RESTART_TASK:

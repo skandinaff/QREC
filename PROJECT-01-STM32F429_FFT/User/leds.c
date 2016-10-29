@@ -187,30 +187,36 @@ void shiftOut(int myDataPin, int myClockPin, uint8_t myDataOut) {
 
 void Control_12V_LEDs(void){
 
-	if(getAll_cups_present()){ // Helps physically see if cups are placed or not
-	switch( get_task_counter() ) {
-		case 0:
-			GPIO_SetBits(LED_GPIO, LED_1);
-			break;
-		case 1:
-			GPIO_SetBits(LED_GPIO, LED_2);
-			break;
-		case 2:
-			GPIO_SetBits(LED_GPIO, LED_3);
-			break;
-		case 3:
-			GPIO_SetBits(LED_GPIO, LED_4);
-			break;
-		case 4:
-			GPIO_SetBits(LED_GPIO, LED_5);
-			break;
-		case 5:
-			GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5 | STATE_LED); 
-			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
-			clearBuffer(); 																										// Clearing 7 segment display. Shouldn't be here, but idk where else to put it
-			break;
-	}
-}		
+		if(getAll_cups_present()){ // Helps physically see if cups are placed or not
+		//TIM_Cmd(TIM3, ENABLE);
+		switch( get_task_counter() ) {
+			case 0:
+				set_xLED(LED_1);
+				break;
+			case 1:
+				GPIO_SetBits(LED_GPIO, LED_1);
+				set_xLED(LED_2);
+				break;
+			case 2:
+				GPIO_SetBits(LED_GPIO, LED_2);
+				set_xLED(LED_3);
+				break;
+			case 3:
+				GPIO_SetBits(LED_GPIO, LED_3);
+				set_xLED(LED_4);
+				break;
+			case 4:
+				GPIO_SetBits(LED_GPIO, LED_4);
+				set_xLED(LED_5);
+				break;
+			case 5:
+				set_xLED(0);
+				GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5 | STATE_LED); 
+				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
+				clearBuffer(); 																										// Clearing 7 segment display. Shouldn't be here, but idk where else to put it
+				break;
+		}
+	}		
 }
 
 void BlinkOnboardLED(uint8_t L){

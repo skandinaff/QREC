@@ -46,6 +46,7 @@
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_delay.h
 .\targets\stm32f429_discovery\main.o: User\leds.h
 .\targets\stm32f429_discovery\main.o: User\usart.h
+.\targets\stm32f429_discovery\main.o: User\init_periph_irqs.h
 .\targets\stm32f429_discovery\main.o: User\detect_whistle.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_adc.h
 .\targets\stm32f429_discovery\main.o: .\TM\tm_stm32f4_disco.h

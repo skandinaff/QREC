@@ -46,6 +46,7 @@ uint8_t DetectCups(void) {
 
 bool getAll_cups_present(void) {
 		if(cups_override) return true;
+		TIM_Cmd(TIM3, ENABLE);
     return DetectCups() == 5;
 }
 
