@@ -221,7 +221,7 @@ void SilenceDetection(void) {
 		}
 		if(N >= SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
 			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + CORRECTION_VALUE ); 			// Add correction value, 4 seems to be optimal
-			addToBuffer(getSilenceThresh(),false,false);
+			//addToBuffer(getSilenceThresh(),false,false);
 			Delayms(1000);
 			//TM_ILI9341_Puts(10, 65, "                         ", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 		} 

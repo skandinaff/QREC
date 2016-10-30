@@ -207,7 +207,8 @@ void Control_12V_LEDs(void){
 				break;
 			case 4:
 				GPIO_SetBits(LED_GPIO, LED_4);
-				set_xLED(LED_5);
+				GPIO_SetBits(LED_GPIO, LED_5);  // Blinking removed due to interference with pulse readings
+				set_xLED(0);
 				break;
 			case 5:
 				set_xLED(0);
