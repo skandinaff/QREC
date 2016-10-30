@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Targets\STM32F429_Discovery\project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Targets\STM32F429_Discovery\project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Sat Oct 29 16:46:49 2016
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Sun Oct 30 03:39:31 2016
 <BR><P>
 <H3>Maximum Stack Usage =        264 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -776,7 +776,7 @@ Global Symbols
 
 <P><STRONG><a name="[11f]"></a>GPIO_WriteBit</STRONG> (Thumb, 10 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shiftOut
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearBuffer
 </UL>
 
@@ -942,7 +942,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
@@ -1517,7 +1517,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
@@ -1922,7 +1922,7 @@ Global Symbols
 <P><STRONG><a name="[111]"></a>getSecondCount</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 </UL>
@@ -1930,7 +1930,7 @@ Global Symbols
 <P><STRONG><a name="[e6]"></a>setSecondsCount</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
@@ -1994,7 +1994,7 @@ Global Symbols
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;arm_cfft_radix4_f32
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
 </UL>
-<BR>[Called By]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<BR>[Called By]<UL><LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 </UL>
@@ -2022,13 +2022,12 @@ Global Symbols
 
 <P><STRONG><a name="[21b]"></a>getClaps</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, detect_whistle.o(.text), UNUSED)
 
-<P><STRONG><a name="[112]"></a>DetectClap</STRONG> (Thumb, 200 bytes, Stack size 64 bytes, detect_whistle.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = DetectClap &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
+<P><STRONG><a name="[112]"></a>DetectClap</STRONG> (Thumb, 168 bytes, Stack size 56 bytes, detect_whistle.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = DetectClap &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ComputeFFT
 <LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_task_counter
@@ -2040,12 +2039,12 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[102]"></a>resetSilenceThresh</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, detect_whistle.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<BR><BR>[Called By]<UL><LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
 <P><STRONG><a name="[101]"></a>setSilenceThresh</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, detect_whistle.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<BR><BR>[Called By]<UL><LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
@@ -2053,13 +2052,13 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[114]"></a>SilenceDetection</STRONG> (Thumb, 286 bytes, Stack size 64 bytes, detect_whistle.o(.text))
+<P><STRONG><a name="[113]"></a>SilenceDetection</STRONG> (Thumb, 280 bytes, Stack size 64 bytes, detect_whistle.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = SilenceDetection &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 <LI><a href="#[10f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ComputeFFT
 <LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[101]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSilenceThresh
@@ -2080,7 +2079,7 @@ Global Symbols
 <P><STRONG><a name="[e9]"></a>get_task_counter</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, cup_detection.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
@@ -2096,7 +2095,7 @@ Global Symbols
 </UL>
 <BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
@@ -2148,7 +2147,7 @@ Global Symbols
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ADC_Read
 <LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_cups_override
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTIM5_count2
 <LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSampleCounterIRQ
 <LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSampleCounterIRQ
@@ -2163,13 +2162,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[e2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[11d]"></a>MotionDetection</STRONG> (Thumb, 134 bytes, Stack size 16 bytes, movement_detection.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = MotionDetection &rArr; addToBuffer &rArr; shiftOut
+<P><STRONG><a name="[11d]"></a>MotionDetection</STRONG> (Thumb, 122 bytes, Stack size 16 bytes, movement_detection.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = MotionDetection &rArr; set_task_counter &rArr; BlinkOnboardLED &rArr; Delayms
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[111]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[e5]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_task_counter
 <LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSecondsCount
@@ -2211,20 +2209,18 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
+<BR>[Called By]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearBuffer
 </UL>
 
-<P><STRONG><a name="[113]"></a>addToBuffer</STRONG> (Thumb, 176 bytes, Stack size 24 bytes, leds.o(.text))
+<P><STRONG><a name="[114]"></a>addToBuffer</STRONG> (Thumb, 176 bytes, Stack size 24 bytes, leds.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = addToBuffer &rArr; shiftOut
 </UL>
 <BR>[Calls]<UL><LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_WriteBit
 <LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;shiftOut
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
-<LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
+<BR>[Called By]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[eb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Test_7Seg
 </UL>
 
@@ -2270,7 +2266,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = Test_7Seg &rArr; addToBuffer &rArr; shiftOut
 </UL>
 <BR>[Calls]<UL><LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
-<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
+<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[d8]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;clearBuffer
 </UL>
 <BR>[Called By]<UL><LI><a href="#[ff]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
@@ -2296,7 +2292,7 @@ Global Symbols
 <LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[117]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
-<LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Configure_MotionSensorPort
@@ -2377,7 +2373,7 @@ Global Symbols
 <P><STRONG><a name="[10f]"></a>__aeabi_memcpy4</STRONG> (Thumb, 0 bytes, Stack size 8 bytes, rt_memcpy_w.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __aeabi_memcpy4
 </UL>
-<BR>[Called By]<UL><LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
+<BR>[Called By]<UL><LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[110]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[10a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ComputeFFT
