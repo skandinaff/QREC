@@ -19,12 +19,14 @@ void PerformQuest(void){
 	
 	
 	switch (task_counter) {
-		case 0:	// Clap detection
-			TM_ADC_Init(ADC1, ADC_Channel_3);
+		case 0:	// Pulse readings
+			TIM_Cmd(TIM5, ENABLE); 
+			TM_ADC_Init(ADC2, ADC_Channel_8);
 			ClearOnboardLEDS();
+			setTIM5_count(1);	
 			break;
 		case 1: // Silence detection
-			//setSilenceThresh(SILENCE_AMPLITUDE); 
+			TM_ADC_Init(ADC1, ADC_Channel_3);
 			ClearOnboardLEDS();
 			break;
 		case 2:  // Motion detection
@@ -34,18 +36,15 @@ void PerformQuest(void){
 		case 3:  // Whistle Detection
 			ClearOnboardLEDS();
 			break;
-		case 4:  // Pulse Readings
-			TIM_Cmd(TIM5, ENABLE); 
-			TM_ADC_Init(ADC2, ADC_Channel_8);
+		case 4:  // Clap Detection
 			ClearOnboardLEDS();
-			setTIM5_count(1);
 			break;
 	}
 
 	while (task_counter == get_task_counter() && getAll_cups_present() ) {
 		switch (task_counter) {
 			case 0:	// Clap detection
-			  DetectClap();
+				ReadPulse();			  
 				break;
 			case 1: // Silence detection
 				SilenceDetection();
@@ -57,7 +56,7 @@ void PerformQuest(void){
 				DetectWhistle();
 				break;
 			case 4:  // Pulse Readings
-				ReadPulse();
+				DetectClap();
 				break;
 		}
 

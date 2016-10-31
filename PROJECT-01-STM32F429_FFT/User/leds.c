@@ -191,7 +191,8 @@ void Control_12V_LEDs(void){
 		//TIM_Cmd(TIM3, ENABLE);
 		switch( get_task_counter() ) {
 			case 0:
-				set_xLED(LED_1);
+				//set_xLED(LED_1);
+				GPIO_SetBits(LED_GPIO, LED_5);
 				break;
 			case 1:
 				GPIO_SetBits(LED_GPIO, LED_1);
@@ -206,9 +207,10 @@ void Control_12V_LEDs(void){
 				set_xLED(LED_4);
 				break;
 			case 4:
-				GPIO_SetBits(LED_GPIO, LED_4);
-				GPIO_SetBits(LED_GPIO, LED_5);  // Blinking removed due to interference with pulse readings
-				set_xLED(0);
+				GPIO_SetBits(LED_GPIO, LED_4);  // In Room 1 Leds 5 and 1 are not swapped, hence this mess.. 
+				set_xLED(LED_1);
+				//GPIO_SetBits(LED_GPIO, LED_5);  // Blinking removed due to interference with pulse readings
+				//set_xLED(0);
 				break;
 			case 5:
 				set_xLED(0);

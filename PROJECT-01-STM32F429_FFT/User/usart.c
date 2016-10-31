@@ -399,6 +399,9 @@ void check_usart_while_playing(){
 					case SYS_RESET:
 						NVIC_SystemReset();
 						break;
+					case HM_CUPS:
+						SendInstruction(DetectCups());
+						break;
 				}	
 			}
 		}

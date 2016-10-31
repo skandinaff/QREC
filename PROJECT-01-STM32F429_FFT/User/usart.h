@@ -15,6 +15,7 @@
 * 0xC1 0x10 0x79 0x3F 0xC0 Perform system reset
 * 0xC1 0x10 0x78 0x38 0xC0 Go Straight to Pulse Reading
 * 0xC1 0x10 0x77 0x15 0xC0 Start quest with cups override, for test purpouses
+*	0xC1 0x10 0x76 0x12 0xC0 Ask how many cups are detected
 *
 * ---------------------------------------------------------- */
 
@@ -32,6 +33,7 @@
 #include "tm_stm32f4_delay.h"
 #include "leds.h"
 #include "quest.h"
+#include "cup_detection.h"
 
 #define USART_BAUD_RATE 					19200
 
@@ -48,6 +50,7 @@
 #define SYS_RESET									0x79
 #define PULSE											0x78
 #define WS_TEST_MODE							0x77
+#define HM_CUPS										0x76
 
 //------------- Instructions from main device
 #define INSTR_MASTER_TEST					0x01
