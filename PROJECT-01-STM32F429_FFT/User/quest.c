@@ -10,7 +10,8 @@ void PerformQuest(void){
 	//TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 	if (!getAll_cups_present()) {
-		TIM_Cmd(TIM3, DISABLE);  //TODO: Check if this works
+		TIM_Cmd(TIM3, DISABLE);  //TODO: Check if this works upd 4.11.16: seems not to..
+		Control_12V_LED_individually(true);
     setSecondsCount(0);	
 		check_usart_while_playing();
 		//TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);

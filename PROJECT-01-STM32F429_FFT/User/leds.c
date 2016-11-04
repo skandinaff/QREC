@@ -185,30 +185,63 @@ void shiftOut(int myDataPin, int myClockPin, uint8_t myDataOut) {
 	GPIO_WriteBit(LED_SEG_GPIO, CLOCK_PIN, Bit_RESET);
 }
 
+void Control_12V_LED_individually(bool state){
+	switch (get_task_counter()){
+		case 0:
+			if(state) GPIO_SetBits(LED_GPIO, LED_5);
+			if(!state) GPIO_ResetBits(LED_GPIO, LED_5);
+			break;
+		case 1:
+			if(state) GPIO_SetBits(LED_GPIO, LED_2);
+			if(!state) GPIO_ResetBits(LED_GPIO, LED_2);
+			break;
+		case 2:
+			if(state) GPIO_SetBits(LED_GPIO, LED_3);
+			if(!state) GPIO_ResetBits(LED_GPIO, LED_3);
+			break;
+		case 3:
+			if(state) GPIO_SetBits(LED_GPIO, LED_4);
+			if(!state) GPIO_ResetBits(LED_GPIO, LED_4);
+			break;
+		case 4:
+			if(state) GPIO_SetBits(LED_GPIO, LED_1);
+			if(!state) GPIO_ResetBits(LED_GPIO, LED_1);			
+			break;
+	}
+}
+
 void Control_12V_LEDs(void){
 
-		if(getAll_cups_present()){ // Helps physically see if cups are placed or not
+		//if(getAll_cups_present()){ // Helps physically see if cups are placed or not
 		//TIM_Cmd(TIM3, ENABLE);
+	
 		switch( get_task_counter() ) {
 			case 0:
 				//set_xLED(LED_1);
 				GPIO_SetBits(LED_GPIO, LED_5);
+			
 				break;
 			case 1:
-				GPIO_SetBits(LED_GPIO, LED_1);
+				//GPIO_SetBits(LED_GPIO, LED_1);
+			
+				GPIO_SetBits(LED_GPIO, LED_5); // Because skipping first task
 				set_xLED(LED_2);
+				
 				break;
 			case 2:
 				GPIO_SetBits(LED_GPIO, LED_2);
 				set_xLED(LED_3);
+				
 				break;
 			case 3:
 				GPIO_SetBits(LED_GPIO, LED_3);
 				set_xLED(LED_4);
+
 				break;
 			case 4:
 				GPIO_SetBits(LED_GPIO, LED_4);  // In Room 1 Leds 5 and 1 are not swapped, hence this mess.. 
 				set_xLED(LED_1);
+
 				//GPIO_SetBits(LED_GPIO, LED_5);  // Blinking removed due to interference with pulse readings
 				//set_xLED(0);
 				break;
@@ -218,7 +251,7 @@ void Control_12V_LEDs(void){
 				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
 				clearBuffer(); 																										// Clearing 7 segment display. Shouldn't be here, but idk where else to put it
 				break;
-		}
+		//}
 	}		
 }
 

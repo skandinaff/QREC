@@ -148,7 +148,7 @@ int main(void) {
 							PerformQuest();
 							if(get_break_flag()){
 								GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);
-								set_task_counter(0);
+								set_task_counter(FIRST_TASK);
 								setSecondsCount(0);
 								TIM_Cmd(TIM2, DISABLE);
 								//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
@@ -166,7 +166,7 @@ int main(void) {
 						}*/
 						break;
 					case INSTR_MASTER_SET_IDLE:
-						set_task_counter(0);
+						set_task_counter(FIRST_TASK);
 						break;
 					case CINSTR_GOTO_END:
 						set_cups_override();
@@ -193,7 +193,7 @@ int main(void) {
 							PerformQuest();
 							if(get_break_flag()){
 								GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);
-								set_task_counter(0);
+								set_task_counter(FIRST_TASK);
 								setSecondsCount(0);
 								TIM_Cmd(TIM2, DISABLE);
 								//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
@@ -206,7 +206,7 @@ int main(void) {
 			}
 		}
 		
-		set_task_counter(0);
+		set_task_counter(FIRST_TASK);
 		
 	}
 }

@@ -367,7 +367,7 @@ void check_usart_while_playing(){
 						GPIO_ResetBits(LED_GPIO, STATE_LED);
 						setClaps(0);
 						set_break_flag(true);
-						set_task_counter(0);
+						set_task_counter(FIRST_TASK);
 						return;
 					case CINSTR_GOTO_END:
 						set_task_counter(get_task_counter() + 1); // Skips a task

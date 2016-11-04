@@ -32,26 +32,37 @@ void DetectWhistle(void) {
 
     if (in.maxIndex > 0) //TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-    if (freq >= 1100 && freq < 2400) {  // TODO: try two interwals
+    if (freq >= 1100 && freq < 2400) {  // Whistle withing range
         TIM_Cmd(TIM2, ENABLE);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
       //  TM_DISCO_LedOff(LED_RED);
       //  TM_DISCO_LedOn(LED_GREEN);
     }
-    if (freq < 900) {
+    if (freq < 900) {  // Cutting off frequencies less than 900
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
        // TM_DISCO_LedOn(LED_RED);
        // TM_DISCO_LedOff(LED_GREEN);
         //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-        TIM_Cmd(TIM2, DISABLE);
+      //setSecondsCount(0);  
+			TIM_Cmd(TIM2, DISABLE);
+    }
+		if (freq > 2400) { // Cutting off frequencies more than 2400
+			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+       // TM_DISCO_LedOn(LED_RED);
+       // TM_DISCO_LedOff(LED_GREEN);
+        //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+      //setSecondsCount(0);  
+			TIM_Cmd(TIM2, DISABLE);
     }
 
-
+		if (getSecondCount() > 60) setSecondsCount(0);
+		
     if (getSecondCount() > WHISTLE_TIME) {
         //TM_ILI9341_Puts(10, 25, "You Whistled for N sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-        Delayms(2000);
+        Delayms(100);
         set_task_counter(get_task_counter() + 1);
         setSecondsCount(0);
     }
@@ -153,7 +164,7 @@ void DetectClap(void) {
 
     float32_t freq;
 
-    freq = in.maxIndex * (45000 / 256); 
+    freq = in.maxIndex * (45000 / 256);  // Obtaining frequency from the signal
 
 		if(freq > 500 && freq < 1200) {
 
@@ -180,7 +191,7 @@ void DetectClap(void) {
 					setClaps(0);
 					//TM_ILI9341_Puts(10, 60, "You did clap 3 times", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 					set_task_counter(get_task_counter() + 1);
-					Delayms(1000);
+					Delayms(100);
 			}
 		}
 }
@@ -191,7 +202,7 @@ void SilenceDetection(void) {
     FFT_OUT_t in;
     in = ComputeFFT();
 
-		/*	Display Section
+		/*	//Display Section
 	  TM_ILI9341_Puts(10, 10, "Peak Ampl:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 		TM_ILI9341_Puts(10, 25, "Current Thresh:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     TM_ILI9341_Puts(10, 40, "Seconds passed:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -208,9 +219,9 @@ void SilenceDetection(void) {
 		*/
 	
 // TODO: remove this in production. For tests only
-		//	addToBuffer(getSecondCount(),false,false);
+			addToBuffer(getSecondCount(),false,false);
 	
-		//	addToBuffer(in.maxValue);
+			//addToBuffer(in.maxValue,false,false);
 // ***
 
 	Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
@@ -221,8 +232,8 @@ void SilenceDetection(void) {
 		}
 		if(N >= SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
 			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + CORRECTION_VALUE ); 			// Add correction value, 4 seems to be optimal
-			//addToBuffer(getSilenceThresh(),false,false);
-			Delayms(1000);
+			addToBuffer(getSilenceThresh(),false,false);
+			Delayms(100);
 			//TM_ILI9341_Puts(10, 65, "                         ", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 		} 
 		if(N<SIL_AVG_SAMPLES + 1) N++;
@@ -231,20 +242,23 @@ void SilenceDetection(void) {
 
     freq = in.maxIndex * (45000 / 256); 
 
-		if(freq > 200 && freq < 5000) {
+		if(freq > 100 && freq < 6000) {
 			
-			if (in.maxValue < getSilenceThresh()) {
+			if (in.maxValue < getSilenceThresh())
+			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);				
 					TIM_Cmd(TIM2, ENABLE);
 			}
 			
 			if (in.maxValue > getSilenceThresh() && silence_thresh_is_set == 1) {
 				setSecondsCount(0); 
-				//BlinkOnboardLED(3);
+				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);	
 				K++;
 			}																							// Here, instead of comparing MAX to a threshold (SILENCE_AMPLITEUD) 
 																										// Should be comparing average between min and max 
 																										// from a previous iterationto a max 
-		}
+		//? }
 			
 			if (getSecondCount() > SILENCE_TIME) { //Silence time
 					TIM_Cmd(TIM2, DISABLE);
@@ -253,7 +267,7 @@ void SilenceDetection(void) {
 					set_task_counter(get_task_counter() + 1);
 					setSecondsCount(0);
 					setSilenceThresh(SILENCE_AMPLITUDE);
-					Delayms(1000);
+					Delayms(100);
 			}
 			if(K > 5) {
 				resetSilenceThresh();

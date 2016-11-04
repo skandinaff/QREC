@@ -9,13 +9,13 @@ unsigned char c5_state = 0;
 
 volatile uint16_t cstate;
 
-uint8_t _task_counter = 0; // that will be our inital task. Default: 0
+uint8_t _task_counter = FIRST_TASK; // that will be our inital task. Default: 0
 
 bool all_cups_present;
 bool cups_override = false;
 
 void reset_task_counter(void) {
-    _task_counter = 0;
+    _task_counter = FIRST_TASK;
 }
 
 
@@ -31,22 +31,20 @@ void set_task_counter(int counter) {
 
 
 uint8_t DetectCups(void) {
-	// TODO: Invert all the states, since schematics reqire that (c1_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_8); etc)
-    c1_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_8);
+	  c1_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_8);
     c2_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_9);
     c3_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_10);
     c4_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_11);
     c5_state = !GPIO_ReadInputDataBit(GPIOD, GPIO_Pin_12);
-
     return c1_state + c2_state + c3_state + c4_state + c5_state;
-		// For debug with no reed used this instead:
-		//return 5;
 }
 
 
 bool getAll_cups_present(void) {
-		if(cups_override) return true;
-		TIM_Cmd(TIM3, ENABLE);
+		if(cups_override) { 
+			return true;
+		}
+		if(DetectCups()==5) TIM_Cmd(TIM3, ENABLE);
     return DetectCups() == 5;
 }
 
