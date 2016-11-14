@@ -20,5 +20,7 @@ void setCstate(uint16_t s);
 bool getAll_cups_present(void);
 bool get_cups_override(void);
 void set_cups_override(void);
+void set_first_start(bool fs);
+bool get_first_start(void);
 	
 #endif

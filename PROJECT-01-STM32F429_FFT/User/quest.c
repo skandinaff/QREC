@@ -11,7 +11,10 @@ void PerformQuest(void){
 
 	if (!getAll_cups_present()) {
 		TIM_Cmd(TIM3, DISABLE);  //TODO: Check if this works upd 4.11.16: seems not to..
-		Control_12V_LED_individually(true);
+		if(get_first_start() == true){
+			Control_12V_LED_individually(true);
+			Control_12V_LEDs(); // Moved to here because othewise leds lit before cups were placed
+		}
     setSecondsCount(0);	
 		check_usart_while_playing();
 		//TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -43,6 +46,9 @@ void PerformQuest(void){
 	}
 
 	while (task_counter == get_task_counter() && getAll_cups_present() ) {
+		
+		if(get_first_start()) Control_12V_LEDs();
+		
 		switch (task_counter) {
 			case 0:	// Clap detection
 				ReadPulse();			  

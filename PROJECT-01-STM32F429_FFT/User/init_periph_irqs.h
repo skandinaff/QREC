@@ -27,6 +27,7 @@
 
 void INTTIM2_Config(void);
 void INTTIM5_Config(void);
+void INTTIM3_Config(void);
 void Configure_CupDetection(void);
 void Configure_485(void);
 void Configure_MotionSensorPort(void);

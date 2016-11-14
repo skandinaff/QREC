@@ -14,6 +14,8 @@ uint8_t _task_counter = FIRST_TASK; // that will be our inital task. Default: 0
 bool all_cups_present;
 bool cups_override = false;
 
+bool first_start = false;
+
 void reset_task_counter(void) {
     _task_counter = FIRST_TASK;
 }
@@ -44,7 +46,10 @@ bool getAll_cups_present(void) {
 		if(cups_override) { 
 			return true;
 		}
-		if(DetectCups()==5) TIM_Cmd(TIM3, ENABLE);
+		if(DetectCups()==5) { 
+			TIM_Cmd(TIM3, ENABLE);
+			if(get_first_start() == false) set_first_start(true);
+		}
     return DetectCups() == 5;
 }
 
@@ -64,4 +69,12 @@ void set_cups_override(void){
 
 bool get_cups_override(void){
 	return cups_override;
+}
+
+void set_first_start(bool fs){
+	first_start = fs;
+}
+
+bool get_first_start(void){
+	return first_start;
 }

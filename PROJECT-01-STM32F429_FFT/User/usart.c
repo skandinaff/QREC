@@ -363,10 +363,13 @@ void check_usart_while_playing(){
 					  setSecondsCount(0); */
 						TIM_Cmd(TIM2, DISABLE);
 						TIM_Cmd(TIM5, DISABLE);
+						TIM_Cmd(TIM5, DISABLE);
 						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
 						GPIO_ResetBits(LED_GPIO, STATE_LED);
+					  set_xLED(0);
 						setClaps(0);
 						set_break_flag(true);
+						set_first_start(false);
 						set_task_counter(FIRST_TASK);
 						return;
 					case CINSTR_GOTO_END:
