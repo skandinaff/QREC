@@ -32,14 +32,14 @@ void DetectWhistle(void) {
 
     if (in.maxIndex > 0) //TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-    if (freq >= 1100 && freq < 2400) {  // Whistle withing range
+    if (freq >= 1000 && freq <= 2400) {  // Whistle withing range
         TIM_Cmd(TIM2, ENABLE);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
       //  TM_DISCO_LedOff(LED_RED);
       //  TM_DISCO_LedOn(LED_GREEN);
     }
-    if (freq < 900) {  // Cutting off frequencies less than 900
+    if (freq < 1000) {  // Cutting off frequencies less than 900
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
        // TM_DISCO_LedOn(LED_RED);
