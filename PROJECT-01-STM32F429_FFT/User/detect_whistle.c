@@ -219,7 +219,7 @@ void SilenceDetection(void) {
 		*/
 	
 // TODO: remove this in production. For tests only
-			addToBuffer(getSecondCount(),false,false);
+			//addToBuffer(getSecondCount(),false,false);
 	
 			//addToBuffer(in.maxValue,false,false);
 // ***
