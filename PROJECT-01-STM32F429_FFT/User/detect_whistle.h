@@ -27,7 +27,7 @@
 #define CLAP_AMPLITUDE 						15
 /* Silence settings */
 #define SILENCE_AMPLITUDE					3						// 4 is the absolute minimum, barele above backround noise // TODO: FIXME (was 5.5)
-#define SILENCE_TIME							10
+#define SILENCE_TIME							15
 #define SIL_AVG_SAMPLES						10
 #define CORRECTION_VALUE					3 //4.5
 /* Common settings */
