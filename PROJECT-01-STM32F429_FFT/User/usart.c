@@ -371,6 +371,7 @@ void check_usart_while_playing(){
 						set_break_flag(true);
 						set_first_start(false);
 						set_task_counter(FIRST_TASK);
+						//clearBuffer();
 						return;
 					case CINSTR_GOTO_END:
 						set_task_counter(get_task_counter() + 1); // Skips a task

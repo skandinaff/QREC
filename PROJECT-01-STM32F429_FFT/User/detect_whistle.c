@@ -4,11 +4,11 @@
 /* Global variables */
 float32_t Input[SAMPLES];
 float32_t Output[FFT_SIZE];
-uint8_t claps = 0;
+uint32_t claps = 0;
 float32_t silence_thresh = SILENCE_AMPLITUDE;
-float32_t silence_thresh_avg;
-uint8_t N = 0, K = 0;
-bool silence_thresh_is_set = 0;
+float32_t silence_thresh_avg = 0;
+uint32_t N = 0, K = 0;
+bool silence_thresh_is_set = false;
 
 void DetectWhistle(void) {
     //TM_ILI9341_Puts(150, 10, "           ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -45,7 +45,7 @@ void DetectWhistle(void) {
        // TM_DISCO_LedOn(LED_RED);
        // TM_DISCO_LedOff(LED_GREEN);
         //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-      //setSecondsCount(0);  
+      if(getSecondCount() < 2) setSecondsCount(0);  
 			TIM_Cmd(TIM2, DISABLE);
     }
 		if (freq > 2400) { // Cutting off frequencies more than 2400
@@ -54,7 +54,7 @@ void DetectWhistle(void) {
        // TM_DISCO_LedOn(LED_RED);
        // TM_DISCO_LedOff(LED_GREEN);
         //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-      //setSecondsCount(0);  
+      if(getSecondCount() < 2) setSecondsCount(0);  
 			TIM_Cmd(TIM2, DISABLE);
     }
 
@@ -156,7 +156,7 @@ void DetectClap(void) {
 */
 
 // TODO: remove this in production. For tests only
-//		addToBuffer(in.maxValue,false,false);
+		addToBuffer(in.maxValue,false,false);
 // ***		
 		
 		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
@@ -219,25 +219,39 @@ void SilenceDetection(void) {
 		*/
 	
 // TODO: remove this in production. For tests only
-			//addToBuffer(getSecondCount(),false,false);
+			//addToBuffer(getSecondCount(),false,false); //Shows seconds spent in silence
 	
-			//addToBuffer(in.maxValue,false,false);
+			addToBuffer(in.maxValue,false,false); // Shows current volume value
 // ***
 
 	Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
 	
-		if(N < SIL_AVG_SAMPLES){
+		if(N < SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
 			silence_thresh_avg += in.maxValue;
 			//TM_ILI9341_Puts(10, 65, "Acquiring threshold value", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 		}
-		if(N >= SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
+		
+		if(N >= SIL_AVG_SAMPLES && silence_thresh_is_set == false){
 			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + CORRECTION_VALUE ); 			// Add correction value, 4 seems to be optimal
-			addToBuffer(getSilenceThresh(),false,false);
-			Delayms(100);
+			addToBuffer(getSilenceThresh(),false,false); // Shows threshold set value.
+			Delayms(800);
+			//BlinkOnboardLED(2);
 			//TM_ILI9341_Puts(10, 65, "                         ", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
+			silence_thresh_avg = 0; // Clearing average variable after threshold is set
+			silence_thresh_is_set = true;
+			TIM_Cmd(TIM5, ENABLE);
 		} 
-		if(N<SIL_AVG_SAMPLES + 1) N++;
+		if(N < SIL_AVG_SAMPLES + 1 && silence_thresh_is_set == false) N++;
 
+		if(getTIM5_count() > 600 && silence_thresh_is_set == true){
+			addToBuffer(000,true,false);
+			Delayms(400);
+			resetSilenceThresh(); // After 2 periouds of tim5 (37.5*2s) redefine silence threshold
+			silence_thresh_is_set = false;
+			setTIM5_count(0);
+			TIM_Cmd(TIM5, DISABLE);
+		}
+		
 		float32_t freq;
 
     freq = in.maxIndex * (45000 / 256); 
@@ -250,11 +264,11 @@ void SilenceDetection(void) {
 					TIM_Cmd(TIM2, ENABLE);
 			}
 			
-			if (in.maxValue > getSilenceThresh() && silence_thresh_is_set == 1) {
+			if (in.maxValue > getSilenceThresh() && silence_thresh_is_set == true) {
 				setSecondsCount(0); 
 				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);	
-				K++;
+				//K++;
 			}																							// Here, instead of comparing MAX to a threshold (SILENCE_AMPLITEUD) 
 																										// Should be comparing average between min and max 
 																										// from a previous iterationto a max 
@@ -269,11 +283,12 @@ void SilenceDetection(void) {
 					setSilenceThresh(SILENCE_AMPLITUDE);
 					Delayms(100);
 			}
+			/*
 			if(K > 5) {
 				resetSilenceThresh();
 				K=0;
 			}
-			
+			*/
 		
 		
 }
@@ -301,7 +316,9 @@ uint8_t getClaps(void) {
 }
 
 void setSilenceThresh(float32_t st) {
-	silence_thresh_is_set = 1;
+	silence_thresh_is_set = true;
+	if(st < 3) st = 3; // If Silence thresh detected to be less than 3, leave it 3 as it is sensable minimum
+	if(st > 10) st = 10; //  If Silence thresh detected to be moore than 16, leave it 16 as it is sensable maximum
 	silence_thresh = st;
 }
 

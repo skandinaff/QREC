@@ -182,14 +182,14 @@ void TIM5_IRQHandler(void) {
 		sampleCounterIRQ += 1;	// This increments a counter for pulse sensor
 
 
-		counter += 1;          // This horrible thing here helps to get ~0.250ms refresh rate for drawing signal
+		counter += 1;          // This horrible thing here helps to get ~2ms refresh rate for drawing signal
 		counter2 += 1;
 		
-		if (counter == 50) {	// This gives you 50*0.25=12.5s (why did I need that??)
+		if (counter == 50) {	// This gives you 50*2ms=100ms (why did I need that??)
 			tim5_count += 1;
 			counter = 0;
 		}
-		if (counter2 == 150) { //And this gives you 37.5s (why did I need that )
+		if (counter2 == 150) { //And this gives you 150*2=300ms (why did I need that )
 			tim5_count2 += 1;
 			counter2 = 0;
 		}

@@ -24,12 +24,12 @@
 /* Whistle settings */
 #define WHISTLE_TIME							10
 /* Clap settings */
-#define CLAP_AMPLITUDE 						15
+#define CLAP_AMPLITUDE 						13
 /* Silence settings */
-#define SILENCE_AMPLITUDE					3						// 4 is the absolute minimum, barele above backround noise // TODO: FIXME (was 5.5)
+#define SILENCE_AMPLITUDE					5						// 3 is the absolute minimum, barele above backround noise 
 #define SILENCE_TIME							15
-#define SIL_AVG_SAMPLES						10
-#define CORRECTION_VALUE					3 //4.5
+#define SIL_AVG_SAMPLES						12					// previously was 10
+#define CORRECTION_VALUE					0 					// was 3
 /* Common settings */
 #define DELAY_VALUE								20
 

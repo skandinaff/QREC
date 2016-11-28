@@ -30,6 +30,7 @@ void PerformQuest(void){
 			setTIM5_count(1);	
 			break;
 		case 1: // Silence detection
+			setTIM5_count2(0);
 			TM_ADC_Init(ADC1, ADC_Channel_3);
 			ClearOnboardLEDS();
 			break;
