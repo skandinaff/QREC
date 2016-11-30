@@ -4,8 +4,12 @@ long secondsCount = 0;
 long tim2_count = 0;
 long tim5_count = 0;
 long tim5_count2 = 0;
+long tim5_count3 = 0;
+long tim5_count4 = 0;
 long counter = 0;
 long counter2 = 0;
+long counter3 = 0;
+long counter4 = 0;
 
 long led_counter = 0;
 int xLED = 0;
@@ -184,6 +188,8 @@ void TIM5_IRQHandler(void) {
 
 		counter += 1;          // This horrible thing here helps to get ~2ms refresh rate for drawing signal
 		counter2 += 1;
+		counter3 += 1;
+		counter4 += 1;
 		
 		if (counter == 50) {	// This gives you 50*2ms=100ms (why did I need that??)
 			tim5_count += 1;
@@ -192,6 +198,14 @@ void TIM5_IRQHandler(void) {
 		if (counter2 == 150) { //And this gives you 150*2=300ms (why did I need that )
 			tim5_count2 += 1;
 			counter2 = 0;
+		}
+		if (counter3 == 25) { //25*0.250
+			tim5_count3 += 1;
+			counter3 = 0;
+		}
+		if (counter4 == 1){ // 1*0.250
+			tim5_count4 += 1;
+			counter4 = 0;
 		}
 
 	}
@@ -258,5 +272,18 @@ uint16_t getTIM5_count2(void){
 }
 void setTIM5_count2(uint16_t s){
 	tim5_count2 = s;
+}
+uint16_t getTIM5_count3(void){
+	return tim5_count3;
+}
+void setTIM5_count3(uint16_t s){
+	tim5_count3 = s;
+}
+
+uint16_t getTIM5_count4(void){
+	return tim5_count4;
+}
+void setTIM5_count4(uint16_t s){
+	tim5_count4 = s;
 }
 

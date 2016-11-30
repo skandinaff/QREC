@@ -234,7 +234,7 @@ void SilenceDetection(void) {
 		if(N >= SIL_AVG_SAMPLES && silence_thresh_is_set == false){
 			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + CORRECTION_VALUE ); 			// Add correction value, 4 seems to be optimal
 			addToBuffer(getSilenceThresh(),false,false); // Shows threshold set value.
-			Delayms(800);
+			//Delayms(800);
 			//BlinkOnboardLED(2);
 			//TM_ILI9341_Puts(10, 65, "                         ", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 			silence_thresh_avg = 0; // Clearing average variable after threshold is set
@@ -259,13 +259,15 @@ void SilenceDetection(void) {
 		if(freq > 100 && freq < 6000) {
 			
 			if (in.maxValue < getSilenceThresh())
-			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
-			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);				
+				
+					GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+					GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);				
 					TIM_Cmd(TIM2, ENABLE);
 			}
 			
 			if (in.maxValue > getSilenceThresh() && silence_thresh_is_set == true) {
-				setSecondsCount(0); 
+				setSecondsCount(0);
+				
 				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);	
 				//K++;

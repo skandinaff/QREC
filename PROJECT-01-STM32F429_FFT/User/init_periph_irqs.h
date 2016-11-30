@@ -56,6 +56,13 @@ void setTIM5_count(uint16_t s);
 uint16_t getTIM5_count2(void);
 void setTIM5_count2(uint16_t s);
 
+uint16_t getTIM5_count3(void);
+void setTIM5_count3(uint16_t s);
+
+uint16_t getTIM5_count4(void);
+void setTIM5_count4(uint16_t s);
+
+
 uint16_t getLEDCount(void);
 void setLEDCount(uint16_t s);
 

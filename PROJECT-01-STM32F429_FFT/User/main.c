@@ -116,9 +116,8 @@ int main(void) {
 	
 	//clearBuffer();
 
-	LCD_init();
-	LCD_FillScreen(WHITE);
-	LCD_Puts("State: Idle", 1, 30, DARK_BLUE, WHITE,1,1);
+
+
 
 	while (1) {	
 

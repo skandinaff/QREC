@@ -18,7 +18,7 @@
 #include "usart.h"
 
 #define TARGET_BPM 90
-#define TARGET_TIME 4
+#define TARGET_TIME 3
 #define AMP_LOW_LIM 100
 #define AMP_HIGH_LIM 900
 

@@ -1,5 +1,8 @@
 #include "pulse_reading.h"
 
+#define LCD_W 101	
+#define LCD_H 80
+
 volatile uint16_t BPM;
 volatile uint16_t Signal;
 volatile uint16_t IBI = 600;
@@ -24,15 +27,21 @@ char pulse_str[15];
 
 uint16_t old_tim5_count = 0;
 
+uint16_t SignalToDraw;
+uint16_t PrevSignalToDraw;
+uint16_t threshToDraw;
+uint16_t prev_Signal;
 
 void ReadPulse(void) {
     //TM_ILI9341_DrawPixel(getTIM5_count(), 240 - thresh / 17, ILI9341_COLOR_RED);
-
+		/*
  		if(GPIO_ReadInputDataBit(GPIOA, PULSE_CAP_SENS)) {
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			Signal = TM_ADC_Read(ADC2, ADC_Channel_8);              // read the Pulse Sensor from PB0 
 		}
-		if(!GPIO_ReadInputDataBit(GPIOA, PULSE_CAP_SENS)) GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+		*/
+		Signal = TM_ADC_Read(ADC2, ADC_Channel_8); 
+		//if(!GPIO_ReadInputDataBit(GPIOA, PULSE_CAP_SENS)) GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 		
     //sampleCounter += 2; // 2 (ms)                         // keep track of the time in mS with this variable
     // We've assigned this variable incrementation to a timer iinterrupts
@@ -62,8 +71,8 @@ void ReadPulse(void) {
             Pulse = 1;                               // set the Pulse flag when we think there is a pulse
 							//TM_DISCO_LedOn(LED_RED);               // turn on pin 13 LED
 							GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4); // Red LED turns on when we have a beat
-							addToBuffer(1,true,false);
-							Delayms(5);
+							//addToBuffer(1,true,false);
+							//Delayms(5);
             IBI = getSampleCounterIRQ() - lastBeatTime;         // measure time between beats in mS
             lastBeatTime = getSampleCounterIRQ();               // keep track of time for next pulse
 
@@ -75,8 +84,7 @@ void ReadPulse(void) {
                 }
             }
 
-            if (firstBeat ==
-                1) {                         // if it's the first time we found a beat, if firstBeat == TRUE
+            if (firstBeat ==1) {                         // if it's the first time we found a beat, if firstBeat == TRUE
                 firstBeat = 0;                   // clear firstBeat flag
                 secondBeat = 1;                   // set the second beat flag
 
@@ -123,64 +131,46 @@ void ReadPulse(void) {
 				/* These were added by me */
 				//Pulse = 0;    // Added here to reduce 
         BPM = 0;		// Add this line here, so when no beat detected display shows 0
-				clearBuffer();
+				//clearBuffer();
 				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 				GPIO_SetBits(LED_GPIO, LED_5);	// And here we make a beat with task LED
     }
 
-		/*
-				//Display section
-				sprintf(adc_result_str, "%4d: ", Signal);
-        TM_ILI9341_Puts(1, 5, "RAW ADC: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-        if (getTIM5_count2() != old_tim5_count)
-            TM_ILI9341_Puts(100, 5, adc_result_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-        sprintf(thresh_restult_str, "%4d: ", thresh);
-        TM_ILI9341_Puts(1, 25, "Thresh: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-        TM_ILI9341_Puts(100, 25, thresh_restult_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
-        sprintf(BPM_result_str, "%4d: ", BPM);
-        TM_ILI9341_Puts(1, 45, "BPM: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				
-        if (Pulse == 1) {
-            TM_ILI9341_Puts(100, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
-					put_char(BPM);
-					if(BPM < 100) clearBuffer(); // So we're clearing LED indicator
-					addToBuffer(BPM);
-					Delayms(125);
-					clearBuffer();
-        }
-				
-				sprintf(time_str, "%4d: ", getSecondCount());
-        TM_ILI9341_Puts(160, 5, "Time: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				TM_ILI9341_Puts(190, 5, time_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				
-				sprintf(pulse_str, "%4d: ", Pulse);
-				
-        TM_ILI9341_Puts(160, 25, "Pulse: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				TM_ILI9341_Puts(190, 25, pulse_str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				
-				old_tim5_count = getTIM5_count2();
-
-				if (getTIM5_count() >= 320) {
-					setTIM5_count(1);
-        TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-				
-				TM_ILI9341_DrawPixel(getTIM5_count(), 240 - Signal / 17, 0x1234);
-    }
-				
-		*/
 		
-		if(BPM && get_cups_override()) {
-			GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
-			put_char(BPM);
-			GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
+		old_tim5_count = getTIM5_count2();
+		SignalToDraw = Signal;	
+		threshToDraw = thresh;
+		prev_Signal = Signal;
+		
+		if(SignalToDraw > 2298) SignalToDraw = 2298;
+		if(SignalToDraw < 2023) SignalToDraw = 2023;
+		if(threshToDraw > 2298) threshToDraw = 2298;
+		if(threshToDraw < 2023) threshToDraw = 2023; 
+		
+		//LCD_DrawLine(getTIM5_count3()-1, (SignalToDraw / 7), getTIM5_count3(), (PrevSignalToDraw / 7), CYAN);
+		Put_Pixel( getTIM5_count3(), ( LCD_H - (Signal / 52) ), RED);	
+		
+		Put_Pixel(getTIM5_count3(), ( LCD_H - (thresh / 52)), GREEN);
+		
+		LCD_DrawLine(getTIM5_count3()+1,0,getTIM5_count3()+1,80,BLACK);
+		
+		if (getTIM5_count3() >= 101) {
+        setTIM5_count3(1);
+				//LCD_FillScreen(BLACK);
 		}
 		
+        sprintf(BPM_result_str, "%4d", BPM);
+        LCD_Puts("BPM: ", 1, 1, WHITE, BLACK,1,1); 
+        if (Pulse == 1) {
+            LCD_Puts(BPM_result_str, 40, 1, RED, BLACK,1,1); 
+        }
+
 		
 		if(BPM > 200) BPM = 0; // Neglect values higher than 200, as it really almost impossible
 		
-		if (Pulse == 1) addToBuffer(BPM,false,false);
+		
+		
+		//if (Pulse == 1) addToBuffer(BPM,false,false);
 					
     if (BPM > TARGET_BPM) {
         TIM_Cmd(TIM2, ENABLE);
@@ -195,7 +185,7 @@ void ReadPulse(void) {
 						setTIM5_count(0);
 						setTIM5_count2(0);
 						TIM_Cmd(TIM5, DISABLE);
-						if(get_cups_override()) GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
+						//if(get_cups_override()) GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
         }
     } else {
         TIM_Cmd(TIM2, DISABLE);

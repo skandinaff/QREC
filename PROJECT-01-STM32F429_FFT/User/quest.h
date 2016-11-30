@@ -11,6 +11,7 @@
 #include "leds.h"
 #include "usart.h"
 #include "movement_detection.h"
+#include "LPH8731-3C.h"
 
 void PerformQuest(void);
 

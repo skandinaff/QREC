@@ -25,7 +25,9 @@ void PerformQuest(void){
 	switch (task_counter) {
 		case 0:	// Pulse readings
 			TIM_Cmd(TIM5, ENABLE); 
+			LCD_init();
 			TM_ADC_Init(ADC2, ADC_Channel_8);
+		
 			ClearOnboardLEDS();
 			setTIM5_count(1);	
 			break;
