@@ -3,11 +3,11 @@
 <title>Static Call Graph - [.\Targets\STM32F429_Discovery\project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Targets\STM32F429_Discovery\project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Wed Nov 30 17:23:39 2016
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Wed Nov 30 20:21:15 2016
 <BR><P>
-<H3>Maximum Stack Usage =        288 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        336 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
-__rt_entry_main &rArr; main &rArr; PerformQuest &rArr; ReadPulse &rArr; LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
+__rt_entry_main &rArr; main &rArr; PerformQuest &rArr; SilenceDetection &rArr; LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 <P>
 <H3>
 Functions with no stack information
@@ -276,8 +276,8 @@ Global Symbols
 <P><STRONG><a name="[179]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[81]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 288 + Unknown Stack Size
-<LI>Call Chain = __rt_entry_main &rArr; main &rArr; PerformQuest &rArr; ReadPulse &rArr; LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
+<BR><BR>[Stack]<UL><LI>Max Depth = 336 + Unknown Stack Size
+<LI>Call Chain = __rt_entry_main &rArr; main &rArr; PerformQuest &rArr; SilenceDetection &rArr; LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
 <BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[83]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;exit
@@ -753,7 +753,7 @@ Global Symbols
 
 <P><STRONG><a name="[1ad]"></a>GPIO_PinLockConfig</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, stm32f4xx_gpio.o(.text), UNUSED)
 
-<P><STRONG><a name="[11a]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
+<P><STRONG><a name="[11b]"></a>GPIO_ReadInputDataBit</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
 <LI><a href="#[107]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectCups
 </UL>
@@ -765,14 +765,14 @@ Global Symbols
 <P><STRONG><a name="[1b0]"></a>GPIO_ReadOutputData</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text), UNUSED)
 
 <P><STRONG><a name="[e0]"></a>GPIO_SetBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
-<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_spi
-<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ClkPulse
+<BR><BR>[Called By]<UL><LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_spi
+<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ClkPulse
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_init
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ClearOnboardLEDS
 <LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_12V_LED_individually
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
@@ -782,13 +782,13 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[e3]"></a>GPIO_ResetBits</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32f4xx_gpio.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
-<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_spi
-<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ClkPulse
+<BR><BR>[Called By]<UL><LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_spi
+<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ClkPulse
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_init
 <LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_12V_LED_individually
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
@@ -961,8 +961,8 @@ Global Symbols
 
 <P><STRONG><a name="[e6]"></a>TIM_Cmd</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, stm32f4xx_tim.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
@@ -1508,7 +1508,7 @@ Global Symbols
 <LI><a href="#[c2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_SoftwareStartConv
 <LI><a href="#[c1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ADC_RegularChannelConfig
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ComputeFFT
 </UL>
 
@@ -1537,7 +1537,7 @@ Global Symbols
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = Delayms
 </UL>
 <BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
@@ -1631,8 +1631,8 @@ Global Symbols
 <P><STRONG><a name="[232]"></a>SystemCoreClockUpdate</STRONG> (Thumb, 108 bytes, Stack size 16 bytes, system_stm32f4xx.o(.text), UNUSED)
 
 <P><STRONG><a name="[82]"></a>main</STRONG> (Thumb, 422 bytes, Stack size 16 bytes, main.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 288 + Unknown Stack Size
-<LI>Call Chain = main &rArr; PerformQuest &rArr; ReadPulse &rArr; LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
+<BR><BR>[Stack]<UL><LI>Max Depth = 336 + Unknown Stack Size
+<LI>Call Chain = main &rArr; PerformQuest &rArr; SilenceDetection &rArr; LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[d6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ToggleBits
@@ -1944,7 +1944,7 @@ Global Symbols
 </UL>
 <P><STRONG><a name="[114]"></a>getSecondCount</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
@@ -1952,7 +1952,7 @@ Global Symbols
 
 <P><STRONG><a name="[e5]"></a>setSecondsCount</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
@@ -1976,12 +1976,12 @@ Global Symbols
 
 <P><STRONG><a name="[238]"></a>setQrSecondsCount</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text), UNUSED)
 
-<P><STRONG><a name="[11d]"></a>getSampleCounterIRQ</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<P><STRONG><a name="[11e]"></a>getSampleCounterIRQ</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 </UL>
 
 <P><STRONG><a name="[124]"></a>setSampleCounterIRQ</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 </UL>
 
 <P><STRONG><a name="[239]"></a>getCounter</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text), UNUSED)
@@ -1992,32 +1992,32 @@ Global Symbols
 
 <P><STRONG><a name="[23c]"></a>setCounter2</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text), UNUSED)
 
-<P><STRONG><a name="[119]"></a>getTIM5_count</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
+<P><STRONG><a name="[11a]"></a>getTIM5_count</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 </UL>
 
 <P><STRONG><a name="[105]"></a>setTIM5_count</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[11e]"></a>getTIM5_count2</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<P><STRONG><a name="[11f]"></a>getTIM5_count2</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 </UL>
 
 <P><STRONG><a name="[125]"></a>setTIM5_count2</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[11f]"></a>getTIM5_count3</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<P><STRONG><a name="[120]"></a>getTIM5_count3</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 </UL>
 
-<P><STRONG><a name="[122]"></a>setTIM5_count3</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<P><STRONG><a name="[123]"></a>setTIM5_count3</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, init_periph_irqs.o(.text))
+<BR><BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 </UL>
 
 <P><STRONG><a name="[23d]"></a>getTIM5_count4</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, init_periph_irqs.o(.text), UNUSED)
@@ -2098,17 +2098,20 @@ Global Symbols
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
-<P><STRONG><a name="[118]"></a>SilenceDetection</STRONG> (Thumb, 438 bytes, Stack size 64 bytes, detect_whistle.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 240<LI>Call Chain = SilenceDetection &rArr; ComputeFFT &rArr; arm_cfft_radix4_f32 &rArr; arm_radix4_butterfly_inverse_f32
+<P><STRONG><a name="[118]"></a>SilenceDetection</STRONG> (Thumb, 712 bytes, Stack size 88 bytes, detect_whistle.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 312 + Unknown Stack Size
+<LI>Call Chain = SilenceDetection &rArr; LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 <LI><a href="#[112]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__aeabi_memcpy4
+<LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
+<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Puts
 <LI><a href="#[10d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ComputeFFT
-<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getTIM5_count
+<LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getTIM5_count
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTIM5_count
 <LI><a href="#[103]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSilenceThresh
@@ -2129,7 +2132,7 @@ Global Symbols
 <P><STRONG><a name="[e9]"></a>get_task_counter</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, cup_detection.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_12V_LED_individually
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
@@ -2145,7 +2148,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[de]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BlinkOnboardLED
 </UL>
 <BR>[Called By]<UL><LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
 <LI><a href="#[113]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectWhistle
@@ -2156,9 +2159,9 @@ Global Symbols
 <P><STRONG><a name="[107]"></a>DetectCups</STRONG> (Thumb, 126 bytes, Stack size 16 bytes, cup_detection.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = DetectCups
 </UL>
-<BR>[Calls]<UL><LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<BR>[Calls]<UL><LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
+<BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
 <LI><a href="#[100]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;check_usart_while_playing
 </UL>
 
@@ -2171,7 +2174,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[11b]"></a>getAll_cups_present</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, cup_detection.o(.text))
+<P><STRONG><a name="[11c]"></a>getAll_cups_present</STRONG> (Thumb, 48 bytes, Stack size 8 bytes, cup_detection.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = getAll_cups_present &rArr; DetectCups
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
@@ -2194,7 +2197,7 @@ Global Symbols
 
 <P><STRONG><a name="[246]"></a>setQS</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, pulse_reading.o(.text), UNUSED)
 
-<P><STRONG><a name="[11c]"></a>ReadPulse</STRONG> (Thumb, 698 bytes, Stack size 40 bytes, pulse_reading.o(.text))
+<P><STRONG><a name="[11d]"></a>ReadPulse</STRONG> (Thumb, 698 bytes, Stack size 40 bytes, pulse_reading.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 264 + Unknown Stack Size
 <LI>Call Chain = ReadPulse &rArr; LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
@@ -2204,15 +2207,15 @@ Global Symbols
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 <LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ADC_Read
 <LI><a href="#[f3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2sprintf
-<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
-<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Puts
-<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
-<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTIM5_count3
-<LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getTIM5_count3
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
+<LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Puts
+<LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTIM5_count3
+<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getTIM5_count3
 <LI><a href="#[125]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTIM5_count2
-<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getTIM5_count2
+<LI><a href="#[11f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getTIM5_count2
 <LI><a href="#[124]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setSampleCounterIRQ
-<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSampleCounterIRQ
+<LI><a href="#[11e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSampleCounterIRQ
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
 <LI><a href="#[105]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;setTIM5_count
 <LI><a href="#[e4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;set_task_counter
@@ -2228,7 +2231,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
-<LI><a href="#[11a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
+<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ReadInputDataBit
 <LI><a href="#[d7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Delayms
 <LI><a href="#[116]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;addToBuffer
 <LI><a href="#[114]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getSecondCount
@@ -2351,18 +2354,19 @@ Global Symbols
 
 <P><STRONG><a name="[247]"></a>set_dot2_always_on</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, leds.o(.text), UNUSED)
 
-<P><STRONG><a name="[e1]"></a>PerformQuest</STRONG> (Thumb, 202 bytes, Stack size 8 bytes, quest.o(.text))
-<BR><BR>[Stack]<UL><LI>Max Depth = 272 + Unknown Stack Size
-<LI>Call Chain = PerformQuest &rArr; ReadPulse &rArr; LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
+<P><STRONG><a name="[e1]"></a>PerformQuest</STRONG> (Thumb, 208 bytes, Stack size 8 bytes, quest.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 320 + Unknown Stack Size
+<LI>Call Chain = PerformQuest &rArr; SilenceDetection &rArr; LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TIM_Cmd
 <LI><a href="#[bf]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TM_ADC_Init
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_init
+<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillScreen
 <LI><a href="#[12c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ClearOnboardLEDS
 <LI><a href="#[12b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Control_12V_LED_individually
 <LI><a href="#[126]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MotionDetection
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-<LI><a href="#[11b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;getAll_cups_present
 <LI><a href="#[12d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;get_first_start
 <LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[115]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DetectClap
@@ -2380,47 +2384,47 @@ Global Symbols
 <LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[133]"></a>lcd_delay_us</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, lph8731-3c.o(.text))
+<P><STRONG><a name="[134]"></a>lcd_delay_us</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, lph8731-3c.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_init
 </UL>
 
-<P><STRONG><a name="[132]"></a>lcd_delay_ms</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, lph8731-3c.o(.text))
+<P><STRONG><a name="[133]"></a>lcd_delay_ms</STRONG> (Thumb, 12 bytes, Stack size 0 bytes, lph8731-3c.o(.text))
 <BR><BR>[Called By]<UL><LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_init
 </UL>
 
-<P><STRONG><a name="[12f]"></a>ClkPulse</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, lph8731-3c.o(.text))
+<P><STRONG><a name="[130]"></a>ClkPulse</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, lph8731-3c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = ClkPulse
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 </UL>
-<BR>[Called By]<UL><LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_spi
+<BR>[Called By]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_spi
 </UL>
 
-<P><STRONG><a name="[130]"></a>Send_spi</STRONG> (Thumb, 200 bytes, Stack size 16 bytes, lph8731-3c.o(.text))
+<P><STRONG><a name="[131]"></a>Send_spi</STRONG> (Thumb, 200 bytes, Stack size 16 bytes, lph8731-3c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Send_spi &rArr; ClkPulse
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
-<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ClkPulse
+<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ClkPulse
 </UL>
-<BR>[Called By]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
+<BR>[Called By]<UL><LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
 </UL>
 
-<P><STRONG><a name="[131]"></a>Send_to_lcd</STRONG> (Thumb, 92 bytes, Stack size 24 bytes, lph8731-3c.o(.text))
+<P><STRONG><a name="[132]"></a>Send_to_lcd</STRONG> (Thumb, 92 bytes, Stack size 24 bytes, lph8731-3c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 48<LI>Call Chain = Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
-<LI><a href="#[130]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_spi
+<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_spi
 </UL>
 <BR>[Called By]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillRect
 <LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Image
-<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillScreen
-<LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetArea
-<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRotation
+<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetArea
+<LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetRotation
 <LI><a href="#[12e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_init
-<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
+<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillScreen
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
 </UL>
 
 <P><STRONG><a name="[12e]"></a>LCD_init</STRONG> (Thumb, 802 bytes, Stack size 16 bytes, lph8731-3c.o(.text))
@@ -2430,89 +2434,94 @@ Global Symbols
 <LI><a href="#[e0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 <LI><a href="#[ae]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_Init
 <LI><a href="#[ad]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_AHB1PeriphClockCmd
-<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
-<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_delay_ms
-<LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_delay_us
+<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
+<LI><a href="#[133]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_delay_ms
+<LI><a href="#[134]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;lcd_delay_us
 </UL>
 <BR>[Called By]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[134]"></a>SetRotation</STRONG> (Thumb, 56 bytes, Stack size 8 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
+<P><STRONG><a name="[135]"></a>SetRotation</STRONG> (Thumb, 56 bytes, Stack size 8 bytes, lph8731-3c.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
 </UL>
 
-<P><STRONG><a name="[135]"></a>SetArea</STRONG> (Thumb, 74 bytes, Stack size 24 bytes, lph8731-3c.o(.text))
+<P><STRONG><a name="[136]"></a>SetArea</STRONG> (Thumb, 74 bytes, Stack size 24 bytes, lph8731-3c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
-<BR>[Calls]<UL><LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
+<BR>[Calls]<UL><LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[13e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillRect
 <LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Image
-<LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillScreen
-<LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
+<LI><a href="#[12f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillScreen
+<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
 </UL>
 
-<P><STRONG><a name="[120]"></a>Put_Pixel</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, lph8731-3c.o(.text))
+<P><STRONG><a name="[121]"></a>Put_Pixel</STRONG> (Thumb, 24 bytes, Stack size 8 bytes, lph8731-3c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 80<LI>Call Chain = Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
-<BR>[Calls]<UL><LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetArea
-<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
+<BR>[Calls]<UL><LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetArea
+<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[141]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawCircle
-<LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Symbol_Shadow
-<LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Symbol
-<LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Symbol_Shadow
+<LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Symbol
+<LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 </UL>
 
-<P><STRONG><a name="[136]"></a>Send_Symbol</STRONG> (Thumb, 290 bytes, Stack size 64 bytes, lph8731-3c.o(.text))
+<P><STRONG><a name="[137]"></a>Send_Symbol</STRONG> (Thumb, 290 bytes, Stack size 64 bytes, lph8731-3c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
-<BR>[Calls]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
+<BR>[Calls]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
 </UL>
-<BR>[Called By]<UL><LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Putchar
+<BR>[Called By]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Putchar
 </UL>
 
-<P><STRONG><a name="[137]"></a>LCD_Putchar</STRONG> (Thumb, 74 bytes, Stack size 32 bytes, lph8731-3c.o(.text))
+<P><STRONG><a name="[138]"></a>LCD_Putchar</STRONG> (Thumb, 74 bytes, Stack size 32 bytes, lph8731-3c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 176<LI>Call Chain = LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
-<BR>[Calls]<UL><LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Symbol
+<BR>[Calls]<UL><LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Symbol
 </UL>
-<BR>[Called By]<UL><LI><a href="#[123]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Puts
+<BR>[Called By]<UL><LI><a href="#[119]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Puts
 </UL>
 
-<P><STRONG><a name="[123]"></a>LCD_Puts</STRONG> (Thumb, 78 bytes, Stack size 48 bytes, lph8731-3c.o(.text))
+<P><STRONG><a name="[119]"></a>LCD_Puts</STRONG> (Thumb, 78 bytes, Stack size 48 bytes, lph8731-3c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 224<LI>Call Chain = LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
-<BR>[Calls]<UL><LI><a href="#[137]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Putchar
+<BR>[Calls]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Putchar
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
-</UL>
-
-<P><STRONG><a name="[138]"></a>Send_Symbol_Shadow</STRONG> (Thumb, 274 bytes, Stack size 64 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
-</UL>
-<BR>[Called By]<UL><LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Putchar_Shadow
+<BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 </UL>
 
-<P><STRONG><a name="[139]"></a>LCD_Putchar_Shadow</STRONG> (Thumb, 70 bytes, Stack size 24 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[138]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Symbol_Shadow
+<P><STRONG><a name="[139]"></a>Send_Symbol_Shadow</STRONG> (Thumb, 274 bytes, Stack size 64 bytes, lph8731-3c.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
 </UL>
-<BR>[Called By]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Puts_Shadow
-</UL>
-
-<P><STRONG><a name="[13a]"></a>LCD_Puts_Shadow</STRONG> (Thumb, 78 bytes, Stack size 40 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Putchar_Shadow
+<BR>[Called By]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Putchar_Shadow
 </UL>
 
-<P><STRONG><a name="[13b]"></a>LCD_FillScreen</STRONG> (Thumb, 38 bytes, Stack size 16 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetArea
-<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
+<P><STRONG><a name="[13a]"></a>LCD_Putchar_Shadow</STRONG> (Thumb, 70 bytes, Stack size 24 bytes, lph8731-3c.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[139]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Symbol_Shadow
+</UL>
+<BR>[Called By]<UL><LI><a href="#[13b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Puts_Shadow
+</UL>
+
+<P><STRONG><a name="[13b]"></a>LCD_Puts_Shadow</STRONG> (Thumb, 78 bytes, Stack size 40 bytes, lph8731-3c.o(.text), UNUSED)
+<BR><BR>[Calls]<UL><LI><a href="#[13a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Putchar_Shadow
+</UL>
+
+<P><STRONG><a name="[12f]"></a>LCD_FillScreen</STRONG> (Thumb, 38 bytes, Stack size 16 bytes, lph8731-3c.o(.text))
+<BR><BR>[Stack]<UL><LI>Max Depth = 88<LI>Call Chain = LCD_FillScreen &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
+</UL>
+<BR>[Calls]<UL><LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetArea
+<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
+</UL>
+<BR>[Called By]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
 <P><STRONG><a name="[13c]"></a>Send_Image</STRONG> (Thumb, 156 bytes, Stack size 32 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetArea
-<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
+<BR><BR>[Calls]<UL><LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetArea
+<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[13d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Output_image
 </UL>
@@ -2521,21 +2530,21 @@ Global Symbols
 <BR><BR>[Calls]<UL><LI><a href="#[13c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_Image
 </UL>
 
-<P><STRONG><a name="[121]"></a>LCD_DrawLine</STRONG> (Thumb, 206 bytes, Stack size 48 bytes, lph8731-3c.o(.text))
+<P><STRONG><a name="[122]"></a>LCD_DrawLine</STRONG> (Thumb, 206 bytes, Stack size 48 bytes, lph8731-3c.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = LCD_DrawLine &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
-<BR>[Calls]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
+<BR>[Calls]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
 </UL>
 <BR>[Called By]<UL><LI><a href="#[144]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillTriangleA
 <LI><a href="#[143]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawTriangle
 <LI><a href="#[142]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillCircle
 <LI><a href="#[140]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawRect
-<LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
 </UL>
 
 <P><STRONG><a name="[13e]"></a>LCD_FillRect</STRONG> (Thumb, 88 bytes, Stack size 24 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[135]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetArea
-<LI><a href="#[131]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
+<BR><BR>[Calls]<UL><LI><a href="#[136]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SetArea
+<LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Send_to_lcd
 </UL>
 <BR>[Called By]<UL><LI><a href="#[13f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillLine
 </UL>
@@ -2545,23 +2554,23 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[140]"></a>LCD_DrawRect</STRONG> (Thumb, 118 bytes, Stack size 40 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
+<BR><BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
 </UL>
 
 <P><STRONG><a name="[141]"></a>LCD_DrawCircle</STRONG> (Thumb, 218 bytes, Stack size 64 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[120]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
+<BR><BR>[Calls]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Put_Pixel
 </UL>
 
 <P><STRONG><a name="[142]"></a>LCD_FillCircle</STRONG> (Thumb, 154 bytes, Stack size 40 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
+<BR><BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
 </UL>
 
 <P><STRONG><a name="[143]"></a>LCD_DrawTriangle</STRONG> (Thumb, 56 bytes, Stack size 40 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
+<BR><BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
 </UL>
 
 <P><STRONG><a name="[144]"></a>LCD_FillTriangleA</STRONG> (Thumb, 194 bytes, Stack size 48 bytes, lph8731-3c.o(.text), UNUSED)
-<BR><BR>[Calls]<UL><LI><a href="#[121]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
+<BR><BR>[Calls]<UL><LI><a href="#[122]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_DrawLine
 </UL>
 <BR>[Called By]<UL><LI><a href="#[145]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_FillTriangle
 </UL>
@@ -2598,7 +2607,8 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_sputc
 <LI><a href="#[148]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;_printf_char_common
 </UL>
-<BR>[Called By]<UL><LI><a href="#[11c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<BR>[Called By]<UL><LI><a href="#[11d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ReadPulse
+<LI><a href="#[118]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SilenceDetection
 <LI><a href="#[f2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;usart_put_data_on_lcd
 </UL>
 

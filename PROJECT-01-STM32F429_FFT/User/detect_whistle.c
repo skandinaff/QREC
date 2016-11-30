@@ -10,6 +10,11 @@ float32_t silence_thresh_avg = 0;
 uint32_t N = 0, K = 0;
 bool silence_thresh_is_set = false;
 
+char silence_thresh_str[15];
+char silence_value_str[15];
+char silence_time_str[15];
+int in_max_value_int;
+
 void DetectWhistle(void) {
     //TM_ILI9341_Puts(150, 10, "           ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
@@ -221,7 +226,7 @@ void SilenceDetection(void) {
 // TODO: remove this in production. For tests only
 			//addToBuffer(getSecondCount(),false,false); //Shows seconds spent in silence
 	
-			addToBuffer(in.maxValue,false,false); // Shows current volume value
+			//addToBuffer(in.maxValue,false,false); // Shows current volume value
 // ***
 
 	Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
@@ -229,23 +234,28 @@ void SilenceDetection(void) {
 		if(N < SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
 			silence_thresh_avg += in.maxValue;
 			//TM_ILI9341_Puts(10, 65, "Acquiring threshold value", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
+			LCD_Puts("Acq. Thr...", 1, 1, WHITE, BLACK,1,1);
 		}
 		
 		if(N >= SIL_AVG_SAMPLES && silence_thresh_is_set == false){
 			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + CORRECTION_VALUE ); 			// Add correction value, 4 seems to be optimal
 			addToBuffer(getSilenceThresh(),false,false); // Shows threshold set value.
-			//Delayms(800);
 			//BlinkOnboardLED(2);
 			//TM_ILI9341_Puts(10, 65, "                         ", &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 			silence_thresh_avg = 0; // Clearing average variable after threshold is set
 			silence_thresh_is_set = true;
+			LCD_Puts("Thr. set: ", 1, 1, WHITE, BLACK,1,1);
+			sprintf(silence_thresh_str, "%4d", (int)getSilenceThresh());
+			LCD_Puts(silence_thresh_str, 60, 1, WHITE, BLACK,1,1);
+			Delayms(100);
 			TIM_Cmd(TIM5, ENABLE);
 		} 
 		if(N < SIL_AVG_SAMPLES + 1 && silence_thresh_is_set == false) N++;
 
-		if(getTIM5_count() > 600 && silence_thresh_is_set == true){
-			addToBuffer(000,true,false);
-			Delayms(400);
+		if(getTIM5_count() > 200 && silence_thresh_is_set == true){
+			LCD_Puts("Thr reset!", 1, 1, RED, BLACK,1,1);
+			//addToBuffer(000,true,false);
+			//Delayms(400);
 			resetSilenceThresh(); // After 2 periouds of tim5 (37.5*2s) redefine silence threshold
 			silence_thresh_is_set = false;
 			setTIM5_count(0);
@@ -261,7 +271,8 @@ void SilenceDetection(void) {
 			if (in.maxValue < getSilenceThresh())
 				
 					GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
-					GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);				
+					GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+
 					TIM_Cmd(TIM2, ENABLE);
 			}
 			
@@ -279,12 +290,20 @@ void SilenceDetection(void) {
 			if (getSecondCount() > SILENCE_TIME) { //Silence time
 					TIM_Cmd(TIM2, DISABLE);
 					//TM_ILI9341_Puts(10, 60, "You were silent for 10 sec", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
+					LCD_Puts("Done", 1, 40, WHITE, BLACK,1,1);
 					set_task_counter(get_task_counter() + 1);
 					setSecondsCount(0);
 					setSilenceThresh(SILENCE_AMPLITUDE);
 					Delayms(100);
 			}
+			in_max_value_int = (int)in.maxValue;
+			LCD_Puts("Cur. Val: ", 1, 10, WHITE, BLACK,1,1);
+			sprintf(silence_value_str, "%4d", in_max_value_int);
+			LCD_Puts(silence_value_str, 60, 10, RED, BLACK,1,1);
+			
+			LCD_Puts("Time: ", 1, 20, WHITE, BLACK,1,1);
+			sprintf(silence_time_str, "%4d", getSecondCount());
+			LCD_Puts(silence_time_str, 60, 20, WHITE, BLACK,1,1);
 			/*
 			if(K > 5) {
 				resetSilenceThresh();

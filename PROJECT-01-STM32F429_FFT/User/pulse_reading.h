@@ -16,6 +16,7 @@
 #include "pulse_reading.h"
 #include "leds.h"
 #include "usart.h"
+#include "LPH8731-3C.h"
 
 #define TARGET_BPM 90
 #define TARGET_TIME 3

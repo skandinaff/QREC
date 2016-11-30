@@ -2,7 +2,7 @@
 .\targets\stm32f429_discovery\stm32f4xx_it.o: User\stm32f4xx_it.h
 .\targets\stm32f429_discovery\stm32f4xx_it.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 .\targets\stm32f429_discovery\stm32f4xx_it.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4.h
-.\targets\stm32f429_discovery\stm32f4xx_it.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\targets\stm32f429_discovery\stm32f4xx_it.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdint.h
 .\targets\stm32f429_discovery\stm32f4xx_it.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cmInstr.h
 .\targets\stm32f429_discovery\stm32f4xx_it.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cmFunc.h
 .\targets\stm32f429_discovery\stm32f4xx_it.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4_simd.h
