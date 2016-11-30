@@ -42,6 +42,7 @@
 ".\targets\stm32f429_discovery\movement_detection.o"
 ".\targets\stm32f429_discovery\leds.o"
 ".\targets\stm32f429_discovery\quest.o"
+".\targets\stm32f429_discovery\lph8731-3c.o"
 --ro-base 0x08000000 --entry 0x08000000 --rw-base 0x20000000 --entry Reset_Handler --first __Vectors --strict --summary_stderr --info summarysizes --map --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list ".\project.map" -o .\Targets\STM32F429_Discovery\project.axf

@@ -74,7 +74,7 @@ Task's order:
 #include "movement_detection.h"
 #include "leds.h"
 #include "quest.h"
-
+#include "LPH8731-3C.h"
 
 int main(void) {
 	SystemInit(); /* Initialize system */
@@ -95,7 +95,7 @@ int main(void) {
 	Configure_Onboard_LEDS();	
 	Configure_485();
 	Configure_12V_LEDS();
-	Configure_LED_indicator();
+	//Configure_LED_indicator();
 	Configure_Pulse_CapSens();
 	
 	INTTIM3_Config();
@@ -114,9 +114,11 @@ int main(void) {
 	
 	//Test_7Seg();
 	
-	clearBuffer();
+	//clearBuffer();
 
-	
+	LCD_init();
+	LCD_FillScreen(WHITE);
+	LCD_Puts("State: Idle", 1, 30, DARK_BLUE, WHITE,1,1);
 
 	while (1) {	
 
@@ -187,8 +189,8 @@ int main(void) {
 						PerformQuest();
 						break;
 					case WS_TEST_MODE:
-							set_cups_override();
-							while (get_task_counter() <= TASK_COUNT) {
+						set_cups_override();
+						while (get_task_counter() <= TASK_COUNT) {
 							GPIO_SetBits(LED_GPIO, STATE_LED);
 							Control_12V_LEDs();
 							PerformQuest();
@@ -199,10 +201,10 @@ int main(void) {
 								TIM_Cmd(TIM2, DISABLE);
 								//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 								set_break_flag(false);
-							}
+								}
 						}
-								break;
 						break;
+					//break;
 				}				
 			}
 		}
