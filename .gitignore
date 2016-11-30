@@ -104,3 +104,6 @@ PROJECT-01-STM32F429_FFT/Targets/STM32F429_Discovery/main.crf
 *.crf
 *.crf
 *.axf
+PROJECT-01-STM32F429_FFT/Targets/STM32F429_Discovery/project.build_log.htm
+*.crf
+PROJECT-01-STM32F429_FFT/Targets/STM32F429_Discovery/project.axf
