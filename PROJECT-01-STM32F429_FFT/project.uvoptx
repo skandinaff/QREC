@@ -191,25 +191,25 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>14</LineNumber>
+          <LineNumber>272</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134234418</Address>
+          <Address>134232410</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\User\quest.c</Filename>
+          <Filename>.\User\detect_whistle.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\project\User/quest.c\14</Expression>
+          <Expression>\\project\User/detect_whistle.c\272</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>227</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>134231972</Address>
+          <LineNumber>247</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134232218</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -218,157 +218,29 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>.\User\detect_whistle.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\project\User/detect_whistle.c\227</Expression>
+          <Expression>\\project\User/detect_whistle.c\247</Expression>
         </Bp>
         <Bp>
           <Number>2</Number>
           <Type>0</Type>
-          <LineNumber>191</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>134231880</Address>
+          <LineNumber>233</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
+          <BreakIfRCount>0</BreakIfRCount>
           <Filename>.\User\detect_whistle.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\project\User/detect_whistle.c\191</Expression>
+          <Expression></Expression>
         </Bp>
         <Bp>
           <Number>3</Number>
           <Type>0</Type>
-          <LineNumber>189</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>134231866</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\User\detect_whistle.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\project\User/detect_whistle.c\189</Expression>
-        </Bp>
-        <Bp>
-          <Number>4</Number>
-          <Type>0</Type>
-          <LineNumber>278</LineNumber>
+          <LineNumber>257</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134230000</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\User\usart.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\project\User/usart.c\278</Expression>
-        </Bp>
-        <Bp>
-          <Number>5</Number>
-          <Type>0</Type>
-          <LineNumber>150</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>134228804</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\User\main.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\project\User/main.c\150</Expression>
-        </Bp>
-        <Bp>
-          <Number>6</Number>
-          <Type>0</Type>
-          <LineNumber>152</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>134228964</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\User\main.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\project\User/main.c\152</Expression>
-        </Bp>
-        <Bp>
-          <Number>7</Number>
-          <Type>0</Type>
-          <LineNumber>155</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>134228978</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\User\main.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\project\User/main.c\155</Expression>
-        </Bp>
-        <Bp>
-          <Number>8</Number>
-          <Type>0</Type>
-          <LineNumber>266</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134229956</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\User\usart.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\project\User/usart.c\266</Expression>
-        </Bp>
-        <Bp>
-          <Number>9</Number>
-          <Type>0</Type>
-          <LineNumber>274</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134229986</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\User\usart.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\project\User/usart.c\274</Expression>
-        </Bp>
-        <Bp>
-          <Number>10</Number>
-          <Type>0</Type>
-          <LineNumber>327</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134230086</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\User\usart.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\project\User/usart.c\327</Expression>
-        </Bp>
-        <Bp>
-          <Number>11</Number>
-          <Type>0</Type>
-          <LineNumber>196</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
           <Address>0</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
@@ -377,54 +249,6 @@
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>0</BreakIfRCount>
           <Filename>.\User\detect_whistle.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-        <Bp>
-          <Number>12</Number>
-          <Type>0</Type>
-          <LineNumber>198</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\User\detect_whistle.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-        <Bp>
-          <Number>13</Number>
-          <Type>0</Type>
-          <LineNumber>228</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\User\detect_whistle.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression></Expression>
-        </Bp>
-        <Bp>
-          <Number>14</Number>
-          <Type>0</Type>
-          <LineNumber>77</LineNumber>
-          <EnabledFlag>0</EnabledFlag>
-          <Address>0</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\User\main.c</Filename>
           <ExecCommand></ExecCommand>
           <Expression></Expression>
         </Bp>
@@ -433,12 +257,7 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>_task_counter</ItemText>
-        </Ww>
-        <Ww>
-          <count>1</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>state</ItemText>
+          <ItemText>correction_value</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>
