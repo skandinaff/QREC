@@ -249,7 +249,7 @@ void Control_12V_LEDs(void){
 				set_xLED(0);
 				GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5 | STATE_LED); 
 				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
-				clearBuffer(); 																										// Clearing 7 segment display. Shouldn't be here, but idk where else to put it
+				//clearBuffer(); 																										// Clearing 7 segment display. Shouldn't be here, but idk where else to put it
 				break;
 		//}
 	}		

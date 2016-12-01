@@ -98,7 +98,8 @@ int main(void) {
 	init_usart();
 	
 	GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_1); // LED indicating that board is ON
-
+	LCD_ON();
+	
 	Delayms(300);
 	
 

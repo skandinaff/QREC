@@ -7,10 +7,11 @@
 #include "stm32f4xx.h"
 #include "LPH8731-3C.h"
 #include "Ascii_tab.h"
+#include <stdbool.h>
 
 /* Private variables ---------------------------------------------------------*/
 unsigned int rot=0; // угол поворота экрана (0, 90, 180, 270)
-
+bool LCD_state = true;
 /* Private function prototypes -----------------------------------------------*/
 static void LCD_port_init(void);
 
@@ -232,6 +233,7 @@ void SetArea(char x1, char x2, char y1, char y2)
 //===============================================================
 void Put_Pixel (char x, char y, unsigned int color)
 {
+	 if(!LCD_state) return;
  SetArea( x, x, y, y );
  #ifdef _8_BIT_COLOR	//(8-ми битовая цветовая палитра (256 цветов))
  Send_to_lcd( DAT, color ); //Данные - задаём цвет пикселя
@@ -316,6 +318,7 @@ void Send_Symbol (unsigned char symbol, char x, char y, int t_color, int b_color
 void LCD_Putchar(char symbol, char x, char y, int t_color, int b_color, char zoom_width, char zoom_height)
 {
     unsigned char m;
+	 if(!LCD_state) return;
     if(zoom_width == 0)   zoom_width = 1;
     if(zoom_height == 0)  zoom_height = 1;
     switch (rot)
@@ -337,7 +340,7 @@ void LCD_Putchar(char symbol, char x, char y, int t_color, int b_color, char zoo
 void LCD_Puts(const char *str, int x, int y,  int t_color, int b_color, char zoom_width, char zoom_height)
 {
     unsigned char i=0;
-
+ if(!LCD_state) return;
     if(zoom_width == 0)   zoom_width = 1;
     if(zoom_height == 0)  zoom_height = 1;
 
@@ -355,6 +358,7 @@ void Send_Symbol_Shadow (unsigned char symbol, char x, char y, int t_color, char
 {
  unsigned char temp_symbol, a, b, zw, zh, mask;
  char m, n;
+	 if(!LCD_state) return;
  m=x;
  n=y;
  if (symbol>127) symbol-=64;    //Убираем отсутствующую часть таблицы ASCII
@@ -452,6 +456,7 @@ void LCD_Puts_Shadow(const char *str, int x, int y,  int t_color, char zoom_widt
 void LCD_FillScreen (unsigned int color)
 {
  unsigned int x;
+	 if(!LCD_state) return;
  SetArea( 0, 101, 0, 80 );   //Область всего экрана
  for (x = 0; x < 101*81; x++)
  {
@@ -534,7 +539,7 @@ void LCD_DrawLine (char x1, char y1, char x2, char y2, int color)
  short  x, y, d, dx, dy, i, i1, i2, kx, ky;
  signed char flag;
  unsigned char m;
-
+ if(!LCD_state) return;
  switch (rot)
  {
     case 90: case 270:  m=y1; y1=x1; x1=m; m=y2; y2=x2; x2=m;
@@ -899,6 +904,13 @@ void Send_to_lcd (unsigned char RS, unsigned char data)
 	RS_old=RS;  //запоминаем значение RS
 	
 	LCD_DATA_LO();
+}
+
+void LCD_ON(){
+	LCD_state = true;
+}
+void LCD_OFF(){
+	LCD_state = false;
 }
 
 

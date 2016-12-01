@@ -154,11 +154,8 @@ void DetectClap(void) {
     in = ComputeFFT();
 		
 
-/*  Display Section
-    //TM_ILI9341_Puts(10, 10, "Peak Ampl:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    //TM_ILI9341_Puts(10, 25, "Claps detected:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    //TM_ILI9341_Puts(10, 40, "Seconds passed:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-*/	
+
+	
 		LCD_Puts("Max Amp: ", 1, 1, WHITE, BLACK,1,1);
 		LCD_Puts("Clp det: ", 1, 10, WHITE, BLACK,1,1);
 		LCD_Puts("T: ", 1, 20, WHITE, BLACK,1,1);
@@ -174,13 +171,7 @@ void DetectClap(void) {
 		LCD_Puts(str, 60, 1, WHITE, BLACK,1,1);
 		LCD_Puts(str2, 60, 10, WHITE, BLACK,1,1);
 		LCD_Puts(str3, 60, 20, WHITE, BLACK,1,1);
-		
-/*
-    //TM_ILI9341_Puts(180, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    //TM_ILI9341_Puts(180, 25, str2, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-    //TM_ILI9341_Puts(180, 40, str3, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-				
-*/
+
 
 
 		
@@ -229,7 +220,7 @@ void SilenceDetection(void) {
 	
     freq = in.maxIndex * (45000 / 256); 
 		if(freq > 100 && freq < 6000) inMaxValueInRange = in.maxValue;  // Approximately range of human voice
-
+	// TODO: actually look in that freq. range, for now omitted
 		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
 	
 		if(N < SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
@@ -269,6 +260,7 @@ void SilenceDetection(void) {
 			LCD_Puts("Thr. set: ", 1, 1, WHITE, BLACK,1,1);
 			sprintf(silence_thresh_str, "%.2f", getSilenceThresh());
 			LCD_Puts(silence_thresh_str, 70, 1, WHITE, BLACK,1,1);
+			//Maybe set a limit to increasing correction value..
 		}
 		
 
@@ -347,8 +339,6 @@ uint8_t getClaps(void) {
 
 void setSilenceThresh(float32_t st) {
 	silence_thresh_is_set = true;
-	//if(st < 3) st = 3; // If Silence thresh detected to be less than 3, leave it 3 as it is sensable minimum
-	//if(st > 10) st = 10; //  If Silence thresh detected to be moore than 16, leave it 16 as it is sensable maximum
 	silence_thresh = st;
 }
 
