@@ -240,7 +240,6 @@ void SilenceDetection(void) {
 				LCD_Puts("Thr. set: ", 1, 1, WHITE, BLACK,1,1);
 				sprintf(silence_thresh_str, "%.2f", getSilenceThresh());
 				LCD_Puts(silence_thresh_str, 70, 1, WHITE, BLACK,1,1);
-			//Delayms(100);
 			TIM_Cmd(TIM5, ENABLE);
 		} 
 		if(N < SIL_AVG_SAMPLES + 1 && silence_thresh_is_set == false) N++;
@@ -261,6 +260,7 @@ void SilenceDetection(void) {
 			sprintf(silence_thresh_str, "%.2f", getSilenceThresh());
 			LCD_Puts(silence_thresh_str, 70, 1, WHITE, BLACK,1,1);
 			//Maybe set a limit to increasing correction value..
+			//if(silence_thresh_incr == 32) correction_value = CORRECTION_VALUE;
 		}
 		
 
