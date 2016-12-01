@@ -27,10 +27,10 @@
 /* Clap settings */
 #define CLAP_AMPLITUDE 						13
 /* Silence settings */
-#define SILENCE_AMPLITUDE					5						// 3 is the absolute minimum, barele above backround noise 
+#define SILENCE_AMPLITUDE					3						// 3 is the absolute minimum, barele above backround noise 
 #define SILENCE_TIME							15
 #define SIL_AVG_SAMPLES						12					// previously was 10
-#define CORRECTION_VALUE					3 					// was 3
+#define CORRECTION_VALUE					1 					// was 3
 /* Common settings */
 #define DELAY_VALUE								20
 

@@ -81,15 +81,10 @@ int main(void) {
 	
 	TM_DELAY_Init(); /* Delay init */
 	
-	//TM_DISCO_LedInit(); /* Initialize LED's on board */
 
 	INTTIM2_Config();
 	INTTIM5_Config();
 
-	/* Initialize LCD */
-	
-	//TM_ILI9341_Init();
-	//TM_ILI9341_Rotate(TM_ILI9341_Orientation_Landscape_1);
 
 	Configure_CupDetection();	
 	Configure_Onboard_LEDS();	
@@ -106,28 +101,17 @@ int main(void) {
 
 	Delayms(300);
 	
-	//TM_ILI9341_Puts(1, 41, "Status: Idle", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 	int len = DATA_PACKET_LEN + 1;
 	unsigned char packet[len];
 	incoming_packet_t incoming_packet;
 	
-	//Test_7Seg();
-	
-	//clearBuffer();
-
 
 
 
 	while (1) {	
 
-//	SendInstruction(INSTR_SLAVE_COMPLETED);
-//		put_str("www");
-		//put_char('w');
-	//	GPIO_ToggleBits(LED_GPIO, LED_1);
-	//	GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
-		
-  // 	Delayms(500);
+
 		
 		if (usart_has_data()) {
 			
@@ -145,14 +129,13 @@ int main(void) {
 					case INSTR_MASTER_WORK_START:
 						while (get_task_counter() <= TASK_COUNT) {
 							GPIO_SetBits(LED_GPIO, STATE_LED);
-							//Control_12V_LEDs();
 							PerformQuest();
 							if(get_break_flag()){
 								GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);
 								set_task_counter(FIRST_TASK);
 								setSecondsCount(0);
 								TIM_Cmd(TIM2, DISABLE);
-								//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+
 								set_break_flag(false);
 								set_first_start(false);
 								break;
@@ -160,12 +143,8 @@ int main(void) {
 						}
 
 						break;
-					case INSTR_MASTER_STATUS_REQ:				/*
-						if (get_task_counter() == TASK_COUNT) {
-							SendInstruction(INSTR_SLAVE_COMPLETED);
-						} else {
-							SendInstruction(INSTR_SLAVE_NOT_COMLETED);
-						}*/
+					case INSTR_MASTER_STATUS_REQ:	
+						
 						break;
 					case INSTR_MASTER_SET_IDLE:
 						set_task_counter(FIRST_TASK);
@@ -198,7 +177,6 @@ int main(void) {
 								set_task_counter(FIRST_TASK);
 								setSecondsCount(0);
 								TIM_Cmd(TIM2, DISABLE);
-								//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 								set_break_flag(false);
 								}
 						}

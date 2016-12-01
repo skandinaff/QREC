@@ -39,13 +39,16 @@ void PerformQuest(void){
 			ClearOnboardLEDS();
 			break;
 		case 2:  // Motion detection
+			LCD_FillScreen(BLACK);
 			Configure_MotionSensorPort();
 			ClearOnboardLEDS();
 			break;
 		case 3:  // Whistle Detection
+			LCD_FillScreen(BLACK);
 			ClearOnboardLEDS();
 			break;
 		case 4:  // Clap Detection
+			LCD_FillScreen(BLACK);
 			ClearOnboardLEDS();
 			break;
 	}

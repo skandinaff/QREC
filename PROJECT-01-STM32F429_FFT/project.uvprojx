@@ -737,6 +737,16 @@
               <FileType>5</FileType>
               <FilePath>.\User\quest.h</FilePath>
             </File>
+            <File>
+              <FileName>LPH8731-3C.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\LPH8731-3C.c</FilePath>
+            </File>
+            <File>
+              <FileName>LPH8731-3C.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\User\LPH8731-3C.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
