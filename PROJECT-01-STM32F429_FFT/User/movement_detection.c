@@ -2,7 +2,7 @@
 
 void MotionDetection(void) {
     bool motion_s1 = GPIO_ReadInputDataBit(PIR_PORT, PIR_1_PIN);
-    bool motion_s2 = GPIO_ReadInputDataBit(PIR_PORT, PIR_2_PIN);
+    //bool motion_s2 = GPIO_ReadInputDataBit(PIR_PORT, PIR_2_PIN);
     //bool motion = (motion_s1 || motion_s2);
     
 		/*Display section
@@ -17,21 +17,27 @@ void MotionDetection(void) {
 		
 		Delayms(3); // Delay that keeps everything consistent
 		
-    if (!motion_s1  || !motion_s2) { // if there was a motion
+    if (!motion_s1 ) { // if there was a motion
         setSecondsCount(0);
         TIM_Cmd(TIM2, DISABLE);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
-			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);	
+			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			
+	//		ControlBiColorLED(BC_LED_GREEN, true);
+	//		ControlBiColorLED(BC_LED_RED, false);
         //TM_ILI9341_Puts(1, 65, "                              ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
     } else {
         TIM_Cmd(TIM2, ENABLE);
 			// TODO: remove this in production. For tests only
-				addToBuffer(getSecondCount(),false,false);
+			//	addToBuffer(getSecondCount(),false,false);
 			// ***
         //sprintf(scd, "%d", getSecondCount());
         //TM_ILI9341_Puts(20, 65, scd, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
-				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);	
+				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+
+			//	ControlBiColorLED(BC_LED_GREEN, false);
+			//	ControlBiColorLED(BC_LED_RED, true);
 			
 			
         if (getSecondCount() >= NO_MOTION_TIME) {

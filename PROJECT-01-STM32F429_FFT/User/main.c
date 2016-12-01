@@ -90,7 +90,8 @@ int main(void) {
 	Configure_Onboard_LEDS();	
 	Configure_485();
 	Configure_12V_LEDS();
-	//Configure_LED_indicator();
+	//Configure_LED_indicator(); // Can't use this when LCD or BiColor LED is used
+	//Configure_BiColor_LED();
 	Configure_Pulse_CapSens();
 	
 	INTTIM3_Config();
@@ -98,7 +99,7 @@ int main(void) {
 	init_usart();
 	
 	GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_1); // LED indicating that board is ON
-	LCD_ON();
+	LCD_OFF();
 	
 	Delayms(300);
 	

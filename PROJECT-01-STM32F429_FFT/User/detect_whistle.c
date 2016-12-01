@@ -46,7 +46,7 @@ void DetectWhistle(void) {
     /*** Thus code takes frequency at a maximum amplitude and detects if it's in range of whistle ***/
     freq = in.maxIndex * (45000 / 256);  // If a condition is added here, that cut's off low frequencies, just reaching
     // certain frequency is enough to trigger the event
-    
+    /*
 		LCD_Puts("Max Fq: ", 1, 1, WHITE, BLACK,1,1);
     sprintf(whistle_freq_str, "%.2f Hz", freq);	
 		LCD_Puts(whistle_freq_str, 60, 1, WHITE, BLACK,1,1);
@@ -54,17 +54,27 @@ void DetectWhistle(void) {
 		LCD_Puts("T: ", 1, 10, WHITE, BLACK,1,1);
     sprintf(whistle_time_str, "%4d", getSecondCount());	
 		LCD_Puts(whistle_time_str, 60, 10, WHITE, BLACK,1,1);
-
+		*/
     if (in.maxIndex > 0) //TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
     if (freq >= 1000 && freq <= 2400) {  // Whistle withing range
         TIM_Cmd(TIM2, ENABLE);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			//ControlBiColorLED(BC_LED_GREEN, false);
+			//ControlBiColorLED(BC_LED_RED, true);
+				//GPIO_ResetBits(LED_GPIO, BC_LED_GREEN);
+				//GPIO_SetBits(LED_GPIO, BC_LED_RED);
     }
     if (freq < 1000) {  // Cutting off frequencies less than
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			
+			//ControlBiColorLED(BC_LED_GREEN, true);
+			//ControlBiColorLED(BC_LED_RED, false);
+				//GPIO_SetBits(LED_GPIO, BC_LED_GREEN);
+				//GPIO_ResetBits(LED_GPIO, BC_LED_RED);
+			
         //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
       if(getSecondCount() < 2) setSecondsCount(0);  
 			TIM_Cmd(TIM2, DISABLE);
@@ -193,6 +203,9 @@ void DetectClap(void) {
 			if (in.maxValue > CLAP_AMPLITUDE) {
 				setClaps(getClaps() + 1);
 				BlinkOnboardLED(3);
+		//		ControlBiColorLED(BC_LED_RED, true);
+		//		Delayms(150);
+		//		ControlBiColorLED(BC_LED_RED, false);
 			}
 
 			if(getSecondCount() > 60) {
@@ -219,7 +232,7 @@ void SilenceDetection(void) {
     in = ComputeFFT();
 	
     freq = in.maxIndex * (45000 / 256); 
-		if(freq > 100 && freq < 6000) inMaxValueInRange = in.maxValue;  // Approximately range of human voice
+		//if(freq > 100 && freq < 6000) inMaxValueInRange = in.maxValue;  // Approximately range of human voice
 	// TODO: actually look in that freq. range, for now omitted
 		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
 	
@@ -267,10 +280,16 @@ void SilenceDetection(void) {
 		
 
 			
-		if (in.maxValue < getSilenceThresh()){
+		if (in.maxValue <= getSilenceThresh()){
 			
 				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			
+				//ControlBiColorLED(BC_LED_GREEN, false);
+				//ControlBiColorLED(BC_LED_RED, true);
+			//	GPIO_ResetBits(LED_GPIO, BC_LED_GREEN);
+			//	GPIO_SetBits(LED_GPIO, BC_LED_RED);
+			
 
 				TIM_Cmd(TIM2, ENABLE);
 		}
@@ -278,7 +297,12 @@ void SilenceDetection(void) {
 		if (in.maxValue > getSilenceThresh() && silence_thresh_is_set == true) {
 			setSecondsCount(0);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
-			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);	
+			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			
+			//ControlBiColorLED(BC_LED_GREEN, true);
+			//ControlBiColorLED(BC_LED_RED, false);
+			//	GPIO_SetBits(LED_GPIO, BC_LED_GREEN);
+			//	GPIO_ResetBits(LED_GPIO, BC_LED_RED);
 		}																							
 		
 		if (getSecondCount() > SILENCE_TIME) { //Silence time
@@ -290,7 +314,7 @@ void SilenceDetection(void) {
 				Delayms(100);
 		}
 		
-			
+		/*
 		LCD_Puts("Cur. Val: ", 1, 10, WHITE, BLACK,1,1);
 		sprintf(silence_value_str, "%.2f", in.maxValue);
 		LCD_Puts(silence_value_str, 70, 10, RED, BLACK,1,1);
@@ -310,7 +334,7 @@ void SilenceDetection(void) {
 		LCD_Puts("Max Val:", 1, 20, WHITE, BLACK,1,1);
 		sprintf(silence_value_biggest_str, "%.2f", silence_value_biggest_old);
 		LCD_Puts(silence_value_biggest_str, 70, 20, WHITE, BLACK,1,1);
-
+		*/
 		
 		
 }

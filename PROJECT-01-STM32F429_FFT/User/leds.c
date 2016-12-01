@@ -315,3 +315,23 @@ void ClearOnboardLEDS(void){
 void set_dot2_always_on(void){
 	dot2_always_on = true;
 }
+
+void Configure_BiColor_LED(void){
+	
+	GPIO_InitTypeDef GPIO_InitStruct;
+	
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+	
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_1 | GPIO_Pin_3;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
+	
+	GPIO_Init(GPIOE, &GPIO_InitStruct);
+	
+}
+void ControlBiColorLED(int _LED, bool state){
+	if(state) GPIO_SetBits(LED_GPIO, _LED);
+	if(!state) GPIO_ResetBits(LED_GPIO, _LED);
+}

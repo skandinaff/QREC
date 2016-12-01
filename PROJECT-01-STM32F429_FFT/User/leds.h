@@ -29,6 +29,9 @@
 #define STATE_LED			GPIO_Pin_4
 #define NUM_OF_REG		3
 
+#define BC_LED_RED 		GPIO_Pin_3
+#define BC_LED_GREEN 	GPIO_Pin_1
+
 void addToBuffer(int digit, bool dot, bool dot2);
 void shiftOut(int myDataPin, int myClockPin, uint8_t myDataOut);
 void clearBuffer(void);
@@ -42,5 +45,7 @@ void ClearOnboardLEDS(void);
 void set_dot2_always_on(void);
 void Pulse_12V_LEDs(void);
 void Control_12V_LED_individually(bool state);
+void Configure_BiColor_LED(void);
+void ControlBiColorLED(int _LED, bool state);
 
 #endif

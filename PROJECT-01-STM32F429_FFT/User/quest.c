@@ -37,18 +37,26 @@ void PerformQuest(void){
 			setTIM5_count2(0);
 			TM_ADC_Init(ADC1, ADC_Channel_3);
 			ClearOnboardLEDS();
+			ControlBiColorLED(BC_LED_GREEN, false);
+			ControlBiColorLED(BC_LED_RED, false);
 			break;
 		case 2:  // Motion detection
 			LCD_FillScreen(BLACK);
 			Configure_MotionSensorPort();
 			ClearOnboardLEDS();
+			ControlBiColorLED(BC_LED_GREEN, false);
+			ControlBiColorLED(BC_LED_RED, false);
 			break;
 		case 3:  // Whistle Detection
 			LCD_FillScreen(BLACK);
 			ClearOnboardLEDS();
+			ControlBiColorLED(BC_LED_GREEN, false);
+			ControlBiColorLED(BC_LED_RED, false);
 			break;
 		case 4:  // Clap Detection
 			LCD_FillScreen(BLACK);
+			ControlBiColorLED(BC_LED_GREEN, false);
+			ControlBiColorLED(BC_LED_RED, false);
 			ClearOnboardLEDS();
 			break;
 	}
