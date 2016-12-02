@@ -146,6 +146,10 @@ void USART3_IRQHandler(void) {
             USART_ITConfig(USART3, USART_IT_TXE, DISABLE);
         }
     }
+		if(USART_GetITStatus(USART3, USART_IT_TC) == SET){
+			GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN); // RS485 RX
+			USART_ITConfig(USART3, USART_IT_TC, DISABLE);
+		}
 
 	
 
@@ -224,6 +228,7 @@ void put_char(uint8_t c) {
             if (tx_wr_index == TX_BUFFER_SIZE) tx_wr_index = 0;
             ++tx_counter;
             USART_ITConfig(USART3, USART_IT_TXE, ENABLE);
+						USART_ITConfig(USART3, USART_IT_TC, ENABLE);
         }
         else
             USART_SendData(USART3, c);
@@ -232,6 +237,7 @@ void put_char(uint8_t c) {
 
 
 void put_str(unsigned char *s) {
+		GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN); // RS485 TX
     while (*s != 0)
         put_char(*s++);
 }
@@ -341,7 +347,7 @@ void check_usart_while_playing(){
 			incoming_packet = usart_packet_parser(packet);
 			if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
 			//TM_ILI9341_Puts(1, 220, "We recevied some data", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-			BlinkOnboardLED(2);
+			//BlinkOnboardLED(2);
 				switch (incoming_packet.instruction) {
 					case INSTR_MASTER_TEST:
 						//SendInstruction(INSTR_SLAVE_NOT_READY); 
@@ -362,7 +368,6 @@ void check_usart_while_playing(){
 						/*setTIM5_count(0);
 					  setSecondsCount(0); */
 						TIM_Cmd(TIM2, DISABLE);
-						TIM_Cmd(TIM5, DISABLE);
 						TIM_Cmd(TIM5, DISABLE);
 						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
 						GPIO_ResetBits(LED_GPIO, STATE_LED);
@@ -416,14 +421,11 @@ void check_usart_while_playing(){
 
 
 uint8_t SendInstruction(unsigned char instruction){
-	GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
 	unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
 	outgoing_packet_t outgoing_packet = usart_assemble_response(instruction);
 	usart_convert_outgoing_packet(packet, outgoing_packet);
 	put_str(packet);
-	Delayms(100);
 	free(packet);
-	GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
 	return 1;
 }
 

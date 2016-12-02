@@ -240,8 +240,8 @@ void TIM5_IRQHandler(void) {
 }
 
 void TIM4_IRQHandler(void) {
-	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET) {
-		TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
+	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET) {
+		TIM_ClearITPendingBit(TIM4, TIM_IT_Update);
 		tim4_counter0 +=1;
 		if (tim4_counter0 == 50){
 			tim4_count0+=1;	

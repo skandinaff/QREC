@@ -44,6 +44,8 @@
 		
 		PC10 USART TX
 		PC11 USART RX
+		
+		PC8 RS485 EN 
 
 Task's order:
 

@@ -59,23 +59,17 @@ void DetectWhistle(void) {
 
     if (freq >= 1000 && freq <= 2400) {  // Whistle withing range
 			TIM_Cmd(TIM4, DISABLE);
-        TIM_Cmd(TIM2, ENABLE);
+      TIM_Cmd(TIM2, ENABLE);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
-			//ControlBiColorLED(BC_LED_GREEN, false);
-			//ControlBiColorLED(BC_LED_RED, true);
-				//GPIO_ResetBits(LED_GPIO, BC_LED_GREEN);
-				//GPIO_SetBits(LED_GPIO, BC_LED_RED);
+
     }
     if (freq < 1000) {  // Cutting off frequencies less than
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			TIM_Cmd(TIM4, ENABLE);
-			if(getTIM4_count0() >= 10) setSecondsCount(0);
-			//ControlBiColorLED(BC_LED_GREEN, true);
-			//ControlBiColorLED(BC_LED_RED, false);
-				//GPIO_SetBits(LED_GPIO, BC_LED_GREEN);
-				//GPIO_ResetBits(LED_GPIO, BC_LED_RED);
+			//if(getTIM4_count0() >= 10) setSecondsCount(0);
+			//setSecondsCount(0);
 			
         //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
       //if(getSecondCount() < 2) setSecondsCount(0);  //TODO: What this suppose to do????
@@ -85,8 +79,9 @@ void DetectWhistle(void) {
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			TIM_Cmd(TIM4, ENABLE);
-			if(getTIM4_count0() >= 10) setSecondsCount(0);
-        //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+			//if(getTIM4_count0() >= 10) setSecondsCount(0);
+			//setSecondsCount(0);
+      //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
       //if(getSecondCount() < 2) setSecondsCount(0);  
 			TIM_Cmd(TIM2, DISABLE);
     }
@@ -239,7 +234,7 @@ void SilenceDetection(void) {
 		//if(freq > 100 && freq < 6000) inMaxValueInRange = in.maxValue;  // Approximately range of human voice
 	// TODO: actually look in that freq. range, for now omitted
 		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
-	
+		// ********** Setting the Threshold 
 		if(N < SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
 			silence_thresh_avg += in.maxValue;
 			LCD_Puts("                ", 1, 1, WHITE, BLACK,1,1);
@@ -261,6 +256,7 @@ void SilenceDetection(void) {
 		} 
 		if(N < SIL_AVG_SAMPLES + 1 && silence_thresh_is_set == false) N++;
 
+		
 		if(getTIM5_count() > 200 && silence_thresh_is_set == true){
 			LCD_Puts("Thr reset!", 1, 1, RED, BLACK,1,1);
 			resetSilenceThresh(); // After 2 periouds of tim5 (37.5*2s) redefine silence threshold
@@ -271,7 +267,7 @@ void SilenceDetection(void) {
 		}
 		
 		if(silence_thresh_incr>silence_thresh_incr_old){
-			correction_value+=0.125;
+			correction_value+=1;
 			silence_thresh_incr_old=silence_thresh_incr;
 			LCD_Puts("Thr. set: ", 1, 1, WHITE, BLACK,1,1);
 			sprintf(silence_thresh_str, "%.2f", getSilenceThresh());
@@ -281,11 +277,14 @@ void SilenceDetection(void) {
 		}
 		
 
-		
+			// ******* Setting Threshold END	
 
 			
 		if (in.maxValue <= getSilenceThresh()){
-				TIM_Cmd(TIM4, DISABLE);
+				TIM_Cmd(TIM4, DISABLE); // Disabling timer that counts Loudness time
+				TIM_Cmd(TIM2, ENABLE);  // Enabling timer that counts quitetness time
+				setTIM4_count0(0); // Resetting timer that counts Loundess time
+			
 				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			
@@ -295,20 +294,23 @@ void SilenceDetection(void) {
 				//	GPIO_SetBits(LED_GPIO, BC_LED_RED);
 			
 
-				TIM_Cmd(TIM2, ENABLE);
+
 		}
 		
 		if (in.maxValue > getSilenceThresh() && silence_thresh_is_set == true) {
+			setSecondsCount(0);
 			TIM_Cmd(TIM4, ENABLE);
-			if(getTIM4_count0() >= 10) setSecondsCount(0);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			
+			//if(getTIM4_count0() >= 10) setSecondsCount(0);
 			//ControlBiColorLED(BC_LED_GREEN, true);
 			//ControlBiColorLED(BC_LED_RED, false);
 			//	GPIO_SetBits(LED_GPIO, BC_LED_GREEN);
 			//	GPIO_ResetBits(LED_GPIO, BC_LED_RED);
-		}																							
+		}
+		
+		//if(getTIM4_count0() >= 10) setSecondsCount(0);
 		
 		if (getSecondCount() > SILENCE_TIME) { //Silence time
 				TIM_Cmd(TIM2, DISABLE);

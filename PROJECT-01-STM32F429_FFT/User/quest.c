@@ -12,7 +12,7 @@ void PerformQuest(void){
 	if (!getAll_cups_present()) {
 		TIM_Cmd(TIM3, DISABLE);  //TODO: Check if this works upd 4.11.16: seems not to..
 		if(get_first_start() == true){
-			Control_12V_LED_individually(true);
+			Control_12V_LED_individually(false); // if false, when remove cups the last activated task will remain dark
 			Control_12V_LEDs(); // Moved to here because othewise leds lit before cups were placed
 		}
     setSecondsCount(0);	
