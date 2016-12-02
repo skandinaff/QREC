@@ -58,6 +58,7 @@ void DetectWhistle(void) {
     if (in.maxIndex > 0) //TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
     if (freq >= 1000 && freq <= 2400) {  // Whistle withing range
+			TIM_Cmd(TIM4, DISABLE);
         TIM_Cmd(TIM2, ENABLE);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
@@ -69,21 +70,24 @@ void DetectWhistle(void) {
     if (freq < 1000) {  // Cutting off frequencies less than
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
-			
+			TIM_Cmd(TIM4, ENABLE);
+			if(getTIM4_count0() >= 10) setSecondsCount(0);
 			//ControlBiColorLED(BC_LED_GREEN, true);
 			//ControlBiColorLED(BC_LED_RED, false);
 				//GPIO_SetBits(LED_GPIO, BC_LED_GREEN);
 				//GPIO_ResetBits(LED_GPIO, BC_LED_RED);
 			
         //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-      if(getSecondCount() < 2) setSecondsCount(0);  
+      //if(getSecondCount() < 2) setSecondsCount(0);  //TODO: What this suppose to do????
 			TIM_Cmd(TIM2, DISABLE);
     }
 		if (freq > 2400) { // Cutting off frequencies more than 2400
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			TIM_Cmd(TIM4, ENABLE);
+			if(getTIM4_count0() >= 10) setSecondsCount(0);
         //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-      if(getSecondCount() < 2) setSecondsCount(0);  
+      //if(getSecondCount() < 2) setSecondsCount(0);  
 			TIM_Cmd(TIM2, DISABLE);
     }
 
@@ -281,21 +285,22 @@ void SilenceDetection(void) {
 
 			
 		if (in.maxValue <= getSilenceThresh()){
-			
+				TIM_Cmd(TIM4, DISABLE);
 				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			
 				//ControlBiColorLED(BC_LED_GREEN, false);
 				//ControlBiColorLED(BC_LED_RED, true);
-			//	GPIO_ResetBits(LED_GPIO, BC_LED_GREEN);
-			//	GPIO_SetBits(LED_GPIO, BC_LED_RED);
+				//	GPIO_ResetBits(LED_GPIO, BC_LED_GREEN);
+				//	GPIO_SetBits(LED_GPIO, BC_LED_RED);
 			
 
 				TIM_Cmd(TIM2, ENABLE);
 		}
 		
 		if (in.maxValue > getSilenceThresh() && silence_thresh_is_set == true) {
-			setSecondsCount(0);
+			TIM_Cmd(TIM4, ENABLE);
+			if(getTIM4_count0() >= 10) setSecondsCount(0);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			

@@ -2,7 +2,7 @@
 .\targets\stm32f429_discovery\tm_stm32f4_button.o: TM\tm_stm32f4_button.h
 .\targets\stm32f429_discovery\tm_stm32f4_button.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 .\targets\stm32f429_discovery\tm_stm32f4_button.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4.h
-.\targets\stm32f429_discovery\tm_stm32f4_button.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdint.h
+.\targets\stm32f429_discovery\tm_stm32f4_button.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\targets\stm32f429_discovery\tm_stm32f4_button.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cmInstr.h
 .\targets\stm32f429_discovery\tm_stm32f4_button.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cmFunc.h
 .\targets\stm32f429_discovery\tm_stm32f4_button.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4_simd.h
@@ -40,4 +40,4 @@
 .\targets\stm32f429_discovery\tm_stm32f4_button.o: .\User\defines.h
 .\targets\stm32f429_discovery\tm_stm32f4_button.o: TM\tm_stm32f4_gpio.h
 .\targets\stm32f429_discovery\tm_stm32f4_button.o: TM\tm_stm32f4_delay.h
-.\targets\stm32f429_discovery\tm_stm32f4_button.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdlib.h
+.\targets\stm32f429_discovery\tm_stm32f4_button.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

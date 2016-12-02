@@ -84,7 +84,8 @@ int main(void) {
 
 	INTTIM2_Config();
 	INTTIM5_Config();
-
+	INTTIM3_Config();
+	INTTIM4_Config();
 
 	Configure_CupDetection();	
 	Configure_Onboard_LEDS();	
@@ -94,7 +95,7 @@ int main(void) {
 	//Configure_BiColor_LED();
 	Configure_Pulse_CapSens();
 	
-	INTTIM3_Config();
+
 		
 	init_usart();
 	

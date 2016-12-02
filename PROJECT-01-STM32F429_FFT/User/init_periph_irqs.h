@@ -28,6 +28,7 @@
 void INTTIM2_Config(void);
 void INTTIM5_Config(void);
 void INTTIM3_Config(void);
+void INTTIM4_Config(void);
 void Configure_CupDetection(void);
 void Configure_485(void);
 void Configure_MotionSensorPort(void);
@@ -61,6 +62,9 @@ void setTIM5_count3(uint16_t s);
 
 uint16_t getTIM5_count4(void);
 void setTIM5_count4(uint16_t s);
+
+uint16_t getTIM4_count0(void);
+void setTIM4_count0(uint16_t s);
 
 
 uint16_t getLEDCount(void);
