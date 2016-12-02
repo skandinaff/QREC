@@ -718,14 +718,14 @@
               <FilePath>.\User\movement_detection.h</FilePath>
             </File>
             <File>
-              <FileName>leds.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\User\leds.c</FilePath>
-            </File>
-            <File>
               <FileName>leds.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\User\leds.h</FilePath>
+            </File>
+            <File>
+              <FileName>leds.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\leds.c</FilePath>
             </File>
             <File>
               <FileName>quest.c</FileName>
