@@ -20,6 +20,7 @@
 ".\targets\stm32f429_discovery\arm_max_f32.o"
 ".\targets\stm32f429_discovery\arm_bitreversal.o"
 ".\targets\stm32f429_discovery\arm_min_f32.o"
+".\targets\stm32f429_discovery\arm_mean_f32.o"
 ".\targets\stm32f429_discovery\tm_stm32f4_adc.o"
 ".\targets\stm32f429_discovery\tm_stm32f4_dac_signal.o"
 ".\targets\stm32f429_discovery\tm_stm32f4_delay.o"

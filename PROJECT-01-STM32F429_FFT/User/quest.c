@@ -25,18 +25,17 @@ void PerformQuest(void){
 	switch (task_counter) {
 		case 0:	// Pulse readings
 			TIM_Cmd(TIM5, ENABLE); 
-			LCD_init();
 			TM_ADC_Init(ADC2, ADC_Channel_8);
 		
 			ClearOnboardLEDS();
 			setTIM5_count(1);	
 			break;
 		case 1: // Silence detection
-			LCD_init();
 			LCD_FillScreen(BLACK);
 			setTIM5_count2(0);
 			TM_ADC_Init(ADC1, ADC_Channel_3);
 			ClearOnboardLEDS();
+			Delayms(3000);
 			//ControlBiColorLED(BC_LED_GREEN, false);
 			//ControlBiColorLED(BC_LED_RED, false);
 			break;
@@ -55,8 +54,8 @@ void PerformQuest(void){
 			break;
 		case 4:  // Clap Detection
 			LCD_FillScreen(BLACK);
-			ControlBiColorLED(BC_LED_GREEN, false);
-			ControlBiColorLED(BC_LED_RED, false);
+			//ControlBiColorLED(BC_LED_GREEN, false);
+			//ControlBiColorLED(BC_LED_RED, false);
 			ClearOnboardLEDS();
 			break;
 	}
@@ -70,7 +69,7 @@ void PerformQuest(void){
 				ReadPulse();			  
 				break;
 			case 1: // Silence detection
-				SilenceDetection();
+				SilenceDetectionByEnergy();
 				break;
 			case 2:  // Motion detection
 			  MotionDetection();

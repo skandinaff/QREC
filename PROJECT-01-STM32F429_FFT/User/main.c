@@ -105,7 +105,10 @@ int main(void) {
 	
 
 	LCD_ON();
-
+	
+	LCD_init();
+ 
+	LCD_FillScreen(BLACK);
 
 	Delayms(300);
 	
@@ -134,23 +137,8 @@ int main(void) {
 					case INSTR_MASTER_TEST:
 						SendInstruction(INSTR_SLAVE_READY);
 						break;
-					case INSTR_MASTER_WORK_START:
-						while (get_task_counter() <= TASK_COUNT) {
-							GPIO_SetBits(LED_GPIO, STATE_LED);
-							PerformQuest();
-							if(get_break_flag()){
-								GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);
-								set_task_counter(FIRST_TASK);
-								setSecondsCount(0);
-								TIM_Cmd(TIM2, DISABLE);
-
-								set_break_flag(false);
-								set_first_start(false);
-								break;
-							}
-						}
-
-						break;
+					
+						
 					case INSTR_MASTER_STATUS_REQ:	
 						
 						break;
@@ -174,7 +162,23 @@ int main(void) {
 						set_task_counter(4);
 						PerformQuest();
 						break;
-					case WS_TEST_MODE:
+					case INSTR_MASTER_WORK_START:
+						free(packet);
+						while (get_task_counter() <= TASK_COUNT) {
+							GPIO_SetBits(LED_GPIO, STATE_LED);
+							Control_12V_LEDs();
+							PerformQuest();
+							if(get_break_flag()){
+								GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);
+								set_task_counter(FIRST_TASK);
+								setSecondsCount(0);
+								TIM_Cmd(TIM2, DISABLE);
+								set_break_flag(false);
+								set_first_start(false);
+								}
+						}
+						break;
+					case WS_TEST_MODE:	
 						set_cups_override();
 						while (get_task_counter() <= TASK_COUNT) {
 							GPIO_SetBits(LED_GPIO, STATE_LED);
@@ -186,13 +190,18 @@ int main(void) {
 								setSecondsCount(0);
 								TIM_Cmd(TIM2, DISABLE);
 								set_break_flag(false);
+								set_first_start(false);
 								}
 						}
 						break;
-					break;
+
+						
+			
 				}				
 			}
 		}
+		
+		free(packet);
 		
 		set_task_counter(FIRST_TASK);
 		

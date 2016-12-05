@@ -29,6 +29,7 @@ volatile uint16_t tx_counter=0;
 char data_for_crc8[3];
 char incoming_crc8;
 bool break_flag = false;
+bool USART_ACTIVE = false;
 
 void init_usart(void){
 
@@ -119,6 +120,9 @@ void usart_put_data_on_lcd(unsigned char* input){
 
 void USART3_IRQHandler(void) {
 	
+	
+		set_usart_active(true);
+	
     if (USART_GetITStatus(USART3, USART_IT_RXNE) == SET) {
         if ((USART3->SR & (USART_FLAG_NE | USART_FLAG_FE | USART_FLAG_PE | USART_FLAG_ORE)) == 0) {
             rx_buffer[rx_wr_index++] = (uint8_t)(USART_ReceiveData(USART3) & 0xFF);
@@ -151,7 +155,7 @@ void USART3_IRQHandler(void) {
 			USART_ITConfig(USART3, USART_IT_TC, DISABLE);
 		}
 
-	
+		set_usart_active(false);	
 
 }
 
@@ -339,6 +343,8 @@ void usart_convert_outgoing_packet (unsigned char* packet, outgoing_packet_t out
 void check_usart_while_playing(){
 		incoming_packet_t incoming_packet;
 	
+		set_usart_active(true);	
+	
 		unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
 	
 		if (usart_has_data()) {
@@ -352,9 +358,7 @@ void check_usart_while_playing(){
 					case INSTR_MASTER_TEST:
 						//SendInstruction(INSTR_SLAVE_NOT_READY); 
 						break;
-					case INSTR_MASTER_WORK_START:
-						
-						break;
+
 					case INSTR_MASTER_STATUS_REQ:				
 						if (get_task_counter() == TASK_COUNT) {
 							SendInstruction(INSTR_SLAVE_COMPLETED);
@@ -416,16 +420,19 @@ void check_usart_while_playing(){
 		}
 		
 		free(packet);
-
+		
+		set_usart_active(false);	
 }
 
 
 uint8_t SendInstruction(unsigned char instruction){
+	set_usart_active(true);
 	unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
 	outgoing_packet_t outgoing_packet = usart_assemble_response(instruction);
 	usart_convert_outgoing_packet(packet, outgoing_packet);
 	put_str(packet);
 	free(packet);
+	set_usart_active(false);
 	return 1;
 }
 
@@ -437,5 +444,14 @@ void set_break_flag(bool bf) {
 bool get_break_flag(void) {
 	
     return break_flag;
+}
+
+void set_usart_active(bool ua) {
+    USART_ACTIVE = ua;
+}
+
+bool get_usart_active(void) {
+	
+    return USART_ACTIVE;
 }
 

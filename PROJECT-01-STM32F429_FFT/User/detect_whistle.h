@@ -28,11 +28,11 @@
 #define CLAP_AMPLITUDE 						10
 /* Silence settings */
 #define SILENCE_AMPLITUDE					6						// 3 is the absolute minimum, barele above backround noise 
-#define SILENCE_TIME							10
-#define SIL_AVG_SAMPLES						12					// previously was 10
-#define CORRECTION_VALUE					2 					// was 3
+#define SILENCE_TIME							15
+#define SIL_AVG_SAMPLES						10					// previously was 10
+#define CORRECTION_VALUE					1.1 					// was 3
 /* Common settings */
-#define DELAY_VALUE								20
+#define DELAY_VALUE								10
 
 typedef struct {
 		float32_t maxValue;							
@@ -40,6 +40,7 @@ typedef struct {
 		float32_t minValue;
 		uint32_t minIndex;
 		uint16_t i;	
+		float32_t Energy;
 } FFT_OUT_t;
 
 void DetectWhistle(void);
@@ -53,5 +54,7 @@ void setSilenceThresh(float32_t st);
 float32_t getSilenceThresh(void);
 void resetSilenceThresh(void);
 bool is_silence_thresh_set(void);
+void SilenceDetectionByEnergy(void);
+void SilenceDetectionByRAW_ADC(void);
 
 #endif

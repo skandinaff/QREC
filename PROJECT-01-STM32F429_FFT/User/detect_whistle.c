@@ -4,10 +4,12 @@
 /* Global variables */
 float32_t Input[SAMPLES];
 float32_t Output[FFT_SIZE];
+float32_t OutputInVoiceRange[18];
 uint32_t claps = 0;
 float32_t silence_thresh = SILENCE_AMPLITUDE;
 float32_t silence_thresh_avg = 0;
 uint32_t N = 0, K = 0;
+
 float32_t freq;
 float32_t inMaxValueInRange;
 bool silence_thresh_is_set = false;
@@ -27,6 +29,14 @@ float32_t silence_value_biggest_old = 0;
 
 char silence_value_biggest_str[15];
 char silence_thresh_time_str[15];
+char silence_energy_str[15];
+
+uint16_t Sil_SignalToDraw;
+uint16_t Sil_PrevSignalToDraw;
+
+uint16_t raw_adc;
+
+char raw_adc_str[15];
 
 void DetectWhistle(void) {
     //TM_ILI9341_Puts(150, 10, "           ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -151,6 +161,20 @@ FFT_OUT_t ComputeFFT(void) {
     arm_max_f32(Output, FFT_SIZE, &out.maxValue, &out.maxIndex);
 		
 		arm_min_f32(Output, FFT_SIZE, &out.minValue, &out.minIndex);
+
+		for(int l = 0; l<=18; l++){
+			OutputInVoiceRange[l]=0;
+		}
+		
+		
+		for(int j = 1; j<=18; j++){
+			OutputInVoiceRange[j-1] += Output[j];
+		}
+		
+		
+		
+		
+		arm_mean_f32(OutputInVoiceRange, FFT_SIZE, &out.Energy);
 
     return out;
 }
@@ -343,11 +367,307 @@ void SilenceDetection(void) {
 		sprintf(silence_value_biggest_str, "%.2f", silence_value_biggest_old);
 		LCD_Puts(silence_value_biggest_str, 70, 20, WHITE, BLACK,1,1);
 		
+		/*Sil_SignalToDraw = ( in.Energy );
+		LCD_DrawLine(getTIM5_count3()+2,( 80-Sil_SignalToDraw *100),getTIM5_count3()+2,( 80-Sil_PrevSignalToDraw*100),RED);
+		LCD_DrawLine(getTIM5_count3()+1,0,getTIM5_count3()+1,80,BLACK);
+		Sil_PrevSignalToDraw = Sil_SignalToDraw;
+		if (getTIM5_count3() >= 101) setTIM5_count3(1);	*/
+		
+		LCD_Puts("E: ", 1, 60, WHITE, BLACK,1,1);
+		sprintf(silence_energy_str, "%4.2f", in.Energy*1000);
+		LCD_Puts(silence_energy_str, 15, 60, RED, BLACK,1,1);
+		
 		
 		
 }
 
 
+void SilenceDetectionByEnergy(void) {
+	
+		raw_adc = TM_ADC_Read(ADC1, ADC_Channel_3);
+	
+    FFT_OUT_t in;
+    in = ComputeFFT();
+	
+    //freq = in.maxIndex * (45000 / 256); 
+	
+		in.Energy = in.Energy*100;
+	
+		//if(freq > 100 && freq < 6000) inMaxValueInRange = in.maxValue;  // Approximately range of human voice
+		// TODO: actually look in that freq. range, for now omitted
+		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
+		// ********** Setting the Threshold 
+		if(N < SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
+			silence_thresh_avg += in.Energy;
+			LCD_Puts("                ", 1, 1, WHITE, BLACK,1,1);
+			LCD_Puts("Acq. Thr...        ", 1, 1, WHITE, BLACK,1,1);
+			Delayms(50);
+		}
+		
+		if(N >= SIL_AVG_SAMPLES && silence_thresh_is_set == false){
+			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + correction_value ); 			// Add correction value, 4 seems to be optimal
+
+			silence_thresh_avg = 0; // Clearing average variable after threshold is set
+			silence_thresh_is_set = true;
+			silence_value_biggest_old = 0;
+				LCD_Puts("                  ", 1, 1, WHITE, BLACK,1,1);
+				LCD_Puts("Thr. set: ", 1, 1, WHITE, BLACK,1,1);
+				sprintf(silence_thresh_str, "%.2f", getSilenceThresh());
+				LCD_Puts(silence_thresh_str, 70, 1, WHITE, BLACK,1,1);
+			TIM_Cmd(TIM5, ENABLE);
+		} 
+		if(N < SIL_AVG_SAMPLES + 1 && silence_thresh_is_set == false) N++;
+
+		
+		if(getTIM5_count() > 200 && silence_thresh_is_set == true){
+			LCD_Puts("Thr reset!", 1, 1, RED, BLACK,1,1);
+			resetSilenceThresh(); // After 2 periouds of tim5 (37.5*2s) redefine silence threshold
+			silence_thresh_is_set = false;
+			setTIM5_count(0);
+			silence_thresh_incr+=0.125;
+			TIM_Cmd(TIM5, DISABLE);
+		}
+		
+		if(silence_thresh_incr>silence_thresh_incr_old){
+			correction_value+=1;
+			silence_thresh_incr_old=silence_thresh_incr;
+			LCD_Puts("Thr. set: ", 1, 1, WHITE, BLACK,1,1);
+			sprintf(silence_thresh_str, "%3.0f", getSilenceThresh());
+			LCD_Puts(silence_thresh_str, 70, 1, WHITE, BLACK,1,1);
+			//Maybe set a limit to increasing correction value..
+			//if(silence_thresh_incr == 32) correction_value = CORRECTION_VALUE;
+		}
+		
+
+			// ******* Setting Threshold END	
+
+			
+		if (in.Energy <= getSilenceThresh()){
+				TIM_Cmd(TIM4, DISABLE); // Disabling timer that counts Loudness time
+				TIM_Cmd(TIM2, ENABLE);  // Enabling timer that counts quitetness time
+				setTIM4_count0(0); // Resetting timer that counts Loundess time
+			
+				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			
+				//ControlBiColorLED(BC_LED_GREEN, false);
+				//ControlBiColorLED(BC_LED_RED, true);
+				//	GPIO_ResetBits(LED_GPIO, BC_LED_GREEN);
+				//	GPIO_SetBits(LED_GPIO, BC_LED_RED);
+			
+
+
+		}
+		
+		if (in.Energy > getSilenceThresh() && silence_thresh_is_set == true) {
+			setSecondsCount(0);
+			TIM_Cmd(TIM4, ENABLE);
+			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			
+			//if(getTIM4_count0() >= 10) setSecondsCount(0);
+			//ControlBiColorLED(BC_LED_GREEN, true);
+			//ControlBiColorLED(BC_LED_RED, false);
+			//	GPIO_SetBits(LED_GPIO, BC_LED_GREEN);
+			//	GPIO_ResetBits(LED_GPIO, BC_LED_RED);
+		}
+		
+		//if(getTIM4_count0() >= 10) setSecondsCount(0);
+		
+		if (getSecondCount() > SILENCE_TIME) { //Silence time
+				TIM_Cmd(TIM2, DISABLE);
+				LCD_Puts("Done", 1, 50, WHITE, BLACK,1,1);
+				set_task_counter(get_task_counter() + 1);
+				setSecondsCount(0);
+				setSilenceThresh(SILENCE_AMPLITUDE);
+				Delayms(100);
+		}
+		
+		
+		LCD_Puts("C.V.: ", 1, 10, WHITE, BLACK,1,1);
+		sprintf(silence_value_str, "%.2f", in.Energy);
+		LCD_Puts(silence_value_str, 70, 10, RED, BLACK,1,1);
+		
+		LCD_Puts("T->Done: ", 1, 30, WHITE, BLACK,1,1);
+		sprintf(silence_time_str, "%4d", getSecondCount());
+		LCD_Puts(silence_time_str, 70, 30, WHITE, BLACK,1,1);
+		
+		LCD_Puts("T->res Th: ", 1, 40, WHITE, BLACK,1,1);
+		sprintf(silence_thresh_time_str, "%4d", getTIM5_count()/10);
+		LCD_Puts(silence_thresh_time_str, 70, 40, WHITE, BLACK,1,1);
+		
+		silence_value_biggest = in.Energy;
+		if(silence_value_biggest > silence_value_biggest_old){
+			silence_value_biggest_old = silence_value_biggest;
+		}
+		LCD_Puts("Max Val:", 1, 20, WHITE, BLACK,1,1);
+		sprintf(silence_value_biggest_str, "%.2f", silence_value_biggest_old);
+		LCD_Puts(silence_value_biggest_str, 70, 20, WHITE, BLACK,1,1);
+		
+		/*Sil_SignalToDraw = ( in.Energy );
+		LCD_DrawLine(getTIM5_count3()+2,( 80-Sil_SignalToDraw *100),getTIM5_count3()+2,( 80-Sil_PrevSignalToDraw*100),RED);
+		LCD_DrawLine(getTIM5_count3()+1,0,getTIM5_count3()+1,80,BLACK);
+		Sil_PrevSignalToDraw = Sil_SignalToDraw;
+		if (getTIM5_count3() >= 101) setTIM5_count3(1);	*/
+		
+		LCD_Puts("E: ", 1, 60, WHITE, BLACK,1,1);
+		sprintf(silence_energy_str, "%4.0f", in.Energy);
+		LCD_Puts(silence_energy_str, 15, 60, RED, BLACK,1,1);
+		
+		LCD_Puts("RAW AD: ", 1, 50, WHITE, BLACK,1,1);
+		sprintf(raw_adc_str, "%d", raw_adc);
+		LCD_Puts(raw_adc_str, 50, 50, WHITE, BLACK,1,1);
+		
+		
+		
+}
+
+void SilenceDetectionByRAW_ADC(void) {
+	
+		//if (!get_usart_active()) {
+
+
+	
+			raw_adc = TM_ADC_Read(ADC1, ADC_Channel_3);
+	
+
+		
+
+
+	
+		//if(freq > 100 && freq < 6000) inMaxValueInRange = in.maxValue;  // Approximately range of human voice
+		// TODO: actually look in that freq. range, for now omitted
+		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
+		// ********** Setting the Threshold 
+		/*
+		if(N < SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
+			silence_thresh_avg += raw_adc;
+			LCD_Puts("                ", 1, 1, WHITE, BLACK,1,1);
+			LCD_Puts("Acq. Thr...        ", 1, 1, WHITE, BLACK,1,1);
+			Delayms(10);
+		}
+		
+		if(N >= SIL_AVG_SAMPLES && silence_thresh_is_set == false){
+			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + correction_value ); 			// Add correction value, 4 seems to be optimal
+
+			silence_thresh_avg = 0; // Clearing average variable after threshold is set
+			silence_thresh_is_set = true;
+			silence_value_biggest_old = 0;
+				LCD_Puts("                  ", 1, 1, WHITE, BLACK,1,1);
+				LCD_Puts("Thr. set: ", 1, 1, WHITE, BLACK,1,1);
+				sprintf(silence_thresh_str, "%d", getSilenceThresh());
+				LCD_Puts(silence_thresh_str, 70, 1, WHITE, BLACK,1,1);
+			TIM_Cmd(TIM5, ENABLE);
+		} 
+		if(N < SIL_AVG_SAMPLES + 1 && silence_thresh_is_set == false) N++;
+
+		
+		if(getTIM5_count() > 200 && silence_thresh_is_set == true){
+			LCD_Puts("Thr reset!", 1, 1, RED, BLACK,1,1);
+			resetSilenceThresh(); // After 2 periouds of tim5 (37.5*2s) redefine silence threshold
+			silence_thresh_is_set = false;
+			setTIM5_count(0);
+			silence_thresh_incr+=1;
+			TIM_Cmd(TIM5, DISABLE);
+		}
+		
+		if(silence_thresh_incr>silence_thresh_incr_old){
+			correction_value+=1;
+			silence_thresh_incr_old=silence_thresh_incr;
+			LCD_Puts("Thr. set: ", 1, 1, WHITE, BLACK,1,1);
+			sprintf(silence_thresh_str, "%d", getSilenceThresh());
+			LCD_Puts(silence_thresh_str, 70, 1, WHITE, BLACK,1,1);
+			//Maybe set a limit to increasing correction value..
+			//if(silence_thresh_incr == 32) correction_value = CORRECTION_VALUE;
+		}
+		*/
+
+			// ******* Setting Threshold END	
+
+
+			LCD_Puts("Thr: ", 1, 1, WHITE, BLACK,1,1);
+			sprintf(silence_thresh_str, "%d", getSilenceThresh());
+			LCD_Puts(silence_thresh_str, 70, 1, WHITE, BLACK,1,1);
+			
+		if (raw_adc <= getSilenceThresh()){
+				TIM_Cmd(TIM4, DISABLE); // Disabling timer that counts Loudness time
+				TIM_Cmd(TIM2, ENABLE);  // Enabling timer that counts quitetness time
+				setTIM4_count0(0); // Resetting timer that counts Loundess time
+			
+				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			
+				//ControlBiColorLED(BC_LED_GREEN, false);
+				//ControlBiColorLED(BC_LED_RED, true);
+				//	GPIO_ResetBits(LED_GPIO, BC_LED_GREEN);
+				//	GPIO_SetBits(LED_GPIO, BC_LED_RED);
+			
+
+
+		}
+		
+		if (raw_adc > getSilenceThresh()){// && silence_thresh_is_set == true) {
+			setSecondsCount(0);
+			TIM_Cmd(TIM4, ENABLE);
+			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
+			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
+			
+			//if(getTIM4_count0() >= 10) setSecondsCount(0);
+			//ControlBiColorLED(BC_LED_GREEN, true);
+			//ControlBiColorLED(BC_LED_RED, false);
+			//	GPIO_SetBits(LED_GPIO, BC_LED_GREEN);
+			//	GPIO_ResetBits(LED_GPIO, BC_LED_RED);
+		}
+		
+		//if(getTIM4_count0() >= 10) setSecondsCount(0);
+		
+		if (getSecondCount() > SILENCE_TIME) { //Silence time
+				TIM_Cmd(TIM2, DISABLE);
+				LCD_Puts("Done", 1, 50, WHITE, BLACK,1,1);
+				set_task_counter(get_task_counter() + 1);
+				setSecondsCount(0);
+				setSilenceThresh(SILENCE_AMPLITUDE);
+				Delayms(100);
+		}
+		
+		
+		LCD_Puts("C.V.: ", 1, 10, WHITE, BLACK,1,1);
+		sprintf(silence_value_str, "%d", raw_adc);
+		LCD_Puts(silence_value_str, 70, 10, RED, BLACK,1,1);
+		
+		LCD_Puts("T->Done: ", 1, 30, WHITE, BLACK,1,1);
+		sprintf(silence_time_str, "%4d", getSecondCount());
+		LCD_Puts(silence_time_str, 70, 30, WHITE, BLACK,1,1);
+		
+		LCD_Puts("T->res Th: ", 1, 40, WHITE, BLACK,1,1);
+		sprintf(silence_thresh_time_str, "%4d", getTIM5_count()/10);
+		LCD_Puts(silence_thresh_time_str, 70, 40, WHITE, BLACK,1,1);
+		
+		silence_value_biggest = raw_adc;
+		if(silence_value_biggest > silence_value_biggest_old){
+			silence_value_biggest_old = silence_value_biggest;
+		}
+		LCD_Puts("Max Val:", 1, 20, WHITE, BLACK,1,1);
+		sprintf(silence_value_biggest_str, "%d", silence_value_biggest_old);
+		LCD_Puts(silence_value_biggest_str, 70, 20, WHITE, BLACK,1,1);
+		
+		/*Sil_SignalToDraw = ( in.Energy );
+		LCD_DrawLine(getTIM5_count3()+2,( 80-Sil_SignalToDraw *100),getTIM5_count3()+2,( 80-Sil_PrevSignalToDraw*100),RED);
+		LCD_DrawLine(getTIM5_count3()+1,0,getTIM5_count3()+1,80,BLACK);
+		Sil_PrevSignalToDraw = Sil_SignalToDraw;
+		if (getTIM5_count3() >= 101) setTIM5_count3(1);	*/
+		
+		LCD_Puts("E: ", 1, 60, WHITE, BLACK,1,1);
+		sprintf(silence_energy_str, "%d", raw_adc);
+		LCD_Puts(silence_energy_str, 15, 60, RED, BLACK,1,1);
+		
+		LCD_Puts("RAW AD: ", 1, 50, WHITE, BLACK,1,1);
+		sprintf(raw_adc_str, "%d", raw_adc);
+		LCD_Puts(raw_adc_str, 50, 50, WHITE, BLACK,1,1);
+		
+
+		
+}
 
 /* Draw bar for LCD */
 /* Simple library to draw bars */
@@ -356,12 +676,14 @@ void DrawBar(uint16_t bottomX, uint16_t bottomY, uint16_t maxHeight, uint16_t ma
     uint16_t height;
     height = (uint16_t)((float32_t) value / (float32_t) maxValue * (float32_t) maxHeight);
     if (height == maxHeight) {
-        //TM_ILI9341_DrawLine(bottomX, bottomY, bottomX, bottomY - height, foreground);
+        TM_ILI9341_DrawLine(bottomX, bottomY, bottomX, bottomY - height, foreground);
     } else if (height < maxHeight) {
-        //TM_ILI9341_DrawLine(bottomX, bottomY, bottomX, bottomY - height, foreground);
-        //TM_ILI9341_DrawLine(bottomX, bottomY - height, bottomX, bottomY - maxHeight, background);
+        TM_ILI9341_DrawLine(bottomX, bottomY, bottomX, bottomY - height, foreground);
+        TM_ILI9341_DrawLine(bottomX, bottomY - height, bottomX, bottomY - maxHeight, background);
     }
 }
+				
+
 
 void setClaps(uint8_t c) {
 	claps = c;

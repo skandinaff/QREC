@@ -115,14 +115,28 @@ void TM_ADC_InitADC(ADC_TypeDef* ADCx) {
 }
 
 uint16_t TM_ADC_Read(ADC_TypeDef* ADCx, uint8_t channel) {
+	
+	
+	
 	ADC_RegularChannelConfig(ADCx, channel, 1, ADC_SampleTime_15Cycles);
+		
+	__disable_irq();
+	
 	ADC_SoftwareStartConv(ADCx);
 	
 	/* Wait till done */
+		
+
 	while (ADC_GetFlagStatus(ADCx, ADC_FLAG_EOC) == RESET);
 	
+	
+	
+	__enable_irq();
 	/* Return result */
+
+	
 	return ADC_GetConversionValue(ADCx);
+	
 }
 
 void TM_ADC_EnableVbat(void) {
