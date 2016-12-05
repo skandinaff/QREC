@@ -417,7 +417,7 @@ void SilenceDetectionByEnergy(void) {
 			TIM_Cmd(TIM5, ENABLE);
 		} 
 		if(N < SIL_AVG_SAMPLES + 1 && silence_thresh_is_set == false) N++;
-
+/*
 		
 		if(getTIM5_count() > 200 && silence_thresh_is_set == true){
 			LCD_Puts("Thr reset!", 1, 1, RED, BLACK,1,1);
@@ -437,7 +437,7 @@ void SilenceDetectionByEnergy(void) {
 			//Maybe set a limit to increasing correction value..
 			//if(silence_thresh_incr == 32) correction_value = CORRECTION_VALUE;
 		}
-		
+		*/
 
 			// ******* Setting Threshold END	
 

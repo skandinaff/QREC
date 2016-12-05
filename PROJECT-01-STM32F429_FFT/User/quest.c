@@ -17,7 +17,6 @@ void PerformQuest(void){
 		}
     setSecondsCount(0);	
 		check_usart_while_playing();
-		//TM_ILI9341_Puts(1, 100, "Hello! Please put all 5 cups!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 	}
 
 	
@@ -26,7 +25,6 @@ void PerformQuest(void){
 		case 0:	// Pulse readings
 			TIM_Cmd(TIM5, ENABLE); 
 			TM_ADC_Init(ADC2, ADC_Channel_8);
-		
 			ClearOnboardLEDS();
 			setTIM5_count(1);	
 			break;
@@ -36,26 +34,18 @@ void PerformQuest(void){
 			TM_ADC_Init(ADC1, ADC_Channel_3);
 			ClearOnboardLEDS();
 			Delayms(3000);
-			//ControlBiColorLED(BC_LED_GREEN, false);
-			//ControlBiColorLED(BC_LED_RED, false);
 			break;
 		case 2:  // Motion detection
 			LCD_FillScreen(BLACK);
 			Configure_MotionSensorPort();
 			ClearOnboardLEDS();
-			//ControlBiColorLED(BC_LED_GREEN, false);
-			//ControlBiColorLED(BC_LED_RED, false);
 			break;
 		case 3:  // Whistle Detection
 			LCD_FillScreen(BLACK);
 			ClearOnboardLEDS();
-			//ControlBiColorLED(BC_LED_GREEN, false);
-			//ControlBiColorLED(BC_LED_RED, false);
 			break;
 		case 4:  // Clap Detection
 			LCD_FillScreen(BLACK);
-			//ControlBiColorLED(BC_LED_GREEN, false);
-			//ControlBiColorLED(BC_LED_RED, false);
 			ClearOnboardLEDS();
 			break;
 	}
@@ -88,9 +78,9 @@ void PerformQuest(void){
 			 3) if can not be handled, then break out of this function to the outer while
 			 5) let the outer while handle the request (reset the state)
 		 */
-		
-		check_usart_while_playing();
 		if (get_break_flag()) return;
+		check_usart_while_playing();
+		
 	}
 
 

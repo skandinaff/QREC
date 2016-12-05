@@ -359,7 +359,8 @@ void check_usart_while_playing(){
 						//SendInstruction(INSTR_SLAVE_NOT_READY); 
 						break;
 
-					case INSTR_MASTER_STATUS_REQ:				
+					case INSTR_MASTER_STATUS_REQ:
+						free(packet);						
 						if (get_task_counter() == TASK_COUNT) {
 							SendInstruction(INSTR_SLAVE_COMPLETED);
 						} else {
@@ -369,8 +370,9 @@ void check_usart_while_playing(){
 						}
 						break;
 					case INSTR_MASTER_SET_IDLE:
-						/*setTIM5_count(0);
-					  setSecondsCount(0); */
+						//free(packet);
+						setTIM5_count(0);
+					  setSecondsCount(0); 
 						TIM_Cmd(TIM2, DISABLE);
 						TIM_Cmd(TIM5, DISABLE);
 						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
@@ -380,7 +382,7 @@ void check_usart_while_playing(){
 						set_break_flag(true);
 						set_first_start(false);
 						set_task_counter(FIRST_TASK);
-						//clearBuffer();
+						free(packet);
 						return;
 					case CINSTR_GOTO_END:
 						set_task_counter(get_task_counter() + 1); // Skips a task
@@ -421,18 +423,15 @@ void check_usart_while_playing(){
 		
 		free(packet);
 		
-		set_usart_active(false);	
 }
 
 
 uint8_t SendInstruction(unsigned char instruction){
-	set_usart_active(true);
 	unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
 	outgoing_packet_t outgoing_packet = usart_assemble_response(instruction);
 	usart_convert_outgoing_packet(packet, outgoing_packet);
 	put_str(packet);
 	free(packet);
-	set_usart_active(false);
 	return 1;
 }
 

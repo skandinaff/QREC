@@ -137,13 +137,12 @@ int main(void) {
 					case INSTR_MASTER_TEST:
 						SendInstruction(INSTR_SLAVE_READY);
 						break;
-					
-						
+											
 					case INSTR_MASTER_STATUS_REQ:	
 						
 						break;
 					case INSTR_MASTER_SET_IDLE:
-						set_task_counter(FIRST_TASK);
+						set_task_counter(FIRST_TASK);						
 						break;
 					case CINSTR_GOTO_END:
 						set_cups_override();
@@ -175,8 +174,11 @@ int main(void) {
 								TIM_Cmd(TIM2, DISABLE);
 								set_break_flag(false);
 								set_first_start(false);
+								break;
 								}
+							break;
 						}
+						//*** CUSTOM COMMANDS
 						break;
 					case WS_TEST_MODE:	
 						set_cups_override();
@@ -194,7 +196,7 @@ int main(void) {
 								}
 						}
 						break;
-
+					break;
 						
 			
 				}				
