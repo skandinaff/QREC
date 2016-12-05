@@ -46,7 +46,7 @@ void DetectWhistle(void) {
     /*** Thus code takes frequency at a maximum amplitude and detects if it's in range of whistle ***/
     freq = in.maxIndex * (45000 / 256);  // If a condition is added here, that cut's off low frequencies, just reaching
     // certain frequency is enough to trigger the event
-    /*
+    
 		LCD_Puts("Max Fq: ", 1, 1, WHITE, BLACK,1,1);
     sprintf(whistle_freq_str, "%.2f Hz", freq);	
 		LCD_Puts(whistle_freq_str, 60, 1, WHITE, BLACK,1,1);
@@ -54,10 +54,10 @@ void DetectWhistle(void) {
 		LCD_Puts("T: ", 1, 10, WHITE, BLACK,1,1);
     sprintf(whistle_time_str, "%4d", getSecondCount());	
 		LCD_Puts(whistle_time_str, 60, 10, WHITE, BLACK,1,1);
-		*/
+		
     if (in.maxIndex > 0) //TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
-    if ((freq >= 1000 && freq <= 2400) || (freq >= 2600 && freq <= 3000)) {  // Whistle withing range
+    if ((freq >= 1000 && freq <= 3000)) {  // Whistle withing range
 			TIM_Cmd(TIM4, DISABLE);
       TIM_Cmd(TIM2, ENABLE);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
@@ -75,7 +75,7 @@ void DetectWhistle(void) {
       //if(getSecondCount() < 2) setSecondsCount(0);  //TODO: What this suppose to do????
 			TIM_Cmd(TIM2, DISABLE);
     }
-		if (freq > 2400) { // Cutting off frequencies more than 2400
+		if (freq > 3000) { // Cutting off frequencies more than 2400
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			TIM_Cmd(TIM4, ENABLE);
@@ -227,12 +227,13 @@ void DetectClap(void) {
 
 void SilenceDetection(void) {
 	
+		
     FFT_OUT_t in;
     in = ComputeFFT();
 	
     freq = in.maxIndex * (45000 / 256); 
 		//if(freq > 100 && freq < 6000) inMaxValueInRange = in.maxValue;  // Approximately range of human voice
-	// TODO: actually look in that freq. range, for now omitted
+		// TODO: actually look in that freq. range, for now omitted
 		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
 		// ********** Setting the Threshold 
 		if(N < SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
@@ -321,7 +322,7 @@ void SilenceDetection(void) {
 				Delayms(100);
 		}
 		
-		/*
+		
 		LCD_Puts("Cur. Val: ", 1, 10, WHITE, BLACK,1,1);
 		sprintf(silence_value_str, "%.2f", in.maxValue);
 		LCD_Puts(silence_value_str, 70, 10, RED, BLACK,1,1);
@@ -341,10 +342,12 @@ void SilenceDetection(void) {
 		LCD_Puts("Max Val:", 1, 20, WHITE, BLACK,1,1);
 		sprintf(silence_value_biggest_str, "%.2f", silence_value_biggest_old);
 		LCD_Puts(silence_value_biggest_str, 70, 20, WHITE, BLACK,1,1);
-		*/
+		
 		
 		
 }
+
+
 
 /* Draw bar for LCD */
 /* Simple library to draw bars */

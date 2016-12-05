@@ -14,15 +14,13 @@
 #include "init_periph_irqs.h"
 #include "cup_detection.h"
 #include "pulse_reading.h"
+#include "LPH8731-3C.h"
 
 #define PIR_PORT GPIOE
 
 #define PIR_1_PIN GPIO_Pin_0
-#define PIR_2_PIN GPIO_Pin_1
-#define PIR_3_PIN GPIO_Pin_2
-#define PIR_4_PIN GPIO_Pin_3
 
-#define NO_MOTION_TIME 20
+#define NO_MOTION_TIME 15
 
 void MotionDetection(void);
 

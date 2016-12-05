@@ -87,7 +87,7 @@ int main(void) {
 	INTTIM2_Config();
 	INTTIM5_Config();
 	INTTIM3_Config();
-	INTTIM4_Config();
+//	INTTIM4_Config();
 
 	Configure_CupDetection();	
 	Configure_Onboard_LEDS();	
@@ -102,8 +102,11 @@ int main(void) {
 	init_usart();
 	
 	GPIO_ToggleBits(ONBOARD_LED_GPIO, ONBOARD_LED_1); // LED indicating that board is ON
-	LCD_OFF();
 	
+
+	LCD_ON();
+
+
 	Delayms(300);
 	
 
