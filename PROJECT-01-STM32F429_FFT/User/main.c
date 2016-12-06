@@ -84,9 +84,9 @@ int main(void) {
 	TM_DELAY_Init(); /* Delay init */
 	
 
-	INTTIM2_Config();
-	INTTIM5_Config();
-	INTTIM3_Config();
+	INTTIM2_Config(); // Responsible only for Seconds count
+	INTTIM5_Config(); // General purpouse small increment timer
+	INTTIM3_Config(); // Responsibleo only for 12V leds blinking
 //	INTTIM4_Config();
 
 	Configure_CupDetection();	
@@ -95,7 +95,7 @@ int main(void) {
 	Configure_12V_LEDS();
 	//Configure_LED_indicator(); // Can't use this when LCD or BiColor LED is used
 	//Configure_BiColor_LED();
-	Configure_Pulse_CapSens();
+	//Configure_Pulse_CapSens();
 	
 
 		
@@ -118,110 +118,55 @@ int main(void) {
 	incoming_packet_t incoming_packet;
 	
 
-
+	GPIO_ResetBits(RS485_GPIO, RS485_EN_PIN); //RX
+	
 
 	while (1) {	
 
-
+		check_usart_while_playing();
 		
-		if (usart_has_data()) {
-			
-			
-			
-			usart_get_data_packet(packet);
-			incoming_packet = usart_packet_parser(packet);
-			
-			if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
-				BlinkOnboardLED(2);
-				switch (incoming_packet.instruction) {
-					case INSTR_MASTER_TEST:
-						SendInstruction(INSTR_SLAVE_READY);
-						break;
-											
-					case INSTR_MASTER_STATUS_REQ:	
-						
-						break;
-					case INSTR_MASTER_SET_IDLE:
-						//NVIC_SystemReset();
-						LCD_FillScreen(BLACK);
-						LCD_Puts("IDLE START", 1, 1, WHITE, BLACK,1,1);
-						set_xLED(0);
-						setClaps(0);
-						set_break_flag(true);
-						set_first_start(false);
-						set_task_counter(FIRST_TASK);					
-						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
-						GPIO_ResetBits(LED_GPIO, STATE_LED);
-						LCD_Puts("IDLE", 1, 1, WHITE, BLACK,1,1);
-						setTIM5_count(0);
-					  setSecondsCount(0); 
-						TIM_Cmd(TIM2, DISABLE);
-						TIM_Cmd(TIM5, DISABLE);
-						LCD_Puts("IDLE END", 1, 10, WHITE, BLACK,1,1);
-						free(packet);
-						break;
-					case CINSTR_GOTO_END:
-						set_cups_override();
-						set_task_counter(TASK_COUNT + 1);
-						if(get_task_counter() == TASK_COUNT ) set_task_counter(TASK_COUNT); // Maybe I should go back to task 1, but, meh..
-						PerformQuest();
-						break;
-					case TEST_DISP:
-						Test_7Seg();
-						break;
-					case SYS_RESET:
-						NVIC_SystemReset();
-						break;
-					case PULSE:
-						set_cups_override();
-						set_task_counter(4);
-						PerformQuest();
-						break;
-					case INSTR_MASTER_WORK_START:
-						free(packet);
-						while (get_task_counter() <= TASK_COUNT) {
-							GPIO_SetBits(LED_GPIO, STATE_LED);
-							Control_12V_LEDs();
-							PerformQuest();
-							if(get_break_flag()){
-								GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);
-								set_task_counter(FIRST_TASK);
-								setSecondsCount(0);
-								TIM_Cmd(TIM2, DISABLE);
-								set_break_flag(false);
-								set_first_start(false);
-								break;
-								}
-							break;
-						}
-						//*** CUSTOM COMMANDS
-						break;
-					case WS_TEST_MODE:	
-						set_cups_override();
-						while (get_task_counter() <= TASK_COUNT) {
-							GPIO_SetBits(LED_GPIO, STATE_LED);
-							Control_12V_LEDs();
-							PerformQuest();
-							if(get_break_flag()){
-								GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);
-								set_task_counter(FIRST_TASK);
-								setSecondsCount(0);
-								TIM_Cmd(TIM2, DISABLE);
-								set_break_flag(false);
-								set_first_start(false);
-								}
-						}
-						break;
-					break;
-						
-			
-				}				
-			}
+		switch(get_game_state()){
+			case IDLE:
+				//Emergency_Stop();
+				set_game_result(NOT_COMPLETED);
+				LCD_Puts("State: Idle", 1, 30, WHITE, BLACK,1,1);
+				LCD_Puts("Result: ", 1, 40, WHITE, BLACK,1,1);
+				if(get_game_result()==COMPLETED)					 LCD_Puts("COMPL", 50, 40, WHITE, BLACK,1,1);
+				if(get_game_result()==NOT_COMPLETED) 			 LCD_Puts("NOT_C", 50, 40, WHITE, BLACK,1,1);
+				GPIO_ResetBits(LED_GPIO, STATE_LED);
+				break;
+			case GAME:
+				LCD_Puts("State: Game", 1, 30, WHITE, BLACK,1,1);
+				if(get_game_result()==COMPLETED) {
+					LCD_FillScreen(BLACK);
+					LCD_Puts("COMPL", 50, 40, WHITE, BLACK,1,1);
+					GPIO_ResetBits(LED_GPIO, STATE_LED);
+					GPIO_ResetBits(LED_GPIO, LED_1 | LED_2 | LED_3 | LED_4 | LED_5);
+					set_task_counter(FIRST_TASK);
+					setSecondsCount(0);
+					TIM_Cmd(TIM2, DISABLE);
+					TIM_Cmd(TIM5, DISABLE);
+					setTIM5_count(0);
+					set_xLED(0);
+					setClaps(0);
+					set_break_flag(false);
+					set_first_start(false);
+				}
+				if(get_game_result()==NOT_COMPLETED) {
+					LCD_Puts("NOT_C", 50, 40, WHITE, BLACK,1,1);
+					GPIO_SetBits(LED_GPIO, STATE_LED);
+					Control_12V_LEDs();						
+				}
+				while(get_game_result()==NOT_COMPLETED && get_game_state()==GAME) {
+					PerformQuest();
+				}
+				break;
 		}
 		
-		free(packet);
 		
-		set_task_counter(FIRST_TASK);
+
+	//****************	
+
 		
 	}
 }

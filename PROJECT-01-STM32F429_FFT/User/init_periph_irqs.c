@@ -201,7 +201,7 @@ void TIM3_IRQHandler(void) {
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET) {
 		led_counter += 1;
 		if(xLED!=0) GPIO_ToggleBits(LED_GPIO, xLED);
-		TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+			TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
 		}
 }
 

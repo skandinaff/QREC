@@ -343,7 +343,6 @@ void usart_convert_outgoing_packet (unsigned char* packet, outgoing_packet_t out
 void check_usart_while_playing(){
 		incoming_packet_t incoming_packet;
 	
-		set_usart_active(true);	
 	
 		unsigned char* packet = malloc((OUTGOING_PACKET_LENGTH + 1) * sizeof(char));
 	
@@ -351,43 +350,39 @@ void check_usart_while_playing(){
 			
 			usart_get_data_packet(packet);
 			incoming_packet = usart_packet_parser(packet);
+			
 			if (usart_validate_crc8(incoming_packet) && usart_packet_is_addressed_to_me(incoming_packet)){
-			//TM_ILI9341_Puts(1, 220, "We recevied some data", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 			//BlinkOnboardLED(2);
 				switch (incoming_packet.instruction) {
 					case INSTR_MASTER_TEST:
-						//SendInstruction(INSTR_SLAVE_NOT_READY); 
-						break;
-
-					case INSTR_MASTER_STATUS_REQ:
-						free(packet);						
-						if (get_task_counter() == TASK_COUNT) {
-							SendInstruction(INSTR_SLAVE_COMPLETED);
-						} else {
-							SendInstruction(INSTR_SLAVE_NOT_COMLETED);
-							//put_char('w');
-							//put_char(get_task_counter()+1); // +1 since task counter starts with 0
+						free(packet);	
+						LCD_Puts("TEST received", 1, 70, WHITE, BLACK,1,1);
+						if(get_game_state()==IDLE){
+							SendInstruction(INSTR_SLAVE_READY);
 						}
 						break;
+					case INSTR_MASTER_STATUS_REQ:
+						free(packet);						
+						LCD_Puts("STATUS received", 1, 70, WHITE, BLACK,1,1);
+						if(get_game_result()==COMPLETED)		 SendInstruction(INSTR_SLAVE_COMPLETED);
+						if(get_game_result()==NOT_COMPLETED) SendInstruction(INSTR_SLAVE_NOT_COMLETED);
+						break;
 					case INSTR_MASTER_SET_IDLE:
-						//NVIC_SystemReset();
-						LCD_FillScreen(BLACK);
-						LCD_Puts("IDLE START", 1, 1, WHITE, BLACK,1,1);
-						set_xLED(0);
-						setClaps(0);
-						set_break_flag(true);
-						set_first_start(false);
-						set_task_counter(FIRST_TASK);					
-						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
-						GPIO_ResetBits(LED_GPIO, STATE_LED);
-						LCD_Puts("IDLE", 1, 1, WHITE, BLACK,1,1);
-						setTIM5_count(0);
-					  setSecondsCount(0); 
-						TIM_Cmd(TIM2, DISABLE);
-						TIM_Cmd(TIM5, DISABLE);
-						LCD_Puts("IDLE END", 1, 10, WHITE, BLACK,1,1);
 						free(packet);
-						return;
+						LCD_Puts("IDLE received", 1, 70, WHITE, BLACK,1,1);
+						if(get_game_state()==GAME) {
+							set_game_state(IDLE);
+							NVIC_SystemReset();
+						}
+						break;
+					case INSTR_MASTER_WORK_START:
+						free(packet);
+						LCD_Puts("WORK received", 1, 70, WHITE, BLACK,1,1);
+						if(get_game_state()==IDLE){
+							set_game_state(GAME);
+						}
+						break;
+						//*** CUSTOM COMMANDS
 					case CINSTR_GOTO_END:
 						set_task_counter(get_task_counter() + 1); // Skips a task
 						if(get_task_counter() == TASK_COUNT ) set_task_counter(TASK_COUNT);
@@ -407,13 +402,10 @@ void check_usart_while_playing(){
 						Test_7Seg();
 						break;
 					case TASK_REQUEST:
-						//put_char(get_task_counter()+1);
 					  SendInstruction(get_task_counter()+1);
 						break;
 					case SIL_THR_REQUEST:
 						SendInstruction(getSilenceThresh());
-						//put_char(getSilenceThresh());
-						//put_char('w');
 						break;
 					case SYS_RESET:
 						NVIC_SystemReset();
@@ -421,12 +413,19 @@ void check_usart_while_playing(){
 					case HM_CUPS:
 						SendInstruction(DetectCups());
 						break;
-				}	
+					case WS_TEST_MODE:	
+						set_cups_override();
+						if(get_game_state()==IDLE){
+							set_game_state(GAME);
+						}
+						break;
+					
 			}
 		}
 		
-		free(packet);
+	}
 		
+	free(packet);
 }
 
 

@@ -25,12 +25,12 @@
 /* Whistle settings */
 #define WHISTLE_TIME							5
 /* Clap settings */
-#define CLAP_AMPLITUDE 						10
+#define CLAP_AMPLITUDE 						5
 /* Silence settings */
-#define SILENCE_AMPLITUDE					6						// 3 is the absolute minimum, barele above backround noise 
+#define SILENCE_AMPLITUDE					10						// 3 is the absolute minimum, barele above backround noise 
 #define SILENCE_TIME							15
 #define SIL_AVG_SAMPLES						10					// previously was 10
-#define CORRECTION_VALUE					1.1 					// was 3
+#define CORRECTION_VALUE					7 					// was 3
 /* Common settings */
 #define DELAY_VALUE								10
 

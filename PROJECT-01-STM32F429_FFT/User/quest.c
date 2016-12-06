@@ -1,13 +1,12 @@
 #include "quest.h"
 
+state game_state;
+result game_result;
+
 void PerformQuest(void){
+	
 	int task_counter = get_task_counter();
 
-	//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
-
-	//char state[1];
-	//sprintf(state, "%d", task_counter);
-	//TM_ILI9341_Puts(280, 10, state, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 	if (!getAll_cups_present()) {
 		TIM_Cmd(TIM3, DISABLE);  //TODO: Check if this works upd 4.11.16: seems not to..
@@ -33,7 +32,7 @@ void PerformQuest(void){
 			setTIM5_count2(0);
 			TM_ADC_Init(ADC1, ADC_Channel_3);
 			ClearOnboardLEDS();
-			Delayms(3000);
+			//Delayms(3000);
 			break;
 		case 2:  // Motion detection
 			LCD_FillScreen(BLACK);
@@ -70,19 +69,59 @@ void PerformQuest(void){
 			case 4:  // Pulse Readings
 				DetectClap();
 				break;
+			case 5:
+				set_game_result(COMPLETED); 
+				break;
 		}
 
-		// TODO:
-		/* 1) check usart
-			 2) if can be handled, then handle it right here!
-			 3) if can not be handled, then break out of this function to the outer while
-			 5) let the outer while handle the request (reset the state)
-		 */
-		if (get_break_flag()) return;
 		check_usart_while_playing();
+		
+		if (get_break_flag()) return;
+
 		
 	}
 
 
-	//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+
+}
+
+state get_game_state(){
+	return game_state;
+}
+
+void set_game_state(state s){
+	game_state = s;
+}
+
+result get_game_result(){
+	return game_result;
+}
+
+void set_game_result(result r){
+	game_result = r;
+}
+
+void Emergency_Stop(void){
+		USART_ITConfig(USART3, USART_IT_TXE, ENABLE);
+		USART_ITConfig(USART3, USART_IT_ORE_RX, ENABLE);
+		USART_ITConfig(USART3, USART_IT_TC, ENABLE);
+		USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
+		__enable_irq();
+		LCD_FillScreen(BLACK);
+		set_task_counter(FIRST_TASK);					
+		GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
+		GPIO_ResetBits(LED_GPIO, STATE_LED);
+		set_xLED(0);
+		TIM_Cmd(TIM2, DISABLE);
+		TIM_Cmd(TIM5, DISABLE);
+		TIM_Cmd(TIM3, DISABLE);
+		setSecondsCount(0); 
+		setTIM5_count(0);
+		setTIM5_count2(0);
+		setTIM5_count3(0);
+		setTIM5_count4(0);
+		setClaps(0);
+		set_break_flag(true);
+		set_first_start(false);
+		return;	
 }
