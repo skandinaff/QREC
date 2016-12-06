@@ -32,7 +32,7 @@ void PerformQuest(void){
 			setTIM5_count2(0);
 			TM_ADC_Init(ADC1, ADC_Channel_3);
 			ClearOnboardLEDS();
-			//Delayms(3000);
+			Delayms(3000);
 			break;
 		case 2:  // Motion detection
 			LCD_FillScreen(BLACK);
@@ -68,9 +68,7 @@ void PerformQuest(void){
 				break;
 			case 4:  // Pulse Readings
 				DetectClap();
-				break;
-			case 5:
-				set_game_result(COMPLETED); 
+				//DetectClapByEnergy();
 				break;
 		}
 

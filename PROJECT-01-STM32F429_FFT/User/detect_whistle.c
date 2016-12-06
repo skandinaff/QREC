@@ -4,7 +4,8 @@
 /* Global variables */
 float32_t Input[SAMPLES];
 float32_t Output[FFT_SIZE];
-float32_t OutputInVoiceRange[18];
+float32_t OutputInVoiceRange[18]; 
+float32_t OutputInClapRange[CLAP_RANGE]; //3 - 7
 uint32_t claps = 0;
 float32_t silence_thresh = SILENCE_AMPLITUDE;
 float32_t silence_thresh_avg = 0;
@@ -12,6 +13,7 @@ uint32_t N = 0, K = 0;
 
 float32_t freq;
 float32_t inMaxValueInRange;
+
 bool silence_thresh_is_set = false;
 
 char silence_thresh_str[15];
@@ -135,8 +137,17 @@ FFT_OUT_t ComputeFFT(void) {
 		for(int j = 1; j<=18; j++){
 			OutputInVoiceRange[j-1] += Output[j];
 		}
+		
+		for(int k = 0; k<=CLAP_RANGE; k++){
+			OutputInClapRange[k]=0;
+		}
+				
+		for(int m = 2; m<=CLAP_RANGE; m++){
+			OutputInClapRange[m-1] += Output[m];
+		}
 
-		arm_mean_f32(OutputInVoiceRange, FFT_SIZE, &out.Energy);
+		arm_mean_f32(OutputInVoiceRange, FFT_SIZE, &out.VoiceEnergy);
+		arm_mean_f32(OutputInClapRange, CLAP_RANGE, &out.ClapEnergy);
 
     return out;
 }
@@ -188,17 +199,75 @@ void DetectClap(void) {
 				setClaps(0);
 			}
 			
-			if (getSecondCount() > 5 && getClaps() > 10) {
+			if (getSecondCount() > 5 && getClaps() > CLAP_TIMES) {
 					TIM_Cmd(TIM2, DISABLE);
 					setSecondsCount(0);
 					setClaps(0);
 					set_task_counter(get_task_counter() + 1);
+					set_game_result(COMPLETED); 
 					Delayms(100);
 			}
 		}
 }
 
+void DetectClapByEnergy(void) {
 
+    FFT_OUT_t in;
+    in = ComputeFFT();
+	
+		in.ClapEnergy = in.ClapEnergy*100; // Scaling!
+
+		LCD_Puts("Max Amp: ", 1, 1, WHITE, BLACK,1,1);
+		LCD_Puts("Clp det: ", 1, 10, WHITE, BLACK,1,1);
+		LCD_Puts("T: ", 1, 20, WHITE, BLACK,1,1);
+
+    char str[16];
+    char str2[8];
+    char str3[8];
+
+    sprintf(str, "%.2f", in.ClapEnergy);
+    sprintf(str2, "%d", getClaps());
+    sprintf(str3, "%d", getSecondCount());
+		
+		LCD_Puts(str, 60, 1, WHITE, BLACK,1,1);
+		LCD_Puts(str2, 60, 10, WHITE, BLACK,1,1);
+		LCD_Puts(str3, 60, 20, WHITE, BLACK,1,1);
+
+		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
+
+
+   // float32_t freq;
+
+   // freq = in.maxIndex * (45000 / 256);  // Obtaining frequency from the signal
+
+		//if(freq > 500 && freq < 1200) {
+
+			if (getClaps() == 0) {
+					if (in.ClapEnergy > CLAP_AMPLITUDE) {
+							TIM_Cmd(TIM2, ENABLE);
+					}
+			}
+		
+			if (in.ClapEnergy > CLAP_AMPLITUDE) {
+				setClaps(getClaps() + 1);
+				BlinkOnboardLED(3);
+			}
+
+			if(getSecondCount() > 60) {
+				setSecondsCount(0);
+				setClaps(0);
+			}
+			
+			if (getSecondCount() > 5 && getClaps() > 10) {
+					TIM_Cmd(TIM2, DISABLE);
+					setSecondsCount(0);
+					setClaps(0);
+					set_task_counter(get_task_counter() + 1);
+					set_game_result(COMPLETED); 
+					Delayms(100);
+			}
+		//}
+}
 
 
 void SilenceDetectionByEnergy(void) {
@@ -210,14 +279,14 @@ void SilenceDetectionByEnergy(void) {
 	
     //freq = in.maxIndex * (45000 / 256); 
 	
-		in.Energy = in.Energy*100;
+		in.VoiceEnergy = in.VoiceEnergy*100; // Scaling!
 	
 		//if(freq > 100 && freq < 6000) inMaxValueInRange = in.maxValue;  // Approximately range of human voice
 		// TODO: actually look in that freq. range, for now omitted
 		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
 		// ********** Setting the Threshold 
 		if(N < SIL_AVG_SAMPLES && silence_thresh_is_set == 0){
-			silence_thresh_avg += in.Energy;
+			silence_thresh_avg += in.VoiceEnergy;
 			LCD_Puts("                ", 1, 1, WHITE, BLACK,1,1);
 			LCD_Puts("Acq. Thr...        ", 1, 1, WHITE, BLACK,1,1);
 			Delayms(50);
@@ -259,7 +328,7 @@ void SilenceDetectionByEnergy(void) {
 			// ******* Setting Threshold END	
 
 			
-		if (in.Energy <= getSilenceThresh()){
+		if (in.VoiceEnergy <= getSilenceThresh() && silence_thresh_is_set == true){
 			//	TIM_Cmd(TIM4, DISABLE); // Disabling timer that counts Loudness time
 				TIM_Cmd(TIM2, ENABLE);  // Enabling timer that counts quitetness time
 				setTIM4_count0(0); // Resetting timer that counts Loundess time
@@ -270,7 +339,7 @@ void SilenceDetectionByEnergy(void) {
 
 		}
 		
-		if (in.Energy > getSilenceThresh() && silence_thresh_is_set == true) {
+		if (in.VoiceEnergy > getSilenceThresh() && silence_thresh_is_set == true) {
 			setSecondsCount(0);
 	//		TIM_Cmd(TIM4, ENABLE);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
@@ -301,7 +370,7 @@ void SilenceDetectionByEnergy(void) {
 		LCD_Puts(silence_thresh_str, 70, 1, WHITE, BLACK,1,1);
 		
 		LCD_Puts("C.V.: ", 1, 10, WHITE, BLACK,1,1);
-		sprintf(silence_value_str, "%.2f", in.Energy);
+		sprintf(silence_value_str, "%.2f", in.VoiceEnergy);
 		LCD_Puts(silence_value_str, 70, 10, RED, BLACK,1,1);
 		
 		LCD_Puts("T->Done: ", 1, 30, WHITE, BLACK,1,1);
@@ -312,7 +381,7 @@ void SilenceDetectionByEnergy(void) {
 		sprintf(silence_thresh_time_str, "%4d", getTIM5_count()/10);
 		LCD_Puts(silence_thresh_time_str, 70, 40, WHITE, BLACK,1,1);
 		*/
-		silence_value_biggest = in.Energy;
+		silence_value_biggest = in.VoiceEnergy;
 		if(silence_value_biggest > silence_value_biggest_old){
 			silence_value_biggest_old = silence_value_biggest;
 		}

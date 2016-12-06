@@ -117,12 +117,17 @@ void TM_ADC_InitADC(ADC_TypeDef* ADCx) {
 uint16_t TM_ADC_Read(ADC_TypeDef* ADCx, uint8_t channel) {
 	
 	__disable_irq();
+	
+	/*
 	if(get_task_counter()==1){
 	USART_ITConfig(USART3, USART_IT_TXE, DISABLE);
 	USART_ITConfig(USART3, USART_IT_ORE_RX, DISABLE);
 	USART_ITConfig(USART3, USART_IT_TC, DISABLE);
 	USART_ITConfig(USART3, USART_IT_RXNE, DISABLE);
 	}
+	
+	*/
+	
 	ADC_RegularChannelConfig(ADCx, channel, 1, ADC_SampleTime_15Cycles);
 		
 	
@@ -133,14 +138,17 @@ uint16_t TM_ADC_Read(ADC_TypeDef* ADCx, uint8_t channel) {
 		
 
 	while (ADC_GetFlagStatus(ADCx, ADC_FLAG_EOC) == RESET);
-	
+	/*
 	if(get_task_counter()==1){
 	USART_ITConfig(USART3, USART_IT_TXE, ENABLE);
 	USART_ITConfig(USART3, USART_IT_ORE_RX, ENABLE);
 	USART_ITConfig(USART3, USART_IT_TC, ENABLE);
 	USART_ITConfig(USART3, USART_IT_RXNE, ENABLE);
 	}	
+	*/
 	__enable_irq();
+	
+	
 	/* Return result */
 
 	
