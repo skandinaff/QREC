@@ -20,7 +20,7 @@
 
 #define PIR_1_PIN GPIO_Pin_0
 
-#define NO_MOTION_TIME 15
+#define NO_MOTION_TIME 25
 
 void MotionDetection(void);
 

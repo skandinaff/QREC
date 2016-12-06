@@ -31,9 +31,9 @@
 #define CLAP_TIMES								10
 /* Silence settings */
 #define SILENCE_AMPLITUDE					10					
-#define SILENCE_TIME							15
+#define SILENCE_TIME							20
 #define SIL_AVG_SAMPLES						10					
-#define CORRECTION_VALUE					4 					
+#define CORRECTION_VALUE					5 				// 3.5 for the right room, 5 for the left room	
 #define SIL_THR_MAX								15 					// Carefull with this parameter, it might do the task unsolvable
 /* Common settings */
 #define DELAY_VALUE								10
