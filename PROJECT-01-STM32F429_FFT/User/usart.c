@@ -370,18 +370,22 @@ void check_usart_while_playing(){
 						}
 						break;
 					case INSTR_MASTER_SET_IDLE:
-						//free(packet);
+						//NVIC_SystemReset();
+						LCD_FillScreen(BLACK);
+						LCD_Puts("IDLE START", 1, 1, WHITE, BLACK,1,1);
+						set_xLED(0);
+						setClaps(0);
+						set_break_flag(true);
+						set_first_start(false);
+						set_task_counter(FIRST_TASK);					
+						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
+						GPIO_ResetBits(LED_GPIO, STATE_LED);
+						LCD_Puts("IDLE", 1, 1, WHITE, BLACK,1,1);
 						setTIM5_count(0);
 					  setSecondsCount(0); 
 						TIM_Cmd(TIM2, DISABLE);
 						TIM_Cmd(TIM5, DISABLE);
-						GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_2);
-						GPIO_ResetBits(LED_GPIO, STATE_LED);
-					  set_xLED(0);
-						setClaps(0);
-						set_break_flag(true);
-						set_first_start(false);
-						set_task_counter(FIRST_TASK);
+						LCD_Puts("IDLE END", 1, 10, WHITE, BLACK,1,1);
 						free(packet);
 						return;
 					case CINSTR_GOTO_END:

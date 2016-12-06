@@ -39,23 +39,17 @@ uint16_t raw_adc;
 char raw_adc_str[15];
 
 void DetectWhistle(void) {
-    //TM_ILI9341_Puts(150, 10, "           ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
     FFT_OUT_t in;
 
     in = ComputeFFT();
-
-    /* This is me trying to output frequency as a number */
-    //TM_ILI9341_Puts(10, 10, "Peak Freq:", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-
     
 		float32_t freq;
 
 
 
     /*** Thus code takes frequency at a maximum amplitude and detects if it's in range of whistle ***/
-    freq = in.maxIndex * (45000 / 256);  // If a condition is added here, that cut's off low frequencies, just reaching
-    // certain frequency is enough to trigger the event
+    freq = in.maxIndex * (45000 / 256); 
     
 		LCD_Puts("Max Fq: ", 1, 1, WHITE, BLACK,1,1);
     sprintf(whistle_freq_str, "%.2f Hz", freq);	
@@ -65,10 +59,9 @@ void DetectWhistle(void) {
     sprintf(whistle_time_str, "%4d", getSecondCount());	
 		LCD_Puts(whistle_time_str, 60, 10, WHITE, BLACK,1,1);
 		
-    if (in.maxIndex > 0) //TM_ILI9341_Puts(150, 10, str, &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+
 
     if ((freq >= 1000 && freq <= 3000)) {  // Whistle withing range
-			TIM_Cmd(TIM4, DISABLE);
       TIM_Cmd(TIM2, ENABLE);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
@@ -77,49 +70,22 @@ void DetectWhistle(void) {
     if (freq < 1000) {  // Cutting off frequencies less than
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
-			TIM_Cmd(TIM4, ENABLE);
-			//if(getTIM4_count0() >= 10) setSecondsCount(0);
-			//setSecondsCount(0);
-			
-        //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-      //if(getSecondCount() < 2) setSecondsCount(0);  //TODO: What this suppose to do????
 			TIM_Cmd(TIM2, DISABLE);
     }
 		if (freq > 3000) { // Cutting off frequencies more than 2400
 			GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 			GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
-			TIM_Cmd(TIM4, ENABLE);
-			//if(getTIM4_count0() >= 10) setSecondsCount(0);
-			//setSecondsCount(0);
-      //TM_ILI9341_Puts(10, 25, "                       ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
-      //if(getSecondCount() < 2) setSecondsCount(0);  
 			TIM_Cmd(TIM2, DISABLE);
     }
 
 		if (getSecondCount() > 60) setSecondsCount(0);
 		
     if (getSecondCount() > WHISTLE_TIME) {
-        //TM_ILI9341_Puts(10, 25, "You Whistled for N sec!", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
         Delayms(100);
         set_task_counter(get_task_counter() + 1);
         setSecondsCount(0);
     }
 		
-		
-    // Display data on LCD 
-		/*
-    for (in.i = 0; in.i < FFT_SIZE / 2; in.i++) {
-        // Draw FFT results 
-        DrawBar(30 + 2 * in.i,
-                220,
-                FFT_BAR_MAX_HEIGHT,
-                (uint16_t) in.maxValue,
-                (float32_t) Output[(uint16_t) in.i],
-                0x1234,
-                0xFFFF
-        );
-    }
-		*/
 		
 }
 
@@ -165,15 +131,11 @@ FFT_OUT_t ComputeFFT(void) {
 		for(int l = 0; l<=18; l++){
 			OutputInVoiceRange[l]=0;
 		}
-		
-		
+				
 		for(int j = 1; j<=18; j++){
 			OutputInVoiceRange[j-1] += Output[j];
 		}
-		
-		
-		
-		
+
 		arm_mean_f32(OutputInVoiceRange, FFT_SIZE, &out.Energy);
 
     return out;
@@ -181,14 +143,10 @@ FFT_OUT_t ComputeFFT(void) {
 
 
 void DetectClap(void) {
-    //	TM_ILI9341_Puts(180, 10,"           ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
     FFT_OUT_t in;
     in = ComputeFFT();
-		
 
-
-	
 		LCD_Puts("Max Amp: ", 1, 1, WHITE, BLACK,1,1);
 		LCD_Puts("Clp det: ", 1, 10, WHITE, BLACK,1,1);
 		LCD_Puts("T: ", 1, 20, WHITE, BLACK,1,1);
@@ -205,9 +163,6 @@ void DetectClap(void) {
 		LCD_Puts(str2, 60, 10, WHITE, BLACK,1,1);
 		LCD_Puts(str3, 60, 20, WHITE, BLACK,1,1);
 
-
-
-		
 		Delayms(DELAY_VALUE); // This delay is essential for correct timing. Default value = 10
 
 
@@ -226,13 +181,9 @@ void DetectClap(void) {
 			if (in.maxValue > CLAP_AMPLITUDE) {
 				setClaps(getClaps() + 1);
 				BlinkOnboardLED(3);
-		//		ControlBiColorLED(BC_LED_RED, true);
-		//		Delayms(150);
-		//		ControlBiColorLED(BC_LED_RED, false);
 			}
 
 			if(getSecondCount() > 60) {
-				//TM_ILI9341_Puts(180, 40, "   ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 				setSecondsCount(0);
 				setClaps(0);
 			}
@@ -241,7 +192,6 @@ void DetectClap(void) {
 					TIM_Cmd(TIM2, DISABLE);
 					setSecondsCount(0);
 					setClaps(0);
-					//TM_ILI9341_Puts(10, 60, "You did clap 3 times", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 					set_task_counter(get_task_counter() + 1);
 					Delayms(100);
 			}
@@ -450,12 +400,6 @@ void SilenceDetectionByEnergy(void) {
 				GPIO_ResetBits(ONBOARD_LED_GPIO, ONBOARD_LED_3);
 				GPIO_SetBits(ONBOARD_LED_GPIO, ONBOARD_LED_4);
 			
-				//ControlBiColorLED(BC_LED_GREEN, false);
-				//ControlBiColorLED(BC_LED_RED, true);
-				//	GPIO_ResetBits(LED_GPIO, BC_LED_GREEN);
-				//	GPIO_SetBits(LED_GPIO, BC_LED_RED);
-			
-
 
 		}
 		
