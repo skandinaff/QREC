@@ -294,7 +294,7 @@ void SilenceDetectionByEnergy(void) {
 		
 		if(N >= SIL_AVG_SAMPLES && silence_thresh_is_set == false){
 			setSilenceThresh( (silence_thresh_avg/SIL_AVG_SAMPLES) + correction_value ); 			// Add correction value, 4 seems to be optimal
-
+			//if(getSilenceThresh() > SIL_THR_MAX) setSilenceThresh(SIL_THR_MAX);
 			silence_thresh_avg = 0; // Clearing average variable after threshold is set
 			silence_thresh_is_set = true;
 			silence_value_biggest_old = 0;
@@ -364,11 +364,11 @@ void SilenceDetectionByEnergy(void) {
 				Delayms(100);
 		}
 		
-		
-		LCD_Puts("Thr. set: ", 1, 1, WHITE, BLACK,1,1);
-		sprintf(silence_thresh_str, "%.2f", getSilenceThresh());
-		LCD_Puts(silence_thresh_str, 70, 1, WHITE, BLACK,1,1);
-		
+		if(silence_thresh_is_set == true){
+			LCD_Puts("Thr. set: ", 1, 1, WHITE, BLACK,1,1);
+			sprintf(silence_thresh_str, "%.2f", getSilenceThresh());
+			LCD_Puts(silence_thresh_str, 70, 1, WHITE, BLACK,1,1);
+		}
 		LCD_Puts("C.V.: ", 1, 10, WHITE, BLACK,1,1);
 		sprintf(silence_value_str, "%.2f", in.VoiceEnergy);
 		LCD_Puts(silence_value_str, 70, 10, RED, BLACK,1,1);

@@ -32,6 +32,7 @@
 #define SILENCE_TIME							15
 #define SIL_AVG_SAMPLES						10					// previously was 10
 #define CORRECTION_VALUE					4 					// was 3
+#define SIL_THR_MAX								15 					// Carefull with this parameter
 /* Common settings */
 #define DELAY_VALUE								10
 
