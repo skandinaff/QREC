@@ -68,7 +68,6 @@ void PerformQuest(void){
 				break;
 			case 4:  // Pulse Readings
 				DetectClap();
-				//DetectClapByEnergy();
 				break;
 		}
 

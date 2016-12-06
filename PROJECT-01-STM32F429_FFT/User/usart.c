@@ -372,7 +372,7 @@ void check_usart_while_playing(){
 						LCD_Puts("IDLE received", 1, 70, WHITE, BLACK,1,1);
 						if(get_game_state()==GAME) {
 							set_game_state(IDLE);
-							NVIC_SystemReset();
+							NVIC_SystemReset(); // Hardware resets everything.
 						}
 						break;
 					case INSTR_MASTER_WORK_START:

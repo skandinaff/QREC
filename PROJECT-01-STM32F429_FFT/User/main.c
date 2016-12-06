@@ -87,13 +87,13 @@ int main(void) {
 	INTTIM2_Config(); // Responsible only for Seconds count
 	INTTIM5_Config(); // General purpouse small increment timer
 	INTTIM3_Config(); // Responsibleo only for 12V leds blinking
-//	INTTIM4_Config();
+	//	INTTIM4_Config(); // TODO: decide if this timer is needed
 
 	Configure_CupDetection();	
 	Configure_Onboard_LEDS();	
 	Configure_485();
 	Configure_12V_LEDS();
-	//Configure_LED_indicator(); // Can't use this when LCD or BiColor LED is used
+	//Configure_LED_indicator(); // Can't use this when LCD or BiColorLED is used
 	//Configure_BiColor_LED();
 	//Configure_Pulse_CapSens();
 	
@@ -127,7 +127,7 @@ int main(void) {
 		
 		switch(get_game_state()){
 			case IDLE:
-				//Emergency_Stop();
+				//Emergency_Stop(); 
 				set_game_result(NOT_COMPLETED);
 				LCD_Puts("State: Idle", 1, 30, WHITE, BLACK,1,1);
 				LCD_Puts("Result: ", 1, 40, WHITE, BLACK,1,1);
