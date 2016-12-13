@@ -5,11 +5,11 @@
 <h2>Tool Versions:</h2>
 IDE-Version: µVision V5.20.0.0
 Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: A S, AS, LIC=LJWDY-IWR9F-GNTA5-G7RBD-61JVX-YHPUE
+License Information: Aleksandrs Sevastjanovs, Silmor, LIC=AK19U-SJKQE-C1XPU-SKRS9-T85H7-ATFRP
  
 Tool Versions:
 Toolchain:       MDK-ARM Professional  Version: 5.20
-Toolchain Path:  D:\Keil_v5.2\ARM\ARMCC\Bin
+Toolchain Path:  H:\Keil_v5\ARM\ARMCC\Bin
 C Compiler:      Armcc.exe V5.06 update 2 (build 183)
 Assembler:       Armasm.exe V5.06 update 2 (build 183)
 Linker/Locator:  ArmLink.exe V5.06 update 2 (build 183)
@@ -21,57 +21,20 @@ Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V2.0.18.0
 Dialog DLL:      TCM.DLL V1.14.9.0
  
 <h2>Project:</h2>
-D:\workspace\STM\QREC\PROJECT-01-STM32F429_FFT\project.uvprojx
+F:\workspace\arm\QREC\PROJECT-01-STM32F429_FFT\project.uvprojx
 Project File Date:  12/06/2016
 
 <h2>Output:</h2>
-*** Using Compiler 'V5.06 update 2 (build 183)', folder: 'D:\Keil_v5.2\ARM\ARMCC\Bin'
+*** Using Compiler 'V5.06 update 2 (build 183)', folder: 'H:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'STM32F429-Discovery'
-compiling main.c...
-User\main.c(117): warning:  #177-D: variable "packet" was declared but never referenced
-  	unsigned char packet[len];
-User\main.c(118): warning:  #177-D: variable "incoming_packet" was declared but never referenced
-  	incoming_packet_t incoming_packet;
-User\main.c: 2 warnings, 0 errors
-compiling tm_stm32f4_adc.c...
-compiling usart.c...
-User\usart.c(96): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
-      sprintf(output, "%02X%02X%02X%02X%02X%02X%02X", input[0], input[1], input[2], input[3], input[4], input[5], input[6]);
-User\usart.c(257): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "const char *"
-      incoming_packet.packet_length = strlen(packet);
-User\usart.c(284): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
-      outgoing_packet.crc8 = usart_crc8(
-RC_INIT_VAL, data_for_crc8); 
-User\usart.c(304): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "uint8_t *"
-  	char incoming_crc8 = usart_crc8(
-RC_INIT_VAL, data_for_crc8);
-User\usart.c(319): warning:  #167-D: argument of type "uint8_t *" is incompatible with parameter of type "const char *"
-  	uint8_t len = strlen(packet);
-User\usart.c: 5 warnings, 0 errors
-compiling init_periph_irqs.c...
-compiling detect_whistle.c...
-compiling cup_detection.c...
-User\cup_detection.c(80): warning:  #1-D: last line of file ends without a newline
-  }
-User\cup_detection.c: 1 warning, 0 errors
-compiling pulse_reading.c...
-compiling movement_detection.c...
-compiling leds.c...
-User\leds.c(337): warning:  #1-D: last line of file ends without a newline
-  }
-User\leds.c: 1 warning, 0 errors
-compiling quest.c...
-linking...
-Program Size: Code=37780 RO-data=36340 RW-data=240 ZI-data=5712  
-FromELF: creating hex file...
-".\Targets\STM32F429_Discovery\project.axf" - 0 Error(s), 9 Warning(s).
+".\Targets\STM32F429_Discovery\project.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Collection of Component include folders:</h2>
-  D:\workspace\STM\QREC\PROJECT-01-STM32F429_FFT\RTE
-  D:\Keil_v5.2\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+  F:\workspace\arm\QREC\PROJECT-01-STM32F429_FFT\RTE
+  H:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.9.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:08
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>
