@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Targets\STM32F429_Discovery\project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Targets\STM32F429_Discovery\project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Tue Dec 13 19:07:28 2016
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060183: Last Updated: Tue Dec 13 23:50:00 2016
 <BR><P>
 <H3>Maximum Stack Usage =        392 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -2871,7 +2871,7 @@ Global Symbols
 
 <P><STRONG><a name="[2f4]"></a>setQS</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, pulse_reading.o(.text), UNUSED)
 
-<P><STRONG><a name="[16c]"></a>ReadPulse</STRONG> (Thumb, 698 bytes, Stack size 40 bytes, pulse_reading.o(.text))
+<P><STRONG><a name="[16c]"></a>ReadPulse</STRONG> (Thumb, 690 bytes, Stack size 40 bytes, pulse_reading.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 264 + Unknown Stack Size
 <LI>Call Chain = ReadPulse &rArr; LCD_Puts &rArr; LCD_Putchar &rArr; Send_Symbol &rArr; Put_Pixel &rArr; SetArea &rArr; Send_to_lcd &rArr; Send_spi &rArr; ClkPulse
 </UL>
@@ -2979,7 +2979,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[132]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PerformQuest
 </UL>
 
-<P><STRONG><a name="[131]"></a>Control_12V_LEDs</STRONG> (Thumb, 120 bytes, Stack size 24 bytes, leds.o(.text))
+<P><STRONG><a name="[131]"></a>Control_12V_LEDs</STRONG> (Thumb, 134 bytes, Stack size 24 bytes, leds.o(.text))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = Control_12V_LEDs
 </UL>
 <BR>[Calls]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
@@ -3028,7 +3028,7 @@ Global Symbols
 <LI><a href="#[b6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RCC_AHB1PeriphClockCmd
 </UL>
 
-<P><STRONG><a name="[17e]"></a>ControlBiColorLED</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, leds.o(.text), UNUSED)
+<P><STRONG><a name="[17e]"></a>ControlBiColorLED</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, leds.o(.text), UNUSED)
 <BR><BR>[Calls]<UL><LI><a href="#[e1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_ResetBits
 <LI><a href="#[e3]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GPIO_SetBits
 </UL>

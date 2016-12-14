@@ -18,8 +18,8 @@
 #include "usart.h"
 #include "LPH8731-3C.h"
 
-#define TARGET_BPM 90
-#define TARGET_TIME 3
+#define TARGET_BPM 100
+#define TARGET_TIME 10
 #define AMP_LOW_LIM 100
 #define AMP_HIGH_LIM 900
 

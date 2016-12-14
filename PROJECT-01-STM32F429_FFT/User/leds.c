@@ -217,12 +217,12 @@ void Control_12V_LEDs(void){
 	
 		switch( get_task_counter() ) {
 			case 0:
-				//set_xLED(LED_1);
+				set_xLED(LED_1);
 				//GPIO_SetBits(LED_GPIO, LED_5);
 			
 				break;
 			case 1:
-				//GPIO_SetBits(LED_GPIO, LED_1);
+				GPIO_SetBits(LED_GPIO, LED_1);
 			
 				GPIO_SetBits(LED_GPIO, LED_5); // Because skipping first task
 				set_xLED(LED_2);

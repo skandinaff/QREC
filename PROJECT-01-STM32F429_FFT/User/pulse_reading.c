@@ -1,5 +1,7 @@
 #include "pulse_reading.h"
 
+#define THRSH 2500
+
 #define LCD_W 101	
 #define LCD_H 80
 
@@ -12,8 +14,8 @@ volatile uint16_t QS = 0;
 volatile uint16_t rate[10];                    // array to hold last ten IBI values
 
 volatile uint32_t lastBeatTime = 0;           // used to find IBI
-volatile uint16_t P = 2048; //512;                     // used to find peak in pulse wave, seeded
-volatile uint16_t T = 2048; //512;                     // used to find trough in pulse wave, seeded
+volatile uint16_t P = THRSH; //512;                     // used to find peak in pulse wave, seeded
+volatile uint16_t T = THRSH; //512;                     // used to find trough in pulse wave, seeded
 volatile uint16_t thresh = 2048; //525;                // used to find instant moment of heart beat, seeded
 volatile uint16_t amp = 100; //100;                   // used to hold amplitude of pulse waveform, seeded
 volatile uint16_t firstBeat = 1;        // used to seed rate array so we startup with reasonable BPM
@@ -122,9 +124,9 @@ void ReadPulse(void) {
     }
 
     if (N > 2500) {                           // if N milliseconds go by without a beat (Original value 2500, I mostly used 1000)
-        thresh = 2058;                          // set thresh default
-        P = 2048;                               // set P default
-        T = 2048;                               // set T default
+        thresh = THRSH; //2058;                          // set thresh default
+        P = THRSH;                               // set P default
+        T = THRSH;                               // set T default
         lastBeatTime = getSampleCounterIRQ();         // bring the lastBeatTime up to date
         firstBeat = 1;                      // set these to avoid noise
         secondBeat = 0;                    // when we get the heartbeat back
@@ -141,11 +143,17 @@ void ReadPulse(void) {
 		SignalToDraw = Signal;	
 		threshToDraw = thresh;
 		prev_Signal = Signal;
-		
+		/*
 		if(SignalToDraw > 2298) SignalToDraw = 2298;
 		if(SignalToDraw < 2023) SignalToDraw = 2023;
 		if(threshToDraw > 2298) threshToDraw = 2298;
 		if(threshToDraw < 2023) threshToDraw = 2023; 
+		*/
+		
+		if(SignalToDraw > 2088) SignalToDraw = 2088;
+		if(SignalToDraw < 2008) SignalToDraw = 2008;
+		if(threshToDraw > 2088) threshToDraw = 2088;
+		if(threshToDraw < 2008) threshToDraw = 2008; 
 		
 		//LCD_DrawLine(getTIM5_count3()-1, (SignalToDraw / 7), getTIM5_count3(), (PrevSignalToDraw / 7), CYAN);
 		Put_Pixel( getTIM5_count3(), ( LCD_H - (Signal / 52) ), RED);	
