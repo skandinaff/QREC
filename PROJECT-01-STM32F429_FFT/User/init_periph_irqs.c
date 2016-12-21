@@ -210,9 +210,12 @@ void TIM5_IRQHandler(void) {
 
 	if (TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET) {
 		TIM_ClearITPendingBit(TIM5, TIM_IT_Update);
+		
+		GPIO_ToggleBits(LED_GPIO, STATE_LED);
+		
+		sampleCounterIRQ += 2;	// This increments a counter for pulse sensor
 
-		sampleCounterIRQ += 1;	// This increments a counter for pulse sensor
-
+		
 
 		counter += 1;          // This horrible thing here helps to get ~2ms refresh rate for drawing signal
 		counter2 += 1;
