@@ -27,19 +27,21 @@ void PerformQuest(void){
 			ClearOnboardLEDS();
 			setTIM5_count(1);	
 			break;
-		case 1: // Silence detection
+		case 2: // Silence detection
 			LCD_FillScreen(BLACK);
 			setTIM5_count2(0);
-			TM_ADC_Init(ADC1, ADC_Channel_3);
+			//TM_ADC_Init(ADC1, ADC_Channel_3);
 			ClearOnboardLEDS();
 			Delayms(3000);
 			break;
-		case 2:  // Motion detection
+		case 3:  // Motion detection
 			LCD_FillScreen(BLACK);
 			Configure_MotionSensorPort();
 			ClearOnboardLEDS();
 			break;
-		case 3:  // Whistle Detection
+		case 1:  // Whistle Detection
+			setTIM5_count2(0);
+			TM_ADC_Init(ADC1, ADC_Channel_3);
 			LCD_FillScreen(BLACK);
 			ClearOnboardLEDS();
 			break;
@@ -57,13 +59,13 @@ void PerformQuest(void){
 			case 0:	// Clap detection
 				ReadPulse();			  
 				break;
-			case 1: // Silence detection
+			case 2: // Silence detection
 				SilenceDetectionByEnergy();
 				break;
-			case 2:  // Motion detection
+			case 3:  // Motion detection
 			  MotionDetection();
 				break;
-			case 3:  // Whistle Detection
+			case 1:  // Whistle Detection
 				DetectWhistle();
 				break;
 			case 4:  // Pulse Readings

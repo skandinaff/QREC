@@ -2,7 +2,7 @@
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: ..\00-STM32F429_LIBRARIES\tm_stm32f4_adc.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4.h
-.\targets\stm32f429_discovery\tm_stm32f4_adc.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\targets\stm32f429_discovery\tm_stm32f4_adc.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdint.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cmInstr.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cmFunc.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4_simd.h
@@ -39,10 +39,10 @@
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_sai.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: .\User\defines.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: .\User\usart.h
-.\targets\stm32f429_discovery\tm_stm32f4_adc.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-.\targets\stm32f429_discovery\tm_stm32f4_adc.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
-.\targets\stm32f429_discovery\tm_stm32f4_adc.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
-.\targets\stm32f429_discovery\tm_stm32f4_adc.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\targets\stm32f429_discovery\tm_stm32f4_adc.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdio.h
+.\targets\stm32f429_discovery\tm_stm32f4_adc.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\string.h
+.\targets\stm32f429_discovery\tm_stm32f4_adc.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdbool.h
+.\targets\stm32f429_discovery\tm_stm32f4_adc.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdlib.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: .\User\init_periph_irqs.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: .\TM\tm_stm32f4_delay.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: .\User\leds.h
@@ -55,7 +55,7 @@
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: .\TM\tm_stm32f4_timer_properties.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\arm_math.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4.h
-.\targets\stm32f429_discovery\tm_stm32f4_adc.o: H:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\targets\stm32f429_discovery\tm_stm32f4_adc.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\math.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: .\User\cup_detection.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: .\User\leds.h
 .\targets\stm32f429_discovery\tm_stm32f4_adc.o: .\User\LPH8731-3C.h

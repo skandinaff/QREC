@@ -2,7 +2,7 @@
 #define CUP_DETECTION_H
 
 #define TASK_COUNT 5
-#define FIRST_TASK 0
+#define FIRST_TASK 1
 
 #include <stdio.h>
 #include <string.h>
