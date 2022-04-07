@@ -101,4 +101,5 @@ PROJECT-01-STM32F429_FFT/project.uvoptx
 *.htm
 PROJECT-01-STM32F429_FFT/Targets/STM32F429_Discovery/project.axf
 PROJECT-01-STM32F429_FFT/Targets/STM32F429_Discovery/main.crf
+PROJECT-01-STM32F429_FFT/Targets/STM32F429_Discovery/
 *.crf

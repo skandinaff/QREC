@@ -81,15 +81,15 @@ int main(void) {
 	
 	TM_DELAY_Init(); /* Delay init */
 	
-	//TM_DISCO_LedInit(); /* Initialize LED's on board */
+	TM_DISCO_LedInit(); /* Initialize LED's on board */
 
 	INTTIM2_Config();
 	INTTIM5_Config();
 
 	/* Initialize LCD */
 	
-	//TM_ILI9341_Init();
-	//TM_ILI9341_Rotate(TM_ILI9341_Orientation_Landscape_1);
+	TM_ILI9341_Init();
+	TM_ILI9341_Rotate(TM_ILI9341_Orientation_Landscape_1);
 
 	Configure_CupDetection();	
 	Configure_Onboard_LEDS();	
@@ -106,7 +106,7 @@ int main(void) {
 
 	Delayms(300);
 	
-	//TM_ILI9341_Puts(1, 41, "Status: Idle", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
+	TM_ILI9341_Puts(1, 41, "Status: Idle", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
 
 	int len = DATA_PACKET_LEN + 1;
 	unsigned char packet[len];
@@ -197,7 +197,7 @@ int main(void) {
 								set_task_counter(FIRST_TASK);
 								setSecondsCount(0);
 								TIM_Cmd(TIM2, DISABLE);
-								//TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
+								TM_ILI9341_Fill(ILI9341_COLOR_WHITE);
 								set_break_flag(false);
 							}
 						}

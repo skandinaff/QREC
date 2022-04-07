@@ -128,7 +128,7 @@ void ReadPulse(void) {
 				GPIO_SetBits(LED_GPIO, LED_5);	// And here we make a beat with task LED
     }
 
-		/*
+		
 				//Display section
 				sprintf(adc_result_str, "%4d: ", Signal);
         TM_ILI9341_Puts(1, 5, "RAW ADC: ", &TM_Font_11x18, ILI9341_COLOR_BLACK, ILI9341_COLOR_WHITE);
@@ -146,7 +146,7 @@ void ReadPulse(void) {
             TM_ILI9341_Puts(100, 45, BPM_result_str, &TM_Font_11x18, ILI9341_COLOR_RED, ILI9341_COLOR_WHITE);
 					put_char(BPM);
 					if(BPM < 100) clearBuffer(); // So we're clearing LED indicator
-					addToBuffer(BPM);
+					//addToBuffer(BPM);
 					Delayms(125);
 					clearBuffer();
         }
@@ -169,7 +169,7 @@ void ReadPulse(void) {
 				TM_ILI9341_DrawPixel(getTIM5_count(), 240 - Signal / 17, 0x1234);
     }
 				
-		*/
+		
 		
 		if(BPM && get_cups_override()) {
 			GPIO_ToggleBits(RS485_GPIO, RS485_EN_PIN);
