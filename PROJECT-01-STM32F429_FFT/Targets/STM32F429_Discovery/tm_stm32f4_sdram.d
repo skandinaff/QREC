@@ -2,7 +2,7 @@
 .\targets\stm32f429_discovery\tm_stm32f4_sdram.o: ..\00-STM32F429_LIBRARIES\tm_stm32f4_sdram.h
 .\targets\stm32f429_discovery\tm_stm32f4_sdram.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Device\ST\STM32F4xx\Include\stm32f4xx.h
 .\targets\stm32f429_discovery\tm_stm32f4_sdram.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4.h
-.\targets\stm32f429_discovery\tm_stm32f4_sdram.o: D:\Keil_v5.2\ARM\ARMCC\Bin\..\include\stdint.h
+.\targets\stm32f429_discovery\tm_stm32f4_sdram.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\targets\stm32f429_discovery\tm_stm32f4_sdram.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cmInstr.h
 .\targets\stm32f429_discovery\tm_stm32f4_sdram.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cmFunc.h
 .\targets\stm32f429_discovery\tm_stm32f4_sdram.o: ..\00-STM32F4xx_STANDARD_PERIPHERAL_DRIVERS\CMSIS\Include\core_cm4_simd.h
